@@ -11,32 +11,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Soluciones PC</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="/index.html">Clientes</a>
-                    <a class="nav-link" href="/pagos.html">Pagos</a>
-                    <a class="nav-link" href="/users.html">Usuarios</a>
-                </div>
-                <div class="user btn-group"> 
-                    <img src="/img/user.png" alt=""  data-bs-toggle="dropdown" aria-expanded="false">
-                    <ul class="dropdown-menu">
-                        <li><div class="dropdown-item disabled" >Coordinador</div></li>
-                        <li><div class="dropdown-item disabled">Usuario</div></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li class="logout" ><a class="dropdown-item logout" href="/mylogout">Cerrar Sesión</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
 
+    <div th:replace="~{fragments/layout :: nav}"></div>
     <main>
         <div class="container-lg d-flex mt-1 client-option">
             <di>
