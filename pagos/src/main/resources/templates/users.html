@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Soluciones PC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/index.html">Clientes</a>
+                    <a class="nav-link" href="/pagos.html">Pagos</a>
+                    <a class="nav-link" href="/users.html">Usuarios</a>
+                </div>
+            </div>
+        </div>
+        <div class="user btn-group"> 
+            <img src="/img/user.png" alt=""  data-bs-toggle="dropdown" aria-expanded="false">
+            <ul class="dropdown-menu">
+                <li><div class="dropdown-item disabled" >Coordinador</div></li>
+                <li><div class="dropdown-item disabled">Usuario</div></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="logout" ><a class="dropdown-item logout" href="/mylogout">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container-lg d-flex mt-1 client-option">
+            <di>
+                <h2>Usuarios</h2>
+                <br>
+                <span>Buscar: </span><input type="text" id="filtroNombre" placeholder="Filtrar por nombre">
+                Número de registros
+                <select onchange="numRegistros();" name="" id="num-registros">
+                    <option selected value="2">2</option>
+                    <option selected value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+            </di>
+            <div>
+                <button data-bs-toggle="modal" data-bs-target="#modal-agregar-usuario" type="button"
+                    class="btn btn-success">
+                    Registrar
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUbicaciones">
+                    <tr>
+                        <th>Joshua</th>
+                        <td>Trinidad Bautista</td>
+                        <td>Admin</td>
+                        <td>
+                            <button data-bs-toggle="modal" data-bs-target="#modal-editar-usuario" class="btn btn-warning">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="container text-center">
+                <span class="result-registros" id="result-registros">No se econtraron registros</span>
+            </div>
+            <ul class="pagination" id="paginacion">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </main>
+
+    <!-- MODAL REGISTRAR USUARIO -->
+
+    <div class="modal fade" id="modal-agregar-usuario" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formRegistrarUsuario" action="#">
+
+                        <div class="row">
+							<div class="col-6">
+								<label for="nombreCliente">Nombre: </label>
+								<input id="nombreCliente" name="nombre" class="form-control" required>
+							</div>
+
+							<div class="col-6">
+								<label for="apellidoPaterno">Apellido Paterno: </label>
+								<input id="apellidoPaterno" name="apellidoPaterno" class="form-control" required>
+							</div>
+						</div>
+                        <div class="row">
+							<div class="col-6">
+								<label for="apellidoMaterno">Apellido Materno: </label>
+								<input id="apellidoMaterno" name="apellidoMaterno" class="form-control" required>
+							</div>
+
+							<div class="col-6">
+								<label for="password">password: </label>
+								<input id="password" name="password" class="form-control" required>
+							</div>
+						</div>
+                        <div class="row">
+							<div class="col-6">
+								<label for="rol">Rol: </label>
+								<Select id="rol" name="rol" class="form-control">
+                                    <option value="1">Administrador general</option>
+                                    <option value="2">Administrador</option>
+                                </Select>
+							</div>
+						</div>
+                        <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FIN MODAL REGISTRAR USUARIO -->
+
+
+    <!-- MODAL EDITAR USUARIO -->
+
+    <div class="modal fade" id="modal-editar-usuario" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formRegistrarUsuario" action="#">
+
+                        <div class="row">
+							<div class="col-6">
+								<label for="nombreCliente">Nombre: </label>
+								<input id="nombreCliente" name="nombre" class="form-control" required>
+							</div>
+
+							<div class="col-6">
+								<label for="apellidoPaterno">Apellido Paterno: </label>
+								<input id="apellidoPaterno" name="apellidoPaterno" class="form-control" required>
+							</div>
+						</div>
+                        <div class="row">
+							<div class="col-6">
+								<label for="apellidoMaterno">Apellido Materno: </label>
+								<input id="apellidoMaterno" name="apellidoMaterno" class="form-control" required>
+							</div>
+
+							<div class="col-6">
+								<label for="password">password: </label>
+								<input id="password" name="password" class="form-control" required>
+							</div>
+						</div>
+                        <div class="row">
+							<div class="col-6">
+								<label for="rol">Rol: </label>
+								<Select id="rol" name="rol" class="form-control">
+                                    <option value="1">Administrador general</option>
+                                    <option value="2">Administrador</option>
+                                </Select>
+							</div>
+							<div class="col-6">
+								<label for="estado">Estado: </label>
+								<Select id="estado" name="estado" class="form-control">
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </Select>
+							</div>
+
+						</div>
+                        <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FIN MODAL EDITAR USUARIO -->
+
+    <!-- MODAL PARA CONFIRMAR PAGO  -->
+    <div class="modal fade" id="modal-confirmar-pago" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Confirmar pago?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmarEliminar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- MODAL PARA CONFIRMAR PAGO -->
+</body>
+
+</html>

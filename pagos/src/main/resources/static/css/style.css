@@ -1,0 +1,68 @@
+.navbar{
+    background-color: #419BCE !important;
+}
+
+/* TITULOS */
+.navbar-collapse{
+    justify-content: space-between;
+}
+.navbar-brand{
+    font-size: 2rem;
+    color: white !important;
+}
+
+.navbar-nav a{
+    font-weight: 200;
+    color: white !important;
+    font-size: 1.5rem;
+}
+.user{
+    padding: 1rem;
+    margin-right: 5rem;
+}
+.user img:hover{
+    cursor: pointer;
+}
+.user img{
+    width: 3rem;
+}
+
+.client-option{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4rem !important;
+}
+
+/* LOGIN */
+.titulo-login{
+    color: white !important;
+}
+
+.login-page{
+    background-color: #419BCE;
+}
+
+.btn-color{
+    background-color: #419BCE;
+    color: #fff;
+    
+  }
+  
+  .profile-image-pic{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+  }
+  
+  
+  
+  .cardbody-color{
+    background-color: #ebf2fa;
+  }
+  
+  a{
+    text-decoration: none;
+  }
+
+
+
