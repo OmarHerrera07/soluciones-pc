@@ -1,4 +1,8 @@
+var currentPage = 0;
 
+document.body.addEventListener("refresh", function(){
+    cargarUsuarios(currentPage);
+})
 function editarUsuario(id) {
 	console.log("HOL");
 	$('#idUser').val(id);
@@ -8,8 +12,6 @@ function editarUsuario(id) {
 // Simular un clic en el botón
 boton.click();
 }
-
-var currentPage = 0;
 
 function cargarUsuarios(page) {
 	$.get("/usuarios/paginacion?page=" + page+"&nombre="+$("#filtroNombre").val()+ "&size=" + $("#num-registros").val(), function(data) {

@@ -22,6 +22,8 @@ import com.solucionespc.pagos.dto.UsuarioRegisterDTO;
 import com.solucionespc.pagos.entity.Usuario;
 import com.solucionespc.pagos.service.IUsuarioService;
 
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
+
 
 @Controller
 @RequestMapping("/usuarios")
@@ -38,6 +40,7 @@ public class UsuarioController {
         return "users";
     }
     
+    @HxTrigger("refresh")
     @PostMapping(value = "/registrar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -68,6 +71,8 @@ public class UsuarioController {
      *
      * @return  fragmento de thymeleaf con el cuerpo del formulario
      */
+    
+
     @GetMapping("/get-form-editar")
     public String getEditarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Usuario user = usuarioService.findUsuarioById(id);
@@ -75,6 +80,7 @@ public class UsuarioController {
         return "fragments/usuarios/editar-usuario :: editar-usuario-form";
     }
     
+    @HxTrigger("refresh")
     @PostMapping(value = "/editar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
