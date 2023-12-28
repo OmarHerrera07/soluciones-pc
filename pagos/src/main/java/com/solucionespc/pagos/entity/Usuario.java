@@ -28,9 +28,7 @@ public class Usuario {
     
     private String password;
     
-    private String apellidoPaterno;
-    
-    private String apellidoMaterno;
+    private String nombre;
     
     @ManyToOne
     @JoinColumn(name = "id_rol")

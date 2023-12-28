@@ -22,5 +22,9 @@ public interface IUsuarioService {
 	Usuario findUsuarioById(Integer id);
 	
 	Page<Usuario> paginacionUsuariosFiltro(String nombre,Pageable pageable);
+	
+	boolean updateUser(UsuarioRegisterDTO userDTO);
+	
+	Usuario findById(Integer id);
 
 }

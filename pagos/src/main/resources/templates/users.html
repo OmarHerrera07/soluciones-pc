@@ -20,18 +20,28 @@
 	<div id="result-msg"></div>
 	<main>
 		<div class="container-lg d-flex mt-1 client-option">
-			<di>
+			<div>
 				<h2>Usuarios</h2>
 				<br>
-				<span>Buscar: </span><input type="text" id="filtroNombre" placeholder="Filtrar por nombre">
-				Número de registros
-				<select onchange="numRegistros();" name="" id="num-registros">
-					<option selected value="2">2</option>
-					<option selected value="5">5</option>
-					<option value="10">10</option>
-					<option value="20">20</option>
-				</select>
-			</di>
+				<div class="row">
+					<div class="col-6 d-flex align-items-center">
+						<span class="mr-2">Buscar: </span><input class="form-control" type="text" id="filtroNombre"
+							placeholder="Filtrar por nombre">
+					</div>
+
+					<div class="col-6">
+						Número de registros
+						<select onchange="numRegistros();" name="" id="num-registros">
+							<option selected value="2">2</option>
+							<option selected value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+						</select>
+					</div>
+				</div>
+
+
+			</div>
 			<div>
 				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-usuario" type="button"
 					class="btn btn-success" hx-get="/usuarios/get-form-registrar" hx-target="#form-registrar-usuario"
@@ -46,8 +56,8 @@
 			<table class="table text-center">
 				<thead>
 					<tr>
-						<th scope="col">Nombre</th>
-						<th scope="col">Apellidos</th>
+						<th scope="col">Nombre Completo</th>
+						<th scope="col">Username</th>
 						<th scope="col">Rol</th>
 						<th scope="col">Acciones</th>
 					</tr>

@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UsuarioRegisterDTO {
+	
+	private Integer idUsuario;
     
     private String username;
     
     private String password;
     
-    private String apellidoPaterno;
-    
-    private String apellidoMaterno;
+    private String nombre;
     
     private Integer idRol;
 }

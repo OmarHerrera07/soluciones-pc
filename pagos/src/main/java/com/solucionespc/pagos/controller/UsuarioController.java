@@ -71,18 +71,34 @@ public class UsuarioController {
     @GetMapping("/get-form-editar")
     public String getEditarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Usuario user = usuarioService.findUsuarioById(id);
-    	System.out.println(user);
     	model.addAttribute("user", user);
         return "fragments/usuarios/editar-usuario :: editar-usuario-form";
+    }
+    
+    @PostMapping(value = "/editar",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String editarUsuario(UsuarioRegisterDTO usuario) {
+    	System.out.println(usuario);
+		if (usuario.getPassword() == null || usuario.getPassword().isEmpty()) {
+			usuario.setPassword(usuarioService.findById(usuario.getIdUsuario()).getPassword());
+		} else {
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		}
+    	 usuarioService.updateUser(usuario);
+    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha editado el usario</div>";
     }
     
     @GetMapping("/paginacion")
     @ResponseBody
     public Page<Usuario> obtenerUsuariosPaginados(
     		@RequestParam(name = "nombre", required = false) String nombre,
+    		 @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
             Pageable pageable) {
     	System.out.println(nombre);
-    	pageable = PageRequest.of(pageable.getPageNumber(), 4, pageable.getSort());
+    	pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         return usuarioService.paginacionUsuariosFiltro(nombre, pageable);
     }
     

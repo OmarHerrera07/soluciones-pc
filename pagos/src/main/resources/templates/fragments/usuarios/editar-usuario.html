@@ -14,33 +14,33 @@
 </div>
 
 <div th:fragment="editar-usuario-form">
-	<form>
+	<form hx-post="/usuarios/editar" hx-target="#result-msg" hx-swap="innerHTML">
+		<input name="idUsuario" th:value="${user.idUsuario}">
 		<div class="row">
 			<div class="col-6">
-				<label for="nombreCliente">Nombre: </label>
-				<input th:value="${user.username}" name="nombre" class="form-control" required>
+				<label for="apellidoPaterno">Nombre Completo: </label>
+				<input th:value="${user.nombre}" name="nombre" class="form-control" required>
 			</div>
-
 			<div class="col-6">
-				<label for="apellidoPaterno">Apellido Paterno: </label>
-				<input th:value="${user.apellidoPaterno}" name="apellidoPaterno" class="form-control" required>
+				<label for="nombreCliente">Username: </label>
+				<input th:value="${user.username}" name="username" class="form-control" required>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-6">
 				<label for="apellidoMaterno">Apellido Materno: </label>
-				<input th:value="${user.apellidoMaterno}" name="apellidoMaterno" class="form-control" required>
+				<input name="apellidoMaterno" class="form-control" >
 			</div>
 
 			<div class="col-6">
 				<label for="password">password: </label>
-				<input id="password" name="password" class="form-control" required>
+				<input id="password" name="password" class="form-control">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-6">
 				<label for="rol">Rol: </label>
-				<Select th:value="${user.rol.idRol}" name="rol" class="form-control">
+				<Select th:value="${user.rol.idRol}" name="idRol" class="form-control">
 					<option value="1">Administrador general</option>
 					<option value="2">Administrador</option>
 				</Select>
@@ -57,7 +57,7 @@
 		<br>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-			<button type="submit" class="btn btn-success">Guardar</button>
+			<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
 		</div>
 	</form>
 </div>

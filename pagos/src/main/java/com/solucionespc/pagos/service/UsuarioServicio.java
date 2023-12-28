@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.solucionespc.pagos.dto.UsuarioRegisterDTO;
@@ -33,11 +34,27 @@ public class UsuarioServicio implements IUsuarioService{
 		// TODO Auto-generated method stub
 		Usuario user = new Usuario();
 		user.setUsername(userDTO.getUsername());
-		user.setApellidoPaterno(userDTO.getApellidoPaterno());
-		user.setApellidoMaterno(userDTO.getApellidoMaterno());
+		user.setNombre(userDTO.getNombre());
 		user.setPassword(userDTO.getPassword());
 		user.setRol(Rol.builder().idRol(userDTO.getIdRol()).build());
 
+		try {
+			usuarioRepository.save(user);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean updateUser(UsuarioRegisterDTO userDTO) {
+		// TODO Auto-generated method stub
+		Usuario user = new Usuario();
+		user.setPassword(userDTO.getPassword());
+		user.setIdUsuario(userDTO.getIdUsuario());
+		user.setUsername(userDTO.getUsername());
+		user.setNombre(userDTO.getNombre());
+		user.setRol(Rol.builder().idRol(userDTO.getIdRol()).build());
 		try {
 			usuarioRepository.save(user);
 			return true;
@@ -62,5 +79,11 @@ public class UsuarioServicio implements IUsuarioService{
 	public Page<Usuario> paginacionUsuariosFiltro(String nombre,Pageable pageable) {
 		// TODO Auto-generated method stub
 		return usuarioRepository.paginacionUsuarioFiltro(nombre, pageable);
+	}
+	
+	@Override
+	public Usuario findById(Integer id) {
+		// TODO Auto-generated method stub
+		return usuarioRepository.findById(id).get();
 	}
 }

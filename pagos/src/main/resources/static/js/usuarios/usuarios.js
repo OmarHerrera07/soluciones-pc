@@ -12,7 +12,7 @@ boton.click();
 var currentPage = 0;
 
 function cargarUsuarios(page) {
-	$.get("/usuarios/paginacion?page=" + page+"&nombre="+$("#filtroNombre").val(), function(data) {
+	$.get("/usuarios/paginacion?page=" + page+"&nombre="+$("#filtroNombre").val()+ "&size=" + $("#num-registros").val(), function(data) {
 		currentPage = page;
 		console.log(data);
 		actualizarTabla(data.content);
@@ -32,8 +32,8 @@ function actualizarTabla(usuarios) {
 		usuarios.forEach(function(user) {
 			tabla.append(`
 								<tr>
+						<td>${user.nombre}</td>
 						<td>${user.username}</td>
-						<td>${user.apellidoPaterno} ${user.apellidoMaterno}</td>
 						<td>Admin</td>
 						<td>
 							<button type="button" 
@@ -119,3 +119,7 @@ $(document).ready(function() {
 		cargarUsuarios(0);
 	});
 });
+
+function numRegistros() {
+	cargarUsuarios(0);
+}
