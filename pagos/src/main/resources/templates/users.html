@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<div th:replace="~{fragments/layout :: estilos}"></div>
 </head>
 
 <body>
     <div th:replace="~{fragments/layout :: nav}"></div>
-
+	
+	<div id="result-msg"></div>
+	<button onclick="prueba();" >Notificación</button>
     <main>
         <div class="container-lg d-flex mt-1 client-option">
             <di>
@@ -29,7 +29,11 @@
             </di>
             <div>
                 <button data-bs-toggle="modal" data-bs-target="#modal-agregar-usuario" type="button"
-                    class="btn btn-success">
+                    class="btn btn-success"
+                    hx-get="/usuarios/get-registrar-modal"
+                    hx-target="#form-registrar-usuario"
+                    hx-swap="innerHTML"
+                    >
                     Registrar
                 </button>
             </div>
@@ -88,54 +92,16 @@
     <div class="modal fade" id="modal-agregar-usuario" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Agregar Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formRegistrarUsuario" action="#">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title">Agregar Usuario</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body" id="form-registrar-usuario">
 
-                        <div class="row">
-							<div class="col-6">
-								<label for="nombreCliente">Nombre: </label>
-								<input id="nombreCliente" name="nombre" class="form-control" required>
-							</div>
-
-							<div class="col-6">
-								<label for="apellidoPaterno">Apellido Paterno: </label>
-								<input id="apellidoPaterno" name="apellidoPaterno" class="form-control" required>
-							</div>
-						</div>
-                        <div class="row">
-							<div class="col-6">
-								<label for="apellidoMaterno">Apellido Materno: </label>
-								<input id="apellidoMaterno" name="apellidoMaterno" class="form-control" required>
-							</div>
-
-							<div class="col-6">
-								<label for="password">password: </label>
-								<input id="password" name="password" class="form-control" required>
-							</div>
-						</div>
-                        <div class="row">
-							<div class="col-6">
-								<label for="rol">Rol: </label>
-								<Select id="rol" name="rol" class="form-control">
-                                    <option value="1">Administrador general</option>
-                                    <option value="2">Administrador</option>
-                                </Select>
-							</div>
-						</div>
-                        <br>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-success">Guardar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+		</div>
+	</div>
+</div>
     </div>
     <!--FIN MODAL REGISTRAR USUARIO -->
 
@@ -226,4 +192,6 @@
     <!-- MODAL PARA CONFIRMAR PAGO -->
 </body>
 
+<div th:replace="~{fragments/layout :: scripts}"></div>
+<script th:src="@{/js/usuarios/usuarios.js}"></script>
 </html>

@@ -1,0 +1,49 @@
+<div th:fragment="registrar-usuario-modal">
+	<form hx-post="/usuarios/registrar" hx-target="#result-msg" hx-swap="innerHTML">
+
+		<div id="body-registro-usuario">
+
+		</div>
+
+		<div class="row">
+			<div class="col-6">
+				<label for="nombreCliente">Nombre: </label>
+				<input id="nombreCliente" name="username" class="form-control" required>
+			</div>
+
+			<div class="col-6">
+				<label for="apellidoPaterno">Apellido Paterno: </label>
+				<input id="apellidoPaterno" name="apellidoPaterno" class="form-control" required>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<label for="apellidoMaterno">Apellido Materno: </label>
+				<input id="apellidoMaterno" name="apellidoMaterno" class="form-control" required>
+			</div>
+
+			<div class="col-6">
+				<label for="password">password: </label>
+				<input id="password" name="password" class="form-control" required>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<label for="rol">Rol: </label>
+				<Select id="rol" name="idRol" class="form-control">
+					<option value="1">Administrador general</option>
+					<option value="2">Administrador</option>
+				</Select>
+			</div>
+		</div>
+
+
+
+		<br>
+
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+			<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+		</div>
+	</form>
+</div>
