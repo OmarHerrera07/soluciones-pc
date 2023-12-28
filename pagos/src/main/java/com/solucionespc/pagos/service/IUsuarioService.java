@@ -18,5 +18,9 @@ public interface IUsuarioService {
 	boolean registerUser(UsuarioRegisterDTO userDTO );
 	
 	Page<Usuario> paginacionUsuarios(Pageable pageable);
+	
+	Usuario findUsuarioById(Integer id);
+	
+	Page<Usuario> paginacionUsuariosFiltro(String nombre,Pageable pageable);
 
 }

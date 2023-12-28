@@ -51,4 +51,16 @@ public class UsuarioServicio implements IUsuarioService{
 		// TODO Auto-generated method stub
 		return usuarioRepository.findAll(pageable);
 	}
+	
+	@Override
+	public Usuario findUsuarioById(Integer id) {
+		// TODO Auto-generated method stub
+		return usuarioRepository.findById(id).get();
+	}
+	
+	@Override
+	public Page<Usuario> paginacionUsuariosFiltro(String nombre,Pageable pageable) {
+		// TODO Auto-generated method stub
+		return usuarioRepository.paginacionUsuarioFiltro(nombre, pageable);
+	}
 }
