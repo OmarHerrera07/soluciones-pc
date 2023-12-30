@@ -1,20 +1,17 @@
 var currentPage = 0;
 
-document.body.addEventListener("refresh", function(){
-    cargarUsuarios(currentPage);
+document.body.addEventListener("refresh", function() {
+	cargarUsuarios(currentPage);
 })
 function editarUsuario(id) {
-	console.log("HOL");
 	$('#idUser').val(id);
 	console.log($('#idUser').val());
 	var boton = document.getElementById('botonid');
-
-// Simular un clic en el botón
-boton.click();
+	boton.click();
 }
 
 function cargarUsuarios(page) {
-	$.get("/usuarios/paginacion?page=" + page+"&nombre="+$("#filtroNombre").val()+ "&size=" + $("#num-registros").val(), function(data) {
+	$.get("/usuarios/paginacion?page=" + page + "&nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val(), function(data) {
 		currentPage = page;
 		console.log(data);
 		actualizarTabla(data.content);
@@ -117,7 +114,7 @@ function cargarPaginacion(totalPages) {
 
 $(document).ready(function() {
 	cargarUsuarios(0);
-		$("#filtroNombre").on("input", function () {
+	$("#filtroNombre").on("input", function() {
 		cargarUsuarios(0);
 	});
 });

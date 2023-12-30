@@ -1,7 +1,5 @@
 package com.solucionespc.pagos.entity;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,26 +11,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "usuario")
-public class Usuario {
+@Table(name = "paquete_Internet")
+public class Paquete {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Integer idUsuario;
-    
-    private String username;
-    
-    private String password;
+    @Column(name = "id_paquete")
+    private Integer idPaquete;
     
     private String nombre;
     
-    @ManyToOne
-    @JoinColumn(name = "id_rol")
-    private Rol rol;
+    private Float precio;
+
 }

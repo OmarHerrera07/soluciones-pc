@@ -63,6 +63,13 @@
   a{
     text-decoration: none;
   }
+  
+  .fechas{
+	  background-color: white;
+	  color: black;
+	  border: none;
+	  text-align: center;
+  }
 
 
 

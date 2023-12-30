@@ -1,0 +1,69 @@
+<div th:fragment="modal-consultar-cliente" class="modal fade" id="modal-consultar-cliente" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Agregar Cliente</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="form-consultar-cliente">
+				<div th:fragment="consultar-cliente">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="datos-consultar-cliente">
+	<div class="row">
+		<div class="col-12">
+			<label for="nombreCliente">Nombre Completo: </label>
+			<input th:value="${cliente.nombre}" class="form-control" disabled>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<label for="telefono">Teléfono: </label>
+			<input th:value="${cliente.telefono}" class="form-control" disabled>
+		</div>
+
+		<div class="col-6">
+			<label for="rfc">RFC: </label>
+			<input th:value="${cliente.rfc}" class="form-control" disabled>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<label for="numCliente">Colonia</label>
+			<input th:value="${cliente.Colonia.colonia}" class="form-control" disabled>
+		</div>
+
+		<div class="col-6">
+			<label for="coordenadas">Ubicación: </label>
+			<input th:value="${cliente.coordenadas}" class="form-control" disabled>
+		</div>
+	</div>
+	<div class="row">
+
+		<div class="col-6">
+			<label for="telefono">Fecha de pago: </label>
+			<input type="date" th:value="${#dates.format(cliente.fechaPago, 'yyyy-MM-dd')}" class="form-control" disabled>
+		</div>
+		<div class="col-6">
+			<label for="idPaquete">Paquete de Internet: </label>
+			<input th:value="${cliente.Paquete.precio}" class="form-control" disabled>	
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<label for="observaciones">Observaciones: </label>
+			<textarea th:value="${cliente.observaciones}" class="form-control" rows="3"></textarea>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+		<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+	</div>
+</div>

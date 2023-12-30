@@ -1,7 +1,5 @@
 package com.solucionespc.pagos.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +38,11 @@ public class UsuarioController {
         return "users";
     }
     
+    /**
+     * Registrar un usuario nuevo
+     * @param usuario	Usuario a registrar
+     * @return	Resultado sobre el registro del usuario
+     */
     @HxTrigger("refresh")
     @PostMapping(value = "/registrar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
@@ -103,7 +106,6 @@ public class UsuarioController {
     		@RequestParam(name = "nombre", required = false) String nombre,
     		 @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
             Pageable pageable) {
-    	System.out.println(nombre);
     	pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         return usuarioService.paginacionUsuariosFiltro(nombre, pageable);
     }

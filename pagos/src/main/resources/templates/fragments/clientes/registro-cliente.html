@@ -1,0 +1,77 @@
+<div th:fragment="modal-registrar-cliente" class="modal fade" id="modal-agregar-cliente" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Agregar Cliente</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="form-registrar-cliente">
+				<div th:fragment="registrar-cliente-form">
+
+					<form id="formRegistrarUbicacion" hx-post="/clientes/registrar" hx-target="#result-msg" hx-swap="innerHTML">
+						<div class="row">
+							<div class="col-12">
+								<label for="nombreCliente">Nombre Completo: </label>
+								<input id="nombreCliente" name="nombre" class="form-control" >
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<label for="telefono">Teléfono: </label>
+								<input id="telefono" name="telefono" class="form-control" required>
+							</div>
+
+							<div class="col-6">
+								<label for="rfc">RFC: </label>
+								<input id="rfc" name="rfc" class="form-control" required>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<label for="numCliente">Colonia</label>
+								<Select id="paquete" name="idColonia" class="form-control" required>
+									<option value="1">Nueva Era</option>
+								</Select>
+							</div>
+
+							<div class="col-6">
+								<label for="coordenadas">Ubicación: </label>
+								<input id="coordenadas" name="coordenadas" class="form-control" required>
+							</div>
+						</div>
+						<div class="row">
+
+							<div class="col-6">
+								<label for="telefono">Fecha de pago: </label>
+								<input type="date" id="fechaPago" name="fecha" class="form-control" required>
+							</div>
+							<div class="col-6">
+								<label for="idPaquete">Paquete de Internet: </label>
+								<Select id="idPaquete" name="paquete" class="form-control" required>
+									<option value="1">Paquete 1</option>
+									<option value="2">Paquete 2</option>
+									<option value="3">Paquete 3</option>
+									<option value="4">Paquete 4</option>
+									<option value="5">Paquete 5</option>
+								</Select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<label for="observaciones">Observaciones: </label>
+								<textarea id="observaciones" name="observaciones" class="form-control" rows="3" ></textarea>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

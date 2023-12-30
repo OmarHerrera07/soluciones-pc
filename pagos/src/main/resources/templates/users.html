@@ -76,32 +76,9 @@
 
 	<!-- MODAL REGISTRAR USUARIO -->
 	<div th:replace="~{fragments/usuarios/registro-usuario :: modal-agregar-usuario}"></div>
-	<!--FIN MODAL REGISTRAR USUARIO -->
-	<div th:replace="~{fragments/usuarios/editar-usuario :: modal-editar-usuario}"></div>
 	<!-- MODAL EDITAR USUARIO -->
+	<div th:replace="~{fragments/usuarios/editar-usuario :: modal-editar-usuario}"></div>
 
-	<!--FIN MODAL EDITAR USUARIO -->
-
-	<!-- MODAL PARA CONFIRMAR PAGO  -->
-	<div class="modal fade" id="modal-confirmar-pago" tabindex="-1" aria-labelledby="exampleModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Confirmar Pago</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					¿Confirmar pago?
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success" id="confirmarEliminar">Confirmar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- MODAL PARA CONFIRMAR PAGO -->
 </body>
 
 <div th:replace="~{fragments/layout :: scripts}"></div>
