@@ -23,8 +23,6 @@ public class Paquete {
     @Column(name = "id_paquete")
     private Integer idPaquete;
     
-    private String nombre;
-    
     private Float precio;
 
 }

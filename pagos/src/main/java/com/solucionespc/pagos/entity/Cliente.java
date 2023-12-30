@@ -41,7 +41,7 @@ public class Cliente {
     
     private String rfc;
     
-    private Integer estado;
+    private Boolean estado;
     
     @ManyToOne
     @JoinColumn(name = "id_paquete")

@@ -19,6 +19,8 @@ import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.service.IClienteService;
+import com.solucionespc.pagos.service.IColoniaService;
+import com.solucionespc.pagos.service.IPaqueteService;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 
@@ -28,6 +30,12 @@ public class ClienteController {
 	
 	@Autowired
 	private IClienteService clienteService;
+	
+	@Autowired
+	private IPaqueteService paqueteService;
+	
+	@Autowired
+	private IColoniaService coloniaService;
 	
     /**
      * Registrar un usuario nuevo
@@ -40,9 +48,24 @@ public class ClienteController {
     @HxTrigger("refresh")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
-    public String registrarCliente(ClienteRegisterDTO cliente 
-    		) {
+    public String registrarCliente(ClienteRegisterDTO cliente) {   	
     	clienteService.registrarCliente(cliente);
+    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el usario</div>";
+    }
+    
+    /**
+     * Registrar un usuario nuevo
+     * @param usuario	Usuario a registrar
+     * @return	Resultado sobre el registro del usuario
+     */
+    @PostMapping(value = "/editar",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @HxTrigger("refresh")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String editarCliente(ClienteRegisterDTO cliente) {   	
+    	clienteService.editarCliente(cliente);
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el usario</div>";
     }
 	
@@ -52,16 +75,27 @@ public class ClienteController {
      * @return  fragmento de thymeleaf con el cuerpo del formulario
      */
     @GetMapping("/get-form-registrar")
-    public String getRegistrarClieneteForm() {
+    public String getRegistrarClieneteForm(Model model) {
+    	model.addAttribute("paquetes", paqueteService.findAll());
+    	model.addAttribute("colonias", coloniaService.findAll());
         return "fragments/clientes/registro-cliente :: registrar-cliente-form";
     }
     
     @GetMapping("/get-consulta-cliente")
+    public String getConsultarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
+    	Cliente cliente = clienteService.finById(id);
+    	model.addAttribute("cliente", cliente);
+        return "fragments/clientes/consultar-cliente :: datos-consultar-cliente";
+    }
+    
+    @GetMapping("/get-editar-cliente")
     public String getEditarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Cliente cliente = clienteService.finById(id);
     	model.addAttribute("cliente", cliente);
+    	model.addAttribute("paquetes", paqueteService.findAll());
+    	model.addAttribute("colonias", coloniaService.findAll());
     	System.out.println(cliente);
-        return "fragments/clientes/consultar-cliente :: datos-consultar-cliente";
+        return "fragments/clientes/editar-cliente :: editar-cliente-form";
     }
     
     @ResponseBody

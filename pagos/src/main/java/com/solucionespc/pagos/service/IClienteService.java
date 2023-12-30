@@ -17,7 +17,9 @@ public interface IClienteService{
 	
 	List<ClienteDTO> prueba();
 	
-	boolean registrarCliente(ClienteRegisterDTO clienteDTO);
+	boolean registrarCliente(ClienteRegisterDTO c);
+	
+	boolean editarCliente(ClienteRegisterDTO c);
 	
 	Cliente finById(Integer id);
 

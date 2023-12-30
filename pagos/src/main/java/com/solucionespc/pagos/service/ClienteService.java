@@ -45,7 +45,7 @@ public class ClienteService implements IClienteService{
 		cliente.setCoordenadas(c.getCoordenadas());
 		cliente.setFechaPago(c.getFecha());
 		cliente.setRfc(c.getRfc());
-		cliente.setEstado(1);
+		cliente.setEstado(true);
 		
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
@@ -65,6 +65,26 @@ public class ClienteService implements IClienteService{
 	public Cliente finById(Integer id) {
 		// TODO Auto-generated method stub
 		return clienteRepository.findById(id).get();
+	}
+
+	@Override
+	public boolean editarCliente(ClienteRegisterDTO c) {
+		Cliente cliente = clienteRepository.findById(c.getIdCliente()).get();
+		cliente.setNombre(c.getNombre());
+		cliente.setTelefono(c.getTelefono());
+		cliente.setCoordenadas(c.getCoordenadas());
+		cliente.setFechaPago(c.getFecha());
+		cliente.setRfc(c.getRfc());
+		cliente.setEstado(c.getEstado());		
+		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
+		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
+		cliente.setObservaciones(c.getObservaciones());
+		try {
+			clienteRepository.save(cliente);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}		
 	}
 
 }

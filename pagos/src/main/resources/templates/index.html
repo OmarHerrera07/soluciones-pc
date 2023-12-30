@@ -12,17 +12,17 @@
 	<div th:replace="~{fragments/layout :: nav}"></div>
 	<div id="result-msg"></div>
 	
-	<input id="idUser" value="0" name="id" hidden>
-	
-	<button hidden id="consultarCliente" data-bs-toggle="modal" data-bs-target="#modal-consultar-cliente" class="btn btn-success"
+	<input id="idUser" value="0" name="id" hidden>	
+	<button hidden id="consultarCliente" data-bs-toggle="modal" data-bs-target="#modal-consultar-cliente"
 		hx-get="/clientes/get-consulta-cliente" hx-target="#form-consultar-cliente" hx-swap="innerHTML"
 		hx-include="[name='id']"
 		>
-		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill"
-			viewBox="0 0 16 16">
-			<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-			<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-		</svg>
+	</button>
+	
+	<button hidden id="editarCliente" data-bs-toggle="modal" data-bs-target="#modal-editar-cliente"
+		hx-get="/clientes/get-editar-cliente" hx-target="#form-editar-cliente" hx-swap="innerHTML"
+		hx-include="[name='id']"
+		>
 	</button>
 
 	<main>
@@ -53,6 +53,7 @@
 			<table class="table text-center">
 				<thead>
 					<tr>
+						<th scope="col">Estado</th>
 						<th scope="col">Nombre</th>
 						<th scope="col">Telefono</th>
 						<th scope="col">Paquete</th>
@@ -81,7 +82,9 @@
 	<div th:replace="~{fragments/clientes/consultar-cliente :: modal-consultar-cliente}"></div>
 
 
-	<!--FIN MODAL REGISTRAR CLIENTE -->
+	<!--FIN MODAL EDITAR CLIENTE -->
+	
+	<div th:replace="~{fragments/clientes/editar-cliente :: modal-editar-cliente}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->
 	<div class="modal fade" id="modal-confirmar-pago" tabindex="-1" aria-labelledby="exampleModalLabel"

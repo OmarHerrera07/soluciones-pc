@@ -9,11 +9,12 @@
 			<div class="modal-body" id="form-registrar-cliente">
 				<div th:fragment="registrar-cliente-form">
 
-					<form id="formRegistrarUbicacion" hx-post="/clientes/registrar" hx-target="#result-msg" hx-swap="innerHTML">
+					<form id="formRegistrarUbicacion" hx-post="/clientes/registrar" hx-target="#result-msg"
+						hx-swap="innerHTML">
 						<div class="row">
 							<div class="col-12">
 								<label for="nombreCliente">Nombre Completo: </label>
-								<input id="nombreCliente" name="nombre" class="form-control" >
+								<input id="nombreCliente" name="nombre" class="form-control">
 							</div>
 
 						</div>
@@ -30,9 +31,10 @@
 						</div>
 						<div class="row">
 							<div class="col-6">
-								<label for="numCliente">Colonia</label>
-								<Select id="paquete" name="idColonia" class="form-control" required>
-									<option value="1">Nueva Era</option>
+								<label for="colonia">Colonia</label>
+								<Select id="colonia" name="idColonia" class="form-control" required>
+									<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
+										th:text="${colonia.colonia}"></option>
 								</Select>
 							</div>
 
@@ -50,18 +52,16 @@
 							<div class="col-6">
 								<label for="idPaquete">Paquete de Internet: </label>
 								<Select id="idPaquete" name="paquete" class="form-control" required>
-									<option value="1">Paquete 1</option>
-									<option value="2">Paquete 2</option>
-									<option value="3">Paquete 3</option>
-									<option value="4">Paquete 4</option>
-									<option value="5">Paquete 5</option>
+									<option th:each="paquete : ${paquetes}" th:value="${paquete.idPaquete}"
+										th:text="${ '$' + paquete.precio}"></option>
 								</Select>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-12">
 								<label for="observaciones">Observaciones: </label>
-								<textarea id="observaciones" name="observaciones" class="form-control" rows="3" ></textarea>
+								<textarea id="observaciones" name="observaciones" class="form-control"
+									rows="3"></textarea>
 							</div>
 						</div>
 

@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ClienteRegisterDTO {
+	
+	private Integer idCliente;
 
 	private String nombre;
 
@@ -27,6 +29,8 @@ public class ClienteRegisterDTO {
 	private Integer idColonia;
 
 	private String coordenadas;
+	
+	private Boolean estado;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fecha;
