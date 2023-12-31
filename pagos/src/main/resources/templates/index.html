@@ -100,7 +100,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success" id="confirmarEliminar">Confirmar</button>
+					<button
+						hx-post="/clientes/realizar-pago" hx-target="#result-msg"
+						hx-swap="innerHTML"
+						hx-include="[name='id']"
+					 type="button" class="btn btn-success" data-bs-dismiss="modal" id="confirmarEliminar">Confirmar</button>
 				</div>
 			</div>
 		</div>

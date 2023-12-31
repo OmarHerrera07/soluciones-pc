@@ -22,5 +22,7 @@ public interface IClienteService{
 	boolean editarCliente(ClienteRegisterDTO c);
 	
 	Cliente finById(Integer id);
+	
+	boolean realizarPago(Integer idCliente);
 
 }

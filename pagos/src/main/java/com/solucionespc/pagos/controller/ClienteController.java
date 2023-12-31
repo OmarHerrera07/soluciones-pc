@@ -107,5 +107,20 @@ public class ClienteController {
         return clienteService.paginacionCliente(nombre,pageable);
     }
     
+    @PostMapping(value = "/realizar-pago",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @HxTrigger("refresh")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String realizarPago(@RequestParam(value="id") Integer id) {   
+    	System.out.println(id);
+    	if(clienteService.realizarPago(id)) {
+    		System.out.println("dsfiodsjfidosfdio");
+    	}else {
+    		System.out.println("Elrrorrrr");
+    	}
+    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
+    }
     
 }

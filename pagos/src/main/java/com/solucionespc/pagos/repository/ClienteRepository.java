@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.entity.Cliente;
@@ -21,5 +24,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     @Query(value = "select c.nombre,c.telefono, c.fecha_pago as fechaPago,p.precio as paquete from cliente c join paquete_internet p on c.id_paquete = p.id_paquete",
             nativeQuery = true)
     List<ClienteDTO> prueba();
+    
+    @Procedure(name = "actualizarPagos")
+    void actualizarPagos(@Param("clienteId") Integer clienteId);
 
 }

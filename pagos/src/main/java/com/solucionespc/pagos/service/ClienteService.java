@@ -86,5 +86,16 @@ public class ClienteService implements IClienteService{
 			return false;
 		}		
 	}
+	
+	@Override
+	public boolean realizarPago(Integer idCliente) {
+		try {
+		    clienteRepository.actualizarPagos(idCliente);
+		    return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
 
 }
