@@ -33,7 +33,7 @@ function actualizarTabla(usuarios) {
 								<tr>
 						<td>${user.nombre}</td>
 						<td>${user.username}</td>
-						<td>Admin</td>
+						<td>${user.rol.rol}</td>
 						<td>
 							<button type="button" 
 								onclick="editarUsuario('${user.idUsuario}');"

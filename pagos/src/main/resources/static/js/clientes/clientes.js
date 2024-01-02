@@ -29,7 +29,7 @@ function confirmarPago(id) {
 
 
 function cargarClientes(page) {
-	$.get("/clientes/paginacion?page=" + page+ page+"&nombre="+$("#filtroNombre").val()+ "&size=" + $("#num-registros").val(), function(data) {
+	$.get("/clientes/paginacion?page=" + page+"&nombre="+$("#filtroNombre").val()+ "&size=" + $("#num-registros").val(), function(data) {
 		currentPage = page;
 		console.log(data);
 		actualizarTabla(data.content);

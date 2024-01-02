@@ -35,9 +35,9 @@
 		<div class="row">
 			<div class="col-6">
 				<label for="rol">Rol: </label>
-				<Select th:value="${user.rol.idRol}" name="idRol" class="form-control">
-					<option value="1">Administrador general</option>
-					<option value="2">Administrador</option>
+				<Select  name="idRol" class="form-control">
+					<option th:each="rol : ${roles}" th:value="${rol.idRol}" th:text="${rol.rol}"
+						th:selected="${rol.idRol == user.rol.idRol}"></option>
 				</Select>
 			</div>
 			<div hidden class="col-6">

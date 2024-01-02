@@ -25,14 +25,11 @@
 				<div class="navbar-nav">
 					<a class="nav-link" href="/">Clientes</a>
 					<a class="nav-link" href="/pagos">Pagos</a>
-					<a class="nav-link" href="/usuarios">Usuarios</a>
+					<a sec:authorize="hasAnyRole('ADMINISTRADOR')" class="nav-link" href="/usuarios">Usuarios</a>
 				</div>
 				<div class="user btn-group">
 					<img src="/img/user.png" alt="" data-bs-toggle="dropdown" aria-expanded="false">
 					<ul class="dropdown-menu">
-						<li>
-							<div class="dropdown-item disabled">Coordinador</div>
-						</li>
 						<li>
 							<div class="dropdown-item disabled"><span sec:authentication="name"></span></div>
 						</li>
