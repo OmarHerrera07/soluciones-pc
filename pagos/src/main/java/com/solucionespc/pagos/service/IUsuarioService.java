@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.solucionespc.pagos.dto.UsuarioRegisterDTO;
+import com.solucionespc.pagos.entity.Rol;
 import com.solucionespc.pagos.entity.Usuario;
 
 public interface IUsuarioService {
@@ -26,5 +27,7 @@ public interface IUsuarioService {
 	boolean updateUser(UsuarioRegisterDTO userDTO);
 	
 	Usuario findById(Integer id);
+	
+	List<Rol> findRoles();
 
 }

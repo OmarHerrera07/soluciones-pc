@@ -68,8 +68,7 @@ public class SecurityConfig {
 	        http
 	                .authorizeHttpRequests((authorize) -> authorize
 	                        .requestMatchers(mvc.pattern("css/**"),mvc.pattern("js/**"),mvc.pattern("img/**"),mvc.pattern("bootstrap/**")).permitAll()
-	                        .requestMatchers(mvc.pattern("/admin/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR")
-	                        .requestMatchers(mvc.pattern("/docente/**")).hasAnyRole("DOCENTE")
+	                        .requestMatchers(mvc.pattern("/usuarios/**")).hasAnyRole("ADMINISTRADOR")
 	                        //.requestMatchers(mvc.pattern("/solicitud/**")).hasAnyRole("SUBDIRECTOR","ADMINISTRADOR","COORDINADOR","POSGRADO")
 	                        .anyRequest().authenticated()
 	                )

@@ -14,7 +14,7 @@ public class UserDetailsMapper {
         // TODO: Manejar roles, ahora mismo mapea todos los usuarios con el rol de docentes hardcodeado
         return User.withUsername(usuario.getUsername())
                 .password(usuario.getPassword())
-                .roles(rol)
+                .roles(rol.toUpperCase())
                 .build();
     }
 }

@@ -66,6 +66,7 @@ public class UsuarioController {
      */
     @GetMapping("/get-form-registrar")
     public String getRegistrarUsuarioForm() {
+    	
         return "fragments/usuarios/registro-usuario :: registrar-usuario-form";
     }
     
@@ -80,6 +81,7 @@ public class UsuarioController {
     public String getEditarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Usuario user = usuarioService.findUsuarioById(id);
     	model.addAttribute("user", user);
+    	model.addAttribute("roles", usuarioService.findRoles());
         return "fragments/usuarios/editar-usuario :: editar-usuario-form";
     }
     
@@ -96,6 +98,7 @@ public class UsuarioController {
 		} else {
 			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		}
+		System.out.println(usuario);
     	 usuarioService.updateUser(usuario);
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha editado el usario</div>";
     }

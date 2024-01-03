@@ -11,12 +11,16 @@ import org.springframework.stereotype.Service;
 import com.solucionespc.pagos.dto.UsuarioRegisterDTO;
 import com.solucionespc.pagos.entity.Rol;
 import com.solucionespc.pagos.entity.Usuario;
+import com.solucionespc.pagos.repository.RolRepository;
 import com.solucionespc.pagos.repository.UsuarioRepository;
 
 @Service
 public class UsuarioServicio implements IUsuarioService{
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private RolRepository rolRepository;
 
 	@Override
 	public List<Usuario> findAll() {
@@ -85,5 +89,10 @@ public class UsuarioServicio implements IUsuarioService{
 	public Usuario findById(Integer id) {
 		// TODO Auto-generated method stub
 		return usuarioRepository.findById(id).get();
+	}
+	
+	@Override
+	public List<Rol> findRoles(){
+		return rolRepository.findAll();
 	}
 }

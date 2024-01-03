@@ -4,9 +4,6 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-
-
 public interface ClienteDTO {
 	
 	Integer getIdCliente();

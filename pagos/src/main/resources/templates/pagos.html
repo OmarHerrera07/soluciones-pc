@@ -51,25 +51,14 @@
             <table class="table text-center">
                 <thead>
                     <tr>
-                        <th scope="col">Num. Cliente</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Pago</th>
+                        <th scope="col">Nombre de Cliente</th>
+                        <th scope="col">Fecha de Pago</th>
+                        <th scope="col">Total</th>
                         <th scope="col">Recibo</th>
                     </tr>
                 </thead>
-                <tbody id="tablaUbicaciones">
-                    <tr>
-                        <th>43244</th>
-                        <td>Joshua Trinidad Bautista</td>
-                        <td>12/02/2023</td>
-                        <td>
-                            <button data-bs-toggle="modal" data-bs-target="#modal-agregar-cliente" class="btn btn-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16">
-                                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
-                                  </svg>
-                            </button>
-                        </td>
-                    </tr>
+                <tbody id="tablaPagos">
+					
                 </tbody>
             </table>
             <div class="container text-center">
@@ -195,6 +184,8 @@
     </div>
 </div>
     <!-- MODAL PARA CONFIRMAR PAGO -->
+    <div th:replace="~{fragments/layout :: scripts}"></div>
+    <script th:src="@{/js/pagos/pagos.js}"></script>
 </body>
 
 </html>

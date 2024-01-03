@@ -23,6 +23,6 @@ public interface IClienteService{
 	
 	Cliente finById(Integer id);
 	
-	boolean realizarPago(Integer idCliente);
+	boolean realizarPago(Integer idCliente,String username);
 
 }

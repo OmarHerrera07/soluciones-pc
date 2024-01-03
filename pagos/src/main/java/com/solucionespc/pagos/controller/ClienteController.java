@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,9 +76,10 @@ public class ClienteController {
      * @return  fragmento de thymeleaf con el cuerpo del formulario
      */
     @GetMapping("/get-form-registrar")
-    public String getRegistrarClieneteForm(Model model) {
+    public String getRegistrarClieneteForm(Model model, Authentication authentication) {
     	model.addAttribute("paquetes", paqueteService.findAll());
     	model.addAttribute("colonias", coloniaService.findAll());
+    	System.out.println(authentication.getName());
         return "fragments/clientes/registro-cliente :: registrar-cliente-form";
     }
     
@@ -113,9 +115,8 @@ public class ClienteController {
     @HxTrigger("refresh")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
-    public String realizarPago(@RequestParam(value="id") Integer id) {   
-    	System.out.println(id);
-    	if(clienteService.realizarPago(id)) {
+    public String realizarPago(@RequestParam(value="id") Integer id, Authentication authentication) {   
+    	if(clienteService.realizarPago(id,authentication.getName())) {
     		System.out.println("dsfiodsjfidosfdio");
     	}else {
     		System.out.println("Elrrorrrr");
