@@ -2,6 +2,7 @@ package com.solucionespc.pagos.service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
+import com.solucionespc.pagos.dto.Meses;
 import com.solucionespc.pagos.dto.MesesPagoDTO;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.entity.Colonia;
@@ -143,6 +145,26 @@ public class ClienteService implements IClienteService{
 			return false;
 		}
 		
+	}
+
+	@Override
+	public List<Date> obtenerMesesPagados(Integer idCliente) {
+		// TODO Auto-generated method stub
+		return mesesPagoRepositoty.obtnerMesesPagados(idCliente);
+	}
+
+	@Override
+	public List<Date> generarMeses(Integer diaDePago) {
+        List<Date> todosLosMeses = new ArrayList();
+        int anioActual = LocalDate.now().getYear();
+
+        for (int i = 0; i < 12; i++) {
+            // Crear la fecha y agregarla a la lista
+            LocalDate fechaLocal = LocalDate.of(anioActual, i + 1, diaDePago);
+            Date fecha = java.sql.Date.valueOf(fechaLocal);
+            todosLosMeses.add(fecha);
+        }
+        return todosLosMeses;
 	}
 
 }

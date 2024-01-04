@@ -1,10 +1,12 @@
 package com.solucionespc.pagos.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.solucionespc.pagos.dto.Meses;
 import com.solucionespc.pagos.dto.MesesPagoDTO;
 import com.solucionespc.pagos.entity.MesesPago;
 
@@ -17,6 +19,10 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
 	@Query(value = "select mp.fecha,p.precio  from meses_pago mp join paquete_internet p on p.id_paquete = mp.id_paquete where mp.id_cliente  = ?1 and DATE(mp.fecha_pago) = CURDATE()",
             nativeQuery = true)
     List<MesesPagoDTO> ObtenerPagosRealizados(Integer id);
+	
+	@Query(value = "SELECT mp.fecha FROM meses_pago mp WHERE id_cliente = ?1 AND YEAR(fecha) = YEAR(CURDATE())",
+            nativeQuery = true)
+    List<Date> obtnerMesesPagados(Integer idCliente);
 	
 	
 }

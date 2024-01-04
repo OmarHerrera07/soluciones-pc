@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+	
+	/**
+	 * Redirige a la vista principal del sistema
+	 * @return	la vista principal
+	 */
 
     @GetMapping()
     public String home(){

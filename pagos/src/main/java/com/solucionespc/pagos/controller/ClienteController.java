@@ -1,5 +1,8 @@
 package com.solucionespc.pagos.controller;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
+import com.solucionespc.pagos.dto.Meses;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.service.IClienteService;
 import com.solucionespc.pagos.service.IColoniaService;
@@ -55,9 +59,9 @@ public class ClienteController {
     }
     
     /**
-     * Registrar un usuario nuevo
-     * @param usuario	Usuario a registrar
-     * @return	Resultado sobre el registro del usuario
+     * Editar un usuario nuevo
+     * @param	usuario a editar
+     * @return	Resultado sobre el la edición del usuario
      */
     @PostMapping(value = "/editar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
@@ -72,8 +76,9 @@ public class ClienteController {
 	
     /**
      * Obtiene el cuerpo del formulario de registrar usuario
-     *
-     * @return  fragmento de thymeleaf con el cuerpo del formulario
+     * @param model				Proporcionar datos a la vista para que se muestren dinámicamente
+     * @param authentication	Obtiene información sobre la autenticación actual
+     * @return 					fragmento de thymeleaf con el cuerpo del formulario
      */
     @GetMapping("/get-form-registrar")
     public String getRegistrarClieneteForm(Model model, Authentication authentication) {
@@ -82,7 +87,12 @@ public class ClienteController {
     	System.out.println(authentication.getName());
         return "fragments/clientes/registro-cliente :: registrar-cliente-form";
     }
-    
+    /**
+     * Obtiene el cuerpo del formulario de editar usuario
+     * @param 	model	Proporcionar datos a la vista para que se muestren dinámicamente
+     * @param	id 		del Cliente a consultar
+     * @return  		fragmento de thymeleaf con el cuerpo del formulario
+     */  
     @GetMapping("/get-consulta-cliente")
     public String getConsultarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Cliente cliente = clienteService.finById(id);
@@ -122,6 +132,19 @@ public class ClienteController {
     		System.out.println("Elrrorrrr");
     	}
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
+    }
+    
+    @GetMapping("/pagos")
+    public String pagosClientes(Model model){
+    	model.addAttribute("meses", clienteService.generarMeses(2));
+        return "cliente-pagos";
+    }
+    
+    @GetMapping("/meses")
+    @ResponseBody
+    public List<Date> meses(Model model){
+    	
+        return clienteService.generarMeses(2);
     }
     
 }

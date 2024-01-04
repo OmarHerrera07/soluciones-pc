@@ -17,7 +17,7 @@ function actualizarTabla(pagos) {
 			tabla.append(`
 					<tr>
 					
-					                        <th>${pago.nombre}</th>
+					    <th>${pago.nombre}</th>
                         <td>${pago.fecha}</td>
                         <td>$${pago.total}</td>
                         <td>

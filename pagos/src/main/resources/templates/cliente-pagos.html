@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<div th:replace="~{fragments/layout :: estilos}"></div>
+	<link rel="stylesheet" href="/css/pagos.css">
+</head>
+
+<body>
+	<div th:replace="~{fragments/layout :: nav}"></div>
+
+	<div id="result-msg"></div>
+	<main>
+		<div class="container-sm">
+			<div class="container-lg d-flex mt-1 client-option">
+				<div>
+					<h2>Pagos</h2>
+					<div class="col-6">
+						Año
+						<select onchange="numRegistros();" name="" id="num-registros">
+							<option selected value="2">2</option>
+							<option selected value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+						</select>
+					</div>
+				</div>
+				<div>
+					<button data-bs-toggle="modal" data-bs-target="#modal-agregar-usuario" type="button"
+						class="btn btn-success" hx-get="/usuarios/get-form-registrar"
+						hx-target="#form-registrar-usuario" hx-swap="innerHTML">
+						Registrar
+					</button>
+				</div>
+			</div>
+			<br><br>
+			<div class="row" id="icon-container">
+				<div th:each="mes : ${meses}" class="col-md-3 col-6">
+					<div>
+						<input type="checkbox" class="btn-check" th:id="${#dates.format(mes, 'MMMM')}" autocomplete="off">
+						<label th:text="${#dates.format(mes, 'dd-MM-yyyy')}" class="btn btn-outline-success custom-column" th:for="${#dates.format(mes, 'MMMM')}">Febrero</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</main>
+
+</body>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
+</html>

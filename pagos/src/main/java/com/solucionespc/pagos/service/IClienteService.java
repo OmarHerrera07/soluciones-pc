@@ -1,5 +1,6 @@
 package com.solucionespc.pagos.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
+import com.solucionespc.pagos.dto.Meses;
 import com.solucionespc.pagos.entity.Cliente;
 
 public interface IClienteService{
@@ -24,5 +26,9 @@ public interface IClienteService{
 	Cliente finById(Integer id);
 	
 	boolean realizarPago(Integer idCliente,String username);
+	
+	List<Date> obtenerMesesPagados(Integer idCliente);
+	
+	List<Date> generarMeses(Integer dia);
 
 }

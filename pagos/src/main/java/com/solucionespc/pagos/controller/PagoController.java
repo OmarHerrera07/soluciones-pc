@@ -1,6 +1,7 @@
 package com.solucionespc.pagos.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.MesesPagoDTO;
 import com.solucionespc.pagos.dto.PagoDTO;
@@ -20,6 +22,10 @@ import com.solucionespc.pagos.entity.Pago;
 import com.solucionespc.pagos.repository.MesesPagoRepositoty;
 import com.solucionespc.pagos.repository.PagoRepository;
 import com.solucionespc.pagos.service.IPagoService;
+import com.solucionespc.pagos.utils.PDFExporter;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/pagos")
@@ -55,4 +61,17 @@ public class PagoController {
     	pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         return pagoRepository.paginacionPagos(nombre,pageable);
     }
+    
+	@GetMapping("/recibo")
+	@ResponseBody
+	public void exportPDF(HttpServletRequest request, HttpServletResponse response) throws DocumentException, IOException {
+		response.setContentType("application/pdf");
+		
+		String headerKey = "Content-Disposition";
+		String sbHeaderValue = "attachment; filename=Recibo.pdf";
+		response.setHeader(headerKey, sbHeaderValue);
+		//System.out.println(solicitud.get());
+		PDFExporter export = new PDFExporter(null);
+			export.export(response);
+		}
 }
