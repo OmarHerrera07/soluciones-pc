@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
 import com.solucionespc.pagos.dto.Meses;
+import com.solucionespc.pagos.dto.MesesDTO;
 import com.solucionespc.pagos.entity.Cliente;
 
 public interface IClienteService{
@@ -30,5 +31,11 @@ public interface IClienteService{
 	List<Date> obtenerMesesPagados(Integer idCliente);
 	
 	List<Date> generarMeses(Integer dia);
+	
+	List<MesesDTO> generarMeses2(Integer diaDePago);
+	
+	Date obtenerFechaPago(Integer idCliente);
+	
+	void pagoMasivo(List<String> meses,Cliente cliente,Integer idUsuario);
 
 }

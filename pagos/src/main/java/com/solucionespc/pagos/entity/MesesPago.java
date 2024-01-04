@@ -41,6 +41,10 @@ public class MesesPago {
     @JoinColumn(name = "id_paquete")
     private Paquete idPaquete;
     
+    @ManyToOne
+    @JoinColumn(name = "id_pago")
+    private Pago idPago;
+    
     @Column(name = "fecha_pago")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date fechaPago;

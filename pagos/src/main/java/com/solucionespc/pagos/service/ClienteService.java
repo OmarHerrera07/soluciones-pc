@@ -1,10 +1,12 @@
 package com.solucionespc.pagos.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
 import com.solucionespc.pagos.dto.Meses;
+import com.solucionespc.pagos.dto.MesesDTO;
 import com.solucionespc.pagos.dto.MesesPagoDTO;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.entity.Colonia;
@@ -165,6 +168,50 @@ public class ClienteService implements IClienteService{
             todosLosMeses.add(fecha);
         }
         return todosLosMeses;
+	}
+	
+    @Override
+    public List<MesesDTO> generarMeses2(Integer diaDePago) {
+        List<MesesDTO> todosLosMeses = new ArrayList<>();
+        int anioActual = LocalDate.now().getYear();
+        SimpleDateFormat formato = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
+
+        for (int i = 0; i < 12; i++) {
+            // Crear la fecha y agregarla a la lista
+            LocalDate fechaLocal = LocalDate.of(anioActual, i + 1, diaDePago);
+            Date fecha = java.sql.Date.valueOf(fechaLocal);
+            
+            
+            MesesDTO mes = new MesesDTO(fecha,formato.format(fecha));
+
+
+            todosLosMeses.add(mes);
+        }
+        return todosLosMeses;
+    }
+
+	@Override
+	public Date obtenerFechaPago(Integer idCliente) {
+		// TODO Auto-generated method stub
+		return clienteRepository.obtenerFechaPago(idCliente);
+	}
+
+	@Override
+	public void pagoMasivo(List<String> meses,Cliente cliente, Integer idUsuario) {
+		Pago pago = new Pago();
+		pago.setFecha(new Date());
+		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
+		pago.setIdUsuario(Usuario.builder().idUsuario(idUsuario).build());
+		Pago res = pagoRepository.save(pago);
+		
+		for(String mes : meses ) {
+			System.out.println(mes);
+			clienteRepository.InsertarMesPago(cliente.getIdCliente(),cliente.getPaquete().getIdPaquete(),res.getIdPago(), mes);
+		}
+		
+		System.out.println("Este es el id debe ser uno");
+		System.out.println(res.getIdPago());
+		
 	}
 
 }

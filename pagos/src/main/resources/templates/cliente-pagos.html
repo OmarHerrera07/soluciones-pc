@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:hx="http://www.w3.org/1999/xhtml">
 
 <head>
 	<meta charset="UTF-8">
@@ -21,30 +22,55 @@
 					<div class="col-6">
 						Año
 						<select onchange="numRegistros();" name="" id="num-registros">
-							<option selected value="2">2</option>
-							<option selected value="5">5</option>
-							<option value="10">10</option>
-							<option value="20">20</option>
+							<option selected value="2022">2022</option>
+							<option selected value="2023">2023</option>
+							<option value="2024">2024</option>
+							<option value="2025">2025</option>
+							<option value="2026">2026</option>
+							<option value="2027">2027</option>
 						</select>
 					</div>
 				</div>
 				<div>
-					<button data-bs-toggle="modal" data-bs-target="#modal-agregar-usuario" type="button"
-						class="btn btn-success" hx-get="/usuarios/get-form-registrar"
-						hx-target="#form-registrar-usuario" hx-swap="innerHTML">
-						Registrar
-					</button>
+
 				</div>
 			</div>
 			<br><br>
-			<div class="row" id="icon-container">
-				<div th:each="mes : ${meses}" class="col-md-3 col-6">
-					<div>
-						<input type="checkbox" class="btn-check" th:id="${#dates.format(mes, 'MMMM')}" autocomplete="off">
-						<label th:text="${#dates.format(mes, 'dd-MM-yyyy')}" class="btn btn-outline-success custom-column" th:for="${#dates.format(mes, 'MMMM')}">Febrero</label>
+			<div hx-target="#meses-container" hx-swap="innerHTML" hx-trigger="refresh from:body"
+				hx-include="[name='idCliente']" hx-get="/clientes/refrescar-meses">
+
+			</div>
+
+			<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML">
+				<button type="submit" class="btn btn-success">
+					Pagar
+				</button>
+				<input hidden name="idCliente" th:value="${idCliente}">
+
+				<br><br>
+
+				<div th:fragment="lista-meses" class="row" id="meses-container">
+					<div th:each="mes : ${meses}" class="col-md-3 col-6">
+						<div th:if="${mes.fecha != mesPago}">
+							<input th:attr="name=${mesesPagados.contains(mes.fecha) ? 'pagado' : 'meses'}"
+								th:checked="${mesesPagados.contains(mes.fecha) ? 'checked' : null}"
+								th:value="${mes.fecha}" type="checkbox" class="btn-check" th:id="${mes.nombresMes}"
+								autocomplete="off">
+							<label th:text="${mes.nombresMes}" class="btn btn-outline-success custom-column"
+								th:for="${mes.nombresMes}">Febrero</label>
+						</div>
+						<div th:if="${mes.fecha == mesPago}">
+							<input th:attr="name=${mesesPagados.contains(mes.fecha) ? 'pagado' : 'meses'}"
+								th:checked="${mesesPagados.contains(mes.fecha) ? 'checked' : null}"
+								th:value="${mes.fecha}" type="checkbox" class="btn-check" th:id="${mes.nombresMes}"
+								autocomplete="off">
+							<label th:text="${mes.nombresMes}" class="btn btn-outline-primary custom-column"
+								th:for="${mes.nombresMes}">Febrero</label>
+						</div>
 					</div>
 				</div>
-			</div>
+			</form>
+
 		</div>
 
 

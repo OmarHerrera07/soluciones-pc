@@ -55,8 +55,13 @@ public class UsuarioController {
     	 
     	 usuario.setPassword(encodedPwd);
     	 
-    	 usuarioService.registerUser(usuario);
-    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el usario</div>";
+    	 boolean res = usuarioService.registerUser(usuario);
+    	 
+    	 if(res) {
+    		 return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el usuario</div>";
+    	 }
+    	 return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al registrar al usuario</div>";
+    	
     }
     
     /**
@@ -99,8 +104,13 @@ public class UsuarioController {
 			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		}
 		System.out.println(usuario);
-    	 usuarioService.updateUser(usuario);
-    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha editado el usario</div>";
+    	boolean res = usuarioService.updateUser(usuario);
+    	
+    	if(res) {
+    		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha editado el usuario</div>";
+    	}
+    	
+    	return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al editar al usuario</div>";
     }
     
     @GetMapping("/paginacion")

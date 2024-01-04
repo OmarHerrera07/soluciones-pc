@@ -1,5 +1,6 @@
 package com.solucionespc.pagos.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -25,7 +26,14 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
             nativeQuery = true)
     List<ClienteDTO> prueba();
     
+    @Query(value = "SELECT c.fecha_pago FROM cliente c WHERE id_cliente = ?1",
+            nativeQuery = true)
+    Date obtenerFechaPago(Integer idCliente);
+    
     @Procedure(name = "actualizarPagos")
     void actualizarPagos(@Param("clienteId") Integer clienteId);
+    
+    @Procedure(name = "InsertarMesPago")
+    void InsertarMesPago(@Param("p_id_cliente") Integer clienteId, @Param("p_id_paquete") Integer idPaquete, @Param("p_id_pago") Integer idPago, @Param("p_fecha") String fecha);
 
 }

@@ -4,6 +4,13 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class MesesDTO {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -1,5 +1,9 @@
 package com.solucionespc.pagos.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +26,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
 import com.solucionespc.pagos.dto.Meses;
+import com.solucionespc.pagos.dto.MesesDTO;
 import com.solucionespc.pagos.entity.Cliente;
+import com.solucionespc.pagos.entity.Usuario;
 import com.solucionespc.pagos.service.IClienteService;
 import com.solucionespc.pagos.service.IColoniaService;
 import com.solucionespc.pagos.service.IPaqueteService;
+import com.solucionespc.pagos.service.IUsuarioService;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 
@@ -42,9 +49,12 @@ public class ClienteController {
 	@Autowired
 	private IColoniaService coloniaService;
 	
+	@Autowired
+	private IUsuarioService usuarioService;
+	
     /**
-     * Registrar un usuario nuevo
-     * @param usuario	Usuario a registrar
+     * Registrar un cliente nuevo
+     * @param 	cliente		cliente a registrar
      * @return	Resultado sobre el registro del usuario
      */
     @PostMapping(value = "/registrar",
@@ -54,8 +64,12 @@ public class ClienteController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
     public String registrarCliente(ClienteRegisterDTO cliente) {   	
-    	clienteService.registrarCliente(cliente);
-    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el usario</div>";
+    	boolean res = clienteService.registrarCliente(cliente);
+    	
+    	if(res) {
+    		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el cliente</div>";
+    	}
+    	return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error en el registro del cliente</div>";
     }
     
     /**
@@ -70,8 +84,13 @@ public class ClienteController {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
     public String editarCliente(ClienteRegisterDTO cliente) {   	
-    	clienteService.editarCliente(cliente);
-    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el usario</div>";
+    	boolean res = clienteService.editarCliente(cliente);
+    	
+    	if(res) {
+    		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el cliente</div>";
+    	}
+    	
+    	return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al editar al cliente</div>";
     }
 	
     /**
@@ -100,6 +119,12 @@ public class ClienteController {
         return "fragments/clientes/consultar-cliente :: datos-consultar-cliente";
     }
     
+    /**
+     * 
+     * @param id		id del cliente a editar (Para obtener su información)
+     * @param model		Proporcionar datos a la vista para que se muestren dinámicamente
+     * @return			fragmento con el formulario para mostrar la información del cliente
+     */
     @GetMapping("/get-editar-cliente")
     public String getEditarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Cliente cliente = clienteService.finById(id);
@@ -110,6 +135,13 @@ public class ClienteController {
         return "fragments/clientes/editar-cliente :: editar-cliente-form";
     }
     
+    /**
+     * 
+     * @param pageable clase para controlar la paginación y ordenamiento de los resultados.
+     * @param nombre	nombre del cliente que es usado para el filtro de busqueda
+     * @param size		tamaño de la pagina a mostrar
+     * @return			clase con los resultados de la paginación (tamaño, clientes, etc)
+     */
     @ResponseBody
     @GetMapping("/paginacion")
     public Page<ClienteDTO> paginacion(Pageable pageable,
@@ -135,16 +167,80 @@ public class ClienteController {
     }
     
     @GetMapping("/pagos")
-    public String pagosClientes(Model model){
-    	model.addAttribute("meses", clienteService.generarMeses(2));
+    public String pagosClientes(@RequestParam(value="id") Integer id,Model model){
+    	
+    	Date fechaPago = clienteService.obtenerFechaPago(id);
+    	Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaPago);
+
+        // Obtener el día del mes
+        Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
+    	System.out.println(fechaPago);
+    	model.addAttribute("idCliente",id);
+    	model.addAttribute("mesPago",fechaPago);
+    	model.addAttribute("meses", clienteService.generarMeses2(diaDelMes));
+    	model.addAttribute("mesesPagados",clienteService.obtenerMesesPagados(id));
         return "cliente-pagos";
+    }
+    
+    @PostMapping(value = "/realizar-pago-masivo",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.TEXT_HTML_VALUE)
+    @HxTrigger("refresh")
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String pagoMasivo(@RequestParam(value="idCliente") Integer idCliente,@RequestParam(value="meses") List<String> meses, Authentication authentication) {   
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        
+        
+        List<Date> mesesPagar = new ArrayList<>();
+        for (String fechaString : meses) {
+            try {
+                Date fecha = dateFormat.parse(fechaString);
+                // Aquí puedes hacer algo con el objeto Date
+                mesesPagar.add(fecha);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                // Manejo de error en caso de que no se pueda parsear la fecha
+            }
+        }
+        
+        Usuario user = usuarioService.finUserByUsername(authentication.getName());
+        Cliente cliente = clienteService.finById(idCliente);
+        clienteService.pagoMasivo(meses,cliente, user.getIdUsuario());
+        System.out.println(clienteService.finById(idCliente));
+    	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
     
     @GetMapping("/meses")
     @ResponseBody
     public List<Date> meses(Model model){
     	
-        return clienteService.generarMeses(2);
+        return clienteService.generarMeses(14);
     }
     
+    @GetMapping("/prueba")
+    @ResponseBody
+    public List<MesesDTO> meses2(Model model){
+    	
+        return clienteService.generarMeses2(2);
+    }
+    
+    
+    @GetMapping("/refrescar-meses")
+    public String refrescarMeses(@RequestParam(value="idCliente") Integer idCliente,Model model){
+    	
+    	Date fechaPago = clienteService.obtenerFechaPago(idCliente);
+    	Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaPago);
+
+        // Obtener el día del mes
+        Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
+    	System.out.println(fechaPago);
+    	model.addAttribute("idCliente",idCliente);
+    	model.addAttribute("mesPago",fechaPago);
+    	model.addAttribute("meses", clienteService.generarMeses2(diaDelMes));
+    	model.addAttribute("mesesPagados",clienteService.obtenerMesesPagados(idCliente));
+        return "cliente-pagos :: lista-meses";
+    }
 }
