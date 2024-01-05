@@ -57,9 +57,14 @@ public class PagoController {
     public Page<PagoDTO> paginacion(
     		@RequestParam(name = "nombre", required = false) String nombre,
     		@RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+    		@RequestParam(name = "fechaInicio", required = false) String fechaInicio,
+    		@RequestParam(name = "fechaFin", required = false) String fechaFin,
     		Pageable pageable) {
+    	
+    	
+    	System.out.println(fechaInicio);
     	pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
-        return pagoRepository.paginacionPagos(nombre,pageable);
+        return pagoRepository.paginacionPagos(nombre,fechaInicio,fechaFin,pageable);
     }
     
 	@GetMapping("/recibo")

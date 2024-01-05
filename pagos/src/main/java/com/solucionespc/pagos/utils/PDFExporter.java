@@ -111,7 +111,7 @@ public class PDFExporter {
 	    
 	    Font fontTableBody = FontFactory.getFont(FontFactory.HELVETICA, 6, negro);
 	    // Agregar filas a la tabla
-	    for (int i = 0; i < 1; i++) {
+	    for (int i = 0; i < 2; i++) {
 	        cell = new PdfPCell(new Phrase("1",fontTableBody));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
