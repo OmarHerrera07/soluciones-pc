@@ -34,8 +34,12 @@ public interface IClienteService{
 	
 	List<MesesDTO> generarMeses2(Integer diaDePago);
 	
+	List<MesesDTO> generarMesesPorAnio(Integer diaDePago, Integer anio);
+	
 	Date obtenerFechaPago(Integer idCliente);
 	
 	void pagoMasivo(List<String> meses,Cliente cliente,Integer idUsuario);
+	
+	List<Date> obtnerMesesPagadosFiltro(String anio,Integer idCliente);
 
 }

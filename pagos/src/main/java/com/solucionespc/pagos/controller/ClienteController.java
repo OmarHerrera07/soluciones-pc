@@ -2,6 +2,7 @@ package com.solucionespc.pagos.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -176,6 +177,10 @@ public class ClienteController {
         // Obtener el día del mes
         Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
     	System.out.println(fechaPago);
+    	
+    	int anioPago = calendar.get(Calendar.YEAR);
+    	model.addAttribute("anio",anioPago);
+    	model.addAttribute("cliente",clienteService.finById(id));
     	model.addAttribute("idCliente",id);
     	model.addAttribute("mesPago",fechaPago);
     	model.addAttribute("meses", clienteService.generarMeses2(diaDelMes));
@@ -209,6 +214,7 @@ public class ClienteController {
         Cliente cliente = clienteService.finById(idCliente);
         clienteService.pagoMasivo(meses,cliente, user.getIdUsuario());
         System.out.println(clienteService.finById(idCliente));
+        
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
     
@@ -228,19 +234,45 @@ public class ClienteController {
     
     
     @GetMapping("/refrescar-meses")
-    public String refrescarMeses(@RequestParam(value="idCliente") Integer idCliente,Model model){
+    public String refrescarMeses(@RequestParam(value="idRefresh") Integer id,@RequestParam(value="anioRefresh") String anio,Model model){
     	
-    	Date fechaPago = clienteService.obtenerFechaPago(idCliente);
+    	Date fechaPago = clienteService.obtenerFechaPago(id);
     	Calendar calendar = Calendar.getInstance();
         calendar.setTime(fechaPago);
-
+        
         // Obtener el día del mes
         Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
     	System.out.println(fechaPago);
-    	model.addAttribute("idCliente",idCliente);
-    	model.addAttribute("mesPago",fechaPago);
-    	model.addAttribute("meses", clienteService.generarMeses2(diaDelMes));
-    	model.addAttribute("mesesPagados",clienteService.obtenerMesesPagados(idCliente));
+    	int anioPago = calendar.get(Calendar.YEAR);
+    	model.addAttribute("anio",anioPago);
+    	model.addAttribute("idCliente",id);
+    	model.addAttribute("mesPago",fechaPago);	
+    	model.addAttribute("meses", clienteService.generarMesesPorAnio(diaDelMes,Integer.parseInt(anio)));
+        model.addAttribute("mesesPagados",clienteService.obtnerMesesPagadosFiltro(anio, id));
+    	  	
+        return "cliente-pagos :: lista-meses";
+    }
+    
+    @GetMapping("/pagos-meses-filtro")
+    public String mesesPagadosFiltro(@RequestParam(value="id") Integer id,@RequestParam(value="anio") String anio,Model model){
+    	
+    	Date fechaPago = clienteService.obtenerFechaPago(id);
+    	Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaPago);
+        
+        
+        // Obtener el día del mes
+        Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
+    	System.out.println(fechaPago);
+    	int anioPago = calendar.get(Calendar.YEAR);
+    	System.out.println("ANIOOOOOOOOOOOOOoo");
+    	model.addAttribute("anio",anio);
+    	model.addAttribute("idCliente",id);
+    	model.addAttribute("mesPago",fechaPago);	
+    	model.addAttribute("meses", clienteService.generarMesesPorAnio(diaDelMes,Integer.parseInt(anio)));
+        model.addAttribute("mesesPagados",clienteService.obtnerMesesPagadosFiltro(anio, id));
+    	  	
+    	
         return "cliente-pagos :: lista-meses";
     }
 }

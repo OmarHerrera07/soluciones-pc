@@ -28,6 +28,7 @@ import com.solucionespc.pagos.repository.ClienteRepository;
 import com.solucionespc.pagos.repository.MesesPagoRepositoty;
 import com.solucionespc.pagos.repository.PagoRepository;
 import com.solucionespc.pagos.repository.UsuarioRepository;
+import com.solucionespc.pagos.utils.PDFRecibo;
 
 
 @Service
@@ -189,6 +190,23 @@ public class ClienteService implements IClienteService{
         }
         return todosLosMeses;
     }
+    
+    @Override
+    public List<MesesDTO> generarMesesPorAnio(Integer diaDePago, Integer anio) {
+        List<MesesDTO> todosLosMeses = new ArrayList<>();
+        SimpleDateFormat formato = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
+
+        for (int i = 0; i < 12; i++) {
+            // Crear la fecha y agregarla a la lista
+            LocalDate fechaLocal = LocalDate.of(anio, i + 1, diaDePago);
+            Date fecha = java.sql.Date.valueOf(fechaLocal);
+
+            MesesDTO mes = new MesesDTO(fecha, formato.format(fecha));
+            todosLosMeses.add(mes);
+        }
+        return todosLosMeses;
+    }
+
 
 	@Override
 	public Date obtenerFechaPago(Integer idCliente) {
@@ -209,9 +227,16 @@ public class ClienteService implements IClienteService{
 			clienteRepository.InsertarMesPago(cliente.getIdCliente(),cliente.getPaquete().getIdPaquete(),res.getIdPago(), mes);
 		}
 		
+		//PDFRecibo recibo = new PDFRecibo();
+		
 		System.out.println("Este es el id debe ser uno");
 		System.out.println(res.getIdPago());
 		
+	}
+
+	@Override
+	public List<Date> obtnerMesesPagadosFiltro(String anio, Integer idCliente) {
+		return mesesPagoRepositoty.obtnerMesesPagadosFiltro(anio, idCliente);
 	}
 
 }
