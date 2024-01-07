@@ -1,5 +1,6 @@
 package com.solucionespc.pagos.service;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,11 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
 import com.solucionespc.pagos.dto.Meses;
 import com.solucionespc.pagos.dto.MesesDTO;
 import com.solucionespc.pagos.dto.MesesPagoDTO;
+import com.solucionespc.pagos.dto.MesesRecibo;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.entity.Colonia;
 import com.solucionespc.pagos.entity.Pago;
@@ -215,7 +218,7 @@ public class ClienteService implements IClienteService{
 	}
 
 	@Override
-	public void pagoMasivo(List<String> meses,Cliente cliente, Integer idUsuario) {
+	public void pagoMasivo(List<String> meses,Cliente cliente, Integer idUsuario) throws IOException, DocumentException {
 		Pago pago = new Pago();
 		pago.setFecha(new Date());
 		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
@@ -226,10 +229,16 @@ public class ClienteService implements IClienteService{
 			System.out.println(mes);
 			clienteRepository.InsertarMesPago(cliente.getIdCliente(),cliente.getPaquete().getIdPaquete(),res.getIdPago(), mes);
 		}
+		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(), res.getIdPago());
+		PDFRecibo recibo = new PDFRecibo(res,mesesR);
 		
-		//PDFRecibo recibo = new PDFRecibo();
+		byte[] pdfBytes = recibo.getPdfBytes();
+
 		
 		System.out.println("Este es el id debe ser uno");
+		
+		System.out.println(pdfBytes);
+		System.out.println(mesesR);
 		System.out.println(res.getIdPago());
 		
 	}

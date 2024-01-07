@@ -1,5 +1,6 @@
 package com.solucionespc.pagos.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Year;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.dto.ClienteRegisterDTO;
 import com.solucionespc.pagos.dto.Meses;
@@ -194,7 +196,7 @@ public class ClienteController {
     @HxTrigger("refresh")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
-    public String pagoMasivo(@RequestParam(value="idCliente") Integer idCliente,@RequestParam(value="meses") List<String> meses, Authentication authentication) {   
+    public String pagoMasivo(@RequestParam(value="idCliente") Integer idCliente,@RequestParam(value="meses") List<String> meses, Authentication authentication) throws IOException, DocumentException {   
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         
         
@@ -214,7 +216,6 @@ public class ClienteController {
         Cliente cliente = clienteService.finById(idCliente);
         clienteService.pagoMasivo(meses,cliente, user.getIdUsuario());
         System.out.println(clienteService.finById(idCliente));
-        
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
     

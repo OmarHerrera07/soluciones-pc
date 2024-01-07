@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,5 +100,15 @@ public class PagoController {
 		// System.out.println(solicitud.get());
 		PDFReciboExporter export = new PDFReciboExporter(pago,meses);
 		export.export(response);
+	}
+	
+	@GetMapping("/descargarRecibo")
+	public ResponseEntity<byte[]> descargarReporteFinal(@RequestParam(value="id") Integer id) {
+		Pago pago = pagoService.findById(id);
+	    byte[] bytes = pago.getRecibo();
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_PDF);
+	    headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Reporte Final.pdf").build());
+	    return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 }
