@@ -1,4 +1,5 @@
 package com.solucionespc.pagos.repository;
+import com.solucionespc.pagos.dto.InfoRecibo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,4 +27,8 @@ public interface PagoRepository extends JpaRepository<Pago, Integer>{
     @Transactional
     @Query(value = "update pago set recibo = ?1 where id_pago = ?2", nativeQuery = true)
     int actualizarRecibo(byte[] recibo, Integer idPago);
+
+    @Query(value = "select c.rfc,u.nombre as nombreUsuario,p.fecha,p.total  from pago p join cliente c on p.id_cliente = c.id_cliente join usuario u on u.id_usuario = p.id_usuario where p.id_pago =?1",
+            nativeQuery = true)
+    InfoRecibo getInfoRecibo(Integer idRecibo);
 }

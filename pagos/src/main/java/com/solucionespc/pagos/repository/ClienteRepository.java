@@ -3,6 +3,7 @@ package com.solucionespc.pagos.repository;
 import java.util.Date;
 import java.util.List;
 
+import com.solucionespc.pagos.dto.ReporteCliente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,4 +37,13 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     @Procedure(name = "InsertarMesPago")
     void InsertarMesPago(@Param("p_id_cliente") Integer clienteId, @Param("p_id_paquete") Integer idPaquete, @Param("p_id_pago") Integer idPago, @Param("p_fecha") String fecha);
 
+    @Query(value = "SELECT " +
+            "c.nombre,c.fecha_pago as fechaPago,c2.colonia," +
+            "DATEDIFF(NOW(), fecha_pago) AS diasReAtraso " +
+            "FROM " +
+            "cliente c join colonia c2 on c.id_colonia = c2.id_colonia " +
+            "WHERE " +
+            "  fecha_pago < CURDATE()",
+            nativeQuery = true)
+    List<ReporteCliente> getReporteClientes();
 }

@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.solucionespc.pagos.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.itextpdf.text.DocumentException;
-import com.solucionespc.pagos.dto.ClienteDTO;
-import com.solucionespc.pagos.dto.ClienteRegisterDTO;
-import com.solucionespc.pagos.dto.Meses;
-import com.solucionespc.pagos.dto.MesesDTO;
 import com.solucionespc.pagos.entity.Cliente;
 
 public interface IClienteService{
@@ -40,8 +37,10 @@ public interface IClienteService{
 	
 	Date obtenerFechaPago(Integer idCliente);
 	
-	void pagoMasivo(List<String> meses,Cliente cliente,Integer idUsuario) throws IOException, DocumentException;
+	void pagoMasivo(List<String> meses,Cliente cliente,Integer idUsuario) throws DocumentException, IOException;
 	
 	List<Date> obtnerMesesPagadosFiltro(String anio,Integer idCliente);
+
+	List<ReporteCliente> getReporteClientes();
 
 }

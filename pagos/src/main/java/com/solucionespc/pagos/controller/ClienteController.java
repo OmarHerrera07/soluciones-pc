@@ -9,6 +9,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.solucionespc.pagos.dto.*;
+import com.solucionespc.pagos.entity.Pago;
+import com.solucionespc.pagos.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,16 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.itextpdf.text.DocumentException;
-import com.solucionespc.pagos.dto.ClienteDTO;
-import com.solucionespc.pagos.dto.ClienteRegisterDTO;
-import com.solucionespc.pagos.dto.Meses;
-import com.solucionespc.pagos.dto.MesesDTO;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.entity.Usuario;
-import com.solucionespc.pagos.service.IClienteService;
-import com.solucionespc.pagos.service.IColoniaService;
-import com.solucionespc.pagos.service.IPaqueteService;
-import com.solucionespc.pagos.service.IUsuarioService;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 
@@ -54,6 +49,9 @@ public class ClienteController {
 	
 	@Autowired
 	private IUsuarioService usuarioService;
+
+    @Autowired
+    private PagoService pagoService;
 	
     /**
      * Registrar un cliente nuevo
@@ -214,7 +212,7 @@ public class ClienteController {
         
         Usuario user = usuarioService.finUserByUsername(authentication.getName());
         Cliente cliente = clienteService.finById(idCliente);
-        clienteService.pagoMasivo(meses,cliente, user.getIdUsuario());
+       clienteService.pagoMasivo(meses,cliente, user.getIdUsuario());
         System.out.println(clienteService.finById(idCliente));
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
@@ -228,9 +226,9 @@ public class ClienteController {
     
     @GetMapping("/prueba")
     @ResponseBody
-    public List<MesesDTO> meses2(Model model){
+    public List<ReporteCliente> meses2(Model model){
     	
-        return clienteService.generarMeses2(2);
+        return clienteService.getReporteClientes();
     }
     
     
@@ -276,4 +274,6 @@ public class ClienteController {
     	
         return "cliente-pagos :: lista-meses";
     }
+
+
 }

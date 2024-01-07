@@ -9,18 +9,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.solucionespc.pagos.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.DocumentException;
-import com.solucionespc.pagos.dto.ClienteDTO;
-import com.solucionespc.pagos.dto.ClienteRegisterDTO;
-import com.solucionespc.pagos.dto.Meses;
-import com.solucionespc.pagos.dto.MesesDTO;
-import com.solucionespc.pagos.dto.MesesPagoDTO;
-import com.solucionespc.pagos.dto.MesesRecibo;
 import com.solucionespc.pagos.entity.Cliente;
 import com.solucionespc.pagos.entity.Colonia;
 import com.solucionespc.pagos.entity.Pago;
@@ -218,7 +213,7 @@ public class ClienteService implements IClienteService{
 	}
 
 	@Override
-	public void pagoMasivo(List<String> meses,Cliente cliente, Integer idUsuario) throws IOException, DocumentException {
+	public void pagoMasivo(List<String> meses,Cliente cliente, Integer idUsuario) throws DocumentException, IOException {
 		Pago pago = new Pago();
 		pago.setFecha(new Date());
 		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
@@ -229,23 +224,21 @@ public class ClienteService implements IClienteService{
 			System.out.println(mes);
 			clienteRepository.InsertarMesPago(cliente.getIdCliente(),cliente.getPaquete().getIdPaquete(),res.getIdPago(), mes);
 		}
+		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(), res.getIdPago());
-		PDFRecibo recibo = new PDFRecibo(res,mesesR);
-		
+		PDFRecibo recibo = new PDFRecibo(i,mesesR);
 		byte[] pdfBytes = recibo.getPdfBytes();
-
-		
-		System.out.println("Este es el id debe ser uno");
-		
-		System.out.println(pdfBytes);
-		System.out.println(mesesR);
-		System.out.println(res.getIdPago());
-		
+		pagoRepository.actualizarRecibo(pdfBytes,res.getIdPago());
 	}
 
 	@Override
 	public List<Date> obtnerMesesPagadosFiltro(String anio, Integer idCliente) {
 		return mesesPagoRepositoty.obtnerMesesPagadosFiltro(anio, idCliente);
+	}
+
+	@Override
+	public List<ReporteCliente> getReporteClientes() {
+		return clienteRepository.getReporteClientes();
 	}
 
 }

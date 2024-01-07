@@ -20,15 +20,16 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.solucionespc.pagos.dto.InfoRecibo;
 import com.solucionespc.pagos.dto.MesesRecibo;
 import com.solucionespc.pagos.entity.Pago;
 
 public class PDFRecibo {
-	private final Pago pago;
+	private final InfoRecibo pago;
 	
 	private final List<MesesRecibo> meses;
 	
-	public PDFRecibo(Pago pago,List<MesesRecibo> meses) {
+	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses) {
 		this.pago = pago;
 		this.meses = meses;
 	}
@@ -63,7 +64,7 @@ public class PDFRecibo {
         LocalDate fechaActual = LocalDate.now();
 
         // Definir el formato deseado (MM/dd/yyyy)
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Formatear la fecha
         String fechaFormateada = fechaActual.format(formato);
@@ -79,7 +80,7 @@ public class PDFRecibo {
 	    PdfPCell cell;
 
 	    // Agregar RFC a la izquierda
-	    cell = new PdfPCell(new Phrase("RFC: "+pago.getIdCliente().getRfc(),fontTableHead));
+	    cell = new PdfPCell(new Phrase("RFC: "+pago.getRfc(),fontTableHead));
 	    cell.setBorder(Rectangle.NO_BORDER);
 	    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 	    tableHead.addCell(cell);
@@ -161,7 +162,7 @@ public class PDFRecibo {
 	    
 	    Font cajaFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
 
-	    Paragraph caja = new Paragraph("Cobrado por: "+pago.getIdUsuario().getNombre(), cajaFont);
+	    Paragraph caja = new Paragraph("Cobrado por: "+pago.getNombreUsuario(), cajaFont);
 	    caja.setAlignment(Element.ALIGN_LEFT);
 	    caja.setSpacingAfter(10f);
 	    document.add(caja);	    
