@@ -161,12 +161,28 @@ public class ClienteController {
     @HxTrigger("refresh")
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CREATED)
-    public String realizarPago(@RequestParam(value="id") Integer id, Authentication authentication) {   
+    public String realizarPago(@RequestParam(value="id") Integer id, Authentication authentication) throws DocumentException, IOException { 
+    	
+    	Cliente cliente = clienteService.finById(id);
+    	Usuario user = usuarioService.finUserByUsername(authentication.getName());
+    	
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
+        
+        List<String> meses = new ArrayList<>();
+        // Convertir el objeto Date a un String
+        String fechaString = formatoFecha.format(cliente.getFechaPago());
+        meses.add(fechaString);
+        
+        clienteService.pagoMasivo(meses, cliente, user.getIdUsuario());
+        /*
     	if(clienteService.realizarPago(id,authentication.getName())) {
     		System.out.println("dsfiodsjfidosfdio");
     	}else {
     		System.out.println("Elrrorrrr");
+    	
+    		System.out.println(cliente.getFechaPago());
     	}
+    	*/
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
     
@@ -186,7 +202,7 @@ public class ClienteController {
     	model.addAttribute("cliente",clienteService.finById(id));
     	model.addAttribute("idCliente",id);
     	model.addAttribute("mesPago",fechaPago);
-    	model.addAttribute("meses", clienteService.generarMeses2(diaDelMes));
+    	model.addAttribute("meses", clienteService.generarMeses2(diaDelMes,anioPago));
     	model.addAttribute("mesesPagados",clienteService.obtenerMesesPagados(id));
         return "cliente-pagos";
     }
@@ -200,7 +216,7 @@ public class ClienteController {
     public String pagoMasivo(@RequestParam(value="idCliente") Integer idCliente,@RequestParam(value="meses") List<String> meses, Authentication authentication) throws IOException, DocumentException {   
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         
-        
+        System.out.println(meses);
         List<Date> mesesPagar = new ArrayList<>();
         for (String fechaString : meses) {
             try {

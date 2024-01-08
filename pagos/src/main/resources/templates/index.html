@@ -11,37 +11,43 @@
 <body>
 	<div th:replace="~{fragments/layout :: nav}"></div>
 	<div id="result-msg"></div>
-	
-	<input id="idUser" value="0" name="id" hidden>	
+
+	<input id="idUser" value="0" name="id" hidden>
 	<button hidden id="consultarCliente" data-bs-toggle="modal" data-bs-target="#modal-consultar-cliente"
 		hx-get="/clientes/get-consulta-cliente" hx-target="#form-consultar-cliente" hx-swap="innerHTML"
-		hx-include="[name='id']"
-		>
+		hx-include="[name='id']">
 	</button>
-	
+
 	<button hidden id="editarCliente" data-bs-toggle="modal" data-bs-target="#modal-editar-cliente"
 		hx-get="/clientes/get-editar-cliente" hx-target="#form-editar-cliente" hx-swap="innerHTML"
-		hx-include="[name='id']"
-		>
+		hx-include="[name='id']">
 	</button>
 
 	<main>
 		<div class="container-lg d-flex mt-1 client-option">
-			<di>
+			<div class="filtro">
 				<h2>Clientes</h2>
 				<br>
-				<span>Buscar: </span><input type="text" id="filtroNombre" placeholder="Filtrar por nombre">
-				Número de registros
-				<select onchange="numRegistros();" name="" id="num-registros">
-					<option selected value="2">2</option>
-					<option selected value="5">5</option>
-					<option value="10">10</option>
-					<option value="20">20</option>
-				</select>
-			</di>
+				<div class="row filtros">
+					<div class="col-8">
+						<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
+							placeholder="Filtrar por nombre">
+					</div>
+
+					<div class="col-4">
+						Número de registros
+						<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
+							<option selected value="2">2</option>
+							<option selected value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+						</select>
+					</div>
+
+				</div>
+			</div>
 			<div>
-				<a  href="/clientes/reporte" target="_blank"
-						class="btn btn-success" >
+				<a href="/clientes/reporte" target="_blank" class="btn btn-success">
 					Reporte Clientes
 				</a>
 				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-cliente" type="button"
@@ -88,7 +94,7 @@
 
 
 	<!--FIN MODAL EDITAR CLIENTE -->
-	
+
 	<div th:replace="~{fragments/clientes/editar-cliente :: modal-editar-cliente}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->
@@ -105,11 +111,9 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-					<button
-						hx-post="/clientes/realizar-pago" hx-target="#result-msg"
-						hx-swap="innerHTML"
-						hx-include="[name='id']"
-					 type="button" class="btn btn-success" data-bs-dismiss="modal" id="confirmarEliminar">Confirmar</button>
+					<button hx-post="/clientes/realizar-pago" hx-target="#result-msg" hx-swap="innerHTML"
+						hx-include="[name='id']" type="button" class="btn btn-success" data-bs-dismiss="modal"
+						id="confirmarEliminar">Confirmar</button>
 				</div>
 			</div>
 		</div>

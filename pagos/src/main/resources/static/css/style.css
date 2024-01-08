@@ -71,5 +71,27 @@
 	  text-align: center;
   }
 
+.filtro{
+	width: 35rem;
+}
+
+.filtro-pagos{
+	display: flex;
+	
+}
+
+.input-date{
+	width: 9rem;
+	height: 2.5rem;
+}
+
+.filtro-fecha{
+    display: flex!important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    gap: 5px;
+
+}
 
 

@@ -18,7 +18,7 @@ function actualizarTabla(pagos) {
 					<tr>
 					
 					    <th>${pago.nombre}</th>
-                        <td>${pago.fecha}</td>
+                        <td><input class="fechas" type="date" value="${pago.fecha}" disabled></td>
                         <td>$${pago.total}</td>
                         <td>
                             <a href="/pagos/reciboCliente?id=${pago.idPago}" class="btn btn-warning">

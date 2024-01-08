@@ -169,25 +169,22 @@ public class ClienteService implements IClienteService{
         return todosLosMeses;
 	}
 	
-    @Override
-    public List<MesesDTO> generarMeses2(Integer diaDePago) {
-        List<MesesDTO> todosLosMeses = new ArrayList<>();
-        int anioActual = LocalDate.now().getYear();
-        SimpleDateFormat formato = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
+	@Override
+	public List<MesesDTO> generarMeses2(Integer diaDePago, Integer anio) {
+	    List<MesesDTO> todosLosMeses = new ArrayList<>();
+	    SimpleDateFormat formato = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
 
-        for (int i = 0; i < 12; i++) {
-            // Crear la fecha y agregarla a la lista
-            LocalDate fechaLocal = LocalDate.of(anioActual, i + 1, diaDePago);
-            Date fecha = java.sql.Date.valueOf(fechaLocal);
-            
-            
-            MesesDTO mes = new MesesDTO(fecha,formato.format(fecha));
+	    for (int i = 0; i < 12; i++) {
+	        // Crear la fecha y agregarla a la lista
+	        LocalDate fechaLocal = LocalDate.of(anio, i + 1, diaDePago);
+	        Date fecha = java.sql.Date.valueOf(fechaLocal);
 
+	        MesesDTO mes = new MesesDTO(fecha, formato.format(fecha));
+	        todosLosMeses.add(mes);
+	    }
+	    return todosLosMeses;
+	}
 
-            todosLosMeses.add(mes);
-        }
-        return todosLosMeses;
-    }
     
     @Override
     public List<MesesDTO> generarMesesPorAnio(Integer diaDePago, Integer anio) {

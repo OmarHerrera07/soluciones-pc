@@ -21,7 +21,10 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
             nativeQuery = true)
     List<MesesPagoDTO> ObtenerPagosRealizados(Integer id);
 	
-	@Query(value = "SELECT mp.fecha FROM meses_pago mp WHERE id_cliente = ?1 AND YEAR(fecha) = YEAR(CURDATE())",
+	/*
+	 * SELECT mp.fecha FROM meses_pago mp WHERE id_cliente = ?1 AND YEAR(fecha) = YEAR(CURDATE())*
+	 */
+	@Query(value = "SELECT mp.fecha FROM meses_pago mp join cliente c on mp.id_cliente = c.id_cliente  WHERE mp.id_cliente = ?1 AND YEAR(fecha) = YEAR(c.fecha_pago)",
             nativeQuery = true)
     List<Date> obtnerMesesPagados(Integer idCliente);
 	

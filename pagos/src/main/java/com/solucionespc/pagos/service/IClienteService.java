@@ -31,7 +31,7 @@ public interface IClienteService{
 	
 	List<Date> generarMeses(Integer dia);
 	
-	List<MesesDTO> generarMeses2(Integer diaDePago);
+	List<MesesDTO> generarMeses2(Integer diaDePago, Integer anio);
 	
 	List<MesesDTO> generarMesesPorAnio(Integer diaDePago, Integer anio);
 	
