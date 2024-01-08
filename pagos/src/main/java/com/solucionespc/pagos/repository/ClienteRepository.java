@@ -39,11 +39,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 
     @Query(value = "SELECT " +
             "c.nombre,c.fecha_pago as fechaPago,c2.colonia," +
-            "DATEDIFF(NOW(), fecha_pago) AS diasReAtraso " +
+            "DATEDIFF(NOW(), fecha_pago) AS diasAtraso " +
             "FROM " +
             "cliente c join colonia c2 on c.id_colonia = c2.id_colonia " +
             "WHERE " +
-            "  fecha_pago < CURDATE()",
+            "  fecha_pago < CURDATE() and c.estado = 1",
             nativeQuery = true)
     List<ReporteCliente> getReporteClientes();
 }

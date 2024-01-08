@@ -12,6 +12,9 @@ import java.util.List;
 import com.solucionespc.pagos.dto.*;
 import com.solucionespc.pagos.entity.Pago;
 import com.solucionespc.pagos.service.*;
+import com.solucionespc.pagos.utils.PDFReporteClientes;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -273,6 +276,20 @@ public class ClienteController {
     	  	
     	
         return "cliente-pagos :: lista-meses";
+    }
+    @GetMapping("/reporte")
+    @ResponseBody
+    public void exportPDF(HttpServletRequest request, HttpServletResponse response) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+
+        String headerKey = "Content-Disposition";
+        String sbHeaderValue = "attachment; filename=Reporte.pdf";
+
+        List<ReporteCliente> reportes = clienteService.getReporteClientes();
+
+        PDFReporteClientes reporte = new PDFReporteClientes(reportes);
+        reporte.export(response);
+
     }
 
 

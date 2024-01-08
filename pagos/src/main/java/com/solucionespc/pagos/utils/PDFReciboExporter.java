@@ -52,7 +52,9 @@ public class PDFReciboExporter {
 	    BaseColor negro = BaseColor.BLACK;
 	    Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, negro);
 
-	    Paragraph title = new Paragraph("Soluciones PC", boldFont);
+		Font fontNormal = FontFactory.getFont(FontFactory.HELVETICA, 10, negro);
+
+	    Paragraph title = new Paragraph("Soluciones PC", fontNormal);
 	    title.setAlignment(Element.ALIGN_CENTER);
 	    title.setSpacingAfter(10f);
 	    document.add(title);

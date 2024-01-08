@@ -7,11 +7,11 @@ import java.util.Date;
 public interface ReporteCliente {
     String getNombre();
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date getFechaPago();
 
     String getColonia();
 
-    Integer getDiasRetraso();
+    Integer getDiasAtraso();
 
 }
