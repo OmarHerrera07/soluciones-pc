@@ -119,8 +119,6 @@ public class PDFReporteClientes {
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setPadding(paddig);
             table.addCell(cell);
-
-
         }
 
         document.add(table);

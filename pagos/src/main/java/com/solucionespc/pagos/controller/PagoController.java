@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +21,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.dto.ClienteDTO;
+import com.solucionespc.pagos.dto.Corte;
 import com.solucionespc.pagos.dto.MesesPagoDTO;
 import com.solucionespc.pagos.dto.MesesRecibo;
 import com.solucionespc.pagos.dto.PagoDTO;
+import com.solucionespc.pagos.dto.ReporteCliente;
 import com.solucionespc.pagos.entity.Pago;
+import com.solucionespc.pagos.entity.Usuario;
 import com.solucionespc.pagos.repository.MesesPagoRepositoty;
 import com.solucionespc.pagos.repository.PagoRepository;
 import com.solucionespc.pagos.service.IPagoService;
+import com.solucionespc.pagos.service.IUsuarioService;
+import com.solucionespc.pagos.utils.PDFCorte;
 import com.solucionespc.pagos.utils.PDFExporter;
 import com.solucionespc.pagos.utils.PDFReciboExporter;
+import com.solucionespc.pagos.utils.PDFReporteClientes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,10 +48,10 @@ public class PagoController {
 	private IPagoService pagoService;
 
 	@Autowired
-	private MesesPagoRepositoty mesesPagoRepositoty;
-
-	@Autowired
 	private PagoRepository pagoRepository;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
 
 	@GetMapping
 	public String pagos() {
@@ -53,9 +60,8 @@ public class PagoController {
 
 	@GetMapping("/e")
 	@ResponseBody
-	public List<MesesRecibo> get() {
-		System.out.println(mesesPagoRepositoty.ObtenerPagosRealizados(1));
-		return mesesPagoRepositoty.obtnerMesesPagadosRecibo(1, 59);
+	public List<Corte> get() {
+		return pagoService.getInfoCorte();
 	}
 
 	@ResponseBody
@@ -111,4 +117,20 @@ public class PagoController {
 	    headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Reporte Final.pdf").build());
 	    return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
+	
+    @GetMapping("/corte")
+    @ResponseBody
+    public void exportPDFCorte(HttpServletRequest request, HttpServletResponse response,Authentication authentication) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+
+        String headerKey = "Content-Disposition";
+        String sbHeaderValue = "inline; filename=Reporte.pdf";
+        response.setHeader(headerKey, sbHeaderValue);
+        List<Corte> infoCorte = pagoService.getInfoCorte();
+        Usuario user = usuarioService.finUserByUsername(authentication.getName());
+        PDFCorte reporte = new PDFCorte(infoCorte,user);
+        reporte.export(response);
+
+    }
+
 }

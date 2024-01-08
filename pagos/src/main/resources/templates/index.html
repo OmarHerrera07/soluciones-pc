@@ -27,7 +27,6 @@
 		<div class="container-lg d-flex mt-1 client-option">
 			<div class="filtro">
 				<h2>Clientes</h2>
-				<br>
 				<div class="row filtros">
 					<div class="col-8">
 						<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
@@ -37,10 +36,10 @@
 					<div class="col-4">
 						Número de registros
 						<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
-							<option selected value="2">2</option>
 							<option selected value="5">5</option>
 							<option value="10">10</option>
 							<option value="20">20</option>
+							<option value="50">50</option>
 						</select>
 					</div>
 
@@ -107,7 +106,8 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					¿Confirmar pago?
+					<p class="fw-bold">Cliente: <span class="no-bold" id="clientePago">Omar Herrera Santos</span></p>
+					<p class="fw-bold">Pago: $<span class="no-bold" id="totalPago">198.0</span></p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>

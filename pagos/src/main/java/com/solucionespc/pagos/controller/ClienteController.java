@@ -300,7 +300,7 @@ public class ClienteController {
 
         String headerKey = "Content-Disposition";
         String sbHeaderValue = "attachment; filename=Reporte.pdf";
-
+        
         List<ReporteCliente> reportes = clienteService.getReporteClientes();
 
         PDFReporteClientes reporte = new PDFReporteClientes(reportes);

@@ -22,13 +22,9 @@
 				<br>
 			</div>
 			<div>
-				<button onclick="mostrarModal(0,'unidad')" type="button" class="btn btn-success">
-					Generar Reporte
-				</button>
-				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-cliente" type="button"
-					class="btn btn-success">
-					Registrar
-				</button>
+				<a href="/pagos/corte"  target="_blank" class="btn btn-success">
+					Generar corte
+				</a>	
 			</div>
 		</div>
 
@@ -46,7 +42,6 @@
 				<div class="col-2">
 					Num. registros
 					<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
-						<option selected value="2">2</option>
 						<option selected value="5">5</option>
 						<option value="10">10</option>
 						<option value="20">20</option>
@@ -57,7 +52,7 @@
 		</div>
 
 		<div class="container">
-
+			<br>
 			<table class="table text-center">
 				<thead>
 					<tr>

@@ -33,6 +33,12 @@
     margin-top: 4rem !important;
 }
 
+.user-option{
+	display: flex;
+    justify-content: space-between;
+    margin-top: 1rem !important;
+}
+
 /* LOGIN */
 .titulo-login{
     color: white !important;
@@ -92,6 +98,10 @@
     align-content: flex-end;
     gap: 5px;
 
+}
+
+.no-bold{
+	font-weight: 200;
 }
 
 

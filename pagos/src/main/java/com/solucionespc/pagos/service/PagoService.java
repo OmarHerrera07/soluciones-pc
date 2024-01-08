@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.solucionespc.pagos.dto.Corte;
 import com.solucionespc.pagos.dto.MesesRecibo;
 import com.solucionespc.pagos.entity.Pago;
 import com.solucionespc.pagos.repository.MesesPagoRepositoty;
@@ -34,5 +35,11 @@ public class PagoService implements IPagoService{
 	public List<MesesRecibo> obtnerMesesPagadosRecibo(Integer idCliente, Integer idPago) {
 		// TODO Auto-generated method stub
 		return mesesPagoRepositoty.obtnerMesesPagadosRecibo(idCliente, idPago);
+	}
+
+	@Override
+	public List<Corte> getInfoCorte() {
+		// TODO Auto-generated method stub
+		return pagoRepository.getInfoCorte();
 	}
 }

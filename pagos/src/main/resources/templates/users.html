@@ -19,28 +19,26 @@
 	</button>
 	<div id="result-msg"></div>
 	<main>
-		<div class="container-lg d-flex mt-1 client-option">
-			<div>
+		<div class="container-lg d-flex mt-1 user-option">
+			<div  class="filtro">
 				<h2>Usuarios</h2>
-				<br>
-				<div class="row">
-					<div class="col-6 d-flex align-items-center">
-						<span class="mr-2">Buscar: </span><input class="form-control" type="text" id="filtroNombre"
+				<div class="row filtros">
+					<div class="col-8">
+						<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
 							placeholder="Filtrar por nombre">
 					</div>
 
-					<div class="col-6">
+					<div class="col-4">
 						Número de registros
-						<select onchange="numRegistros();" name="" id="num-registros">
-							<option selected value="2">2</option>
+						<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
 							<option selected value="5">5</option>
 							<option value="10">10</option>
 							<option value="20">20</option>
+							<option value="50">50</option>
 						</select>
 					</div>
+
 				</div>
-
-
 			</div>
 			<div>
 				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-usuario" type="button"

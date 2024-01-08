@@ -14,7 +14,7 @@
 						<div class="row">
 							<div class="col-12">
 								<label for="nombreCliente">Nombre Completo: </label>
-								<input id="nombreCliente" name="nombre" class="form-control">
+								<input id="nombreCliente" name="nombre" class="form-control" required>
 							</div>
 
 						</div>
@@ -40,7 +40,7 @@
 
 							<div class="col-6">
 								<label for="coordenadas">Ubicación: </label>
-								<input id="coordenadas" name="coordenadas" class="form-control" required>
+								<input id="coordenadas" name="coordenadas" class="form-control">
 							</div>
 						</div>
 						<div class="row">
@@ -57,17 +57,18 @@
 								</Select>
 							</div>
 						</div>
+						<br>
 						<div class="row">
 							<div class="col-12">
 								<label for="observaciones">Observaciones: </label>
 								<textarea id="observaciones" name="observaciones" class="form-control"
-									rows="3"></textarea>
+									rows="5"></textarea>
 							</div>
 						</div>
 
 						<div class="modal-footer">
 							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+							<button type="submit" class="btn btn-success">Guardar</button>
 						</div>
 					</form>
 				</div>

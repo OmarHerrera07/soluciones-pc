@@ -41,6 +41,7 @@ public class UsuarioServicio implements IUsuarioService{
 		user.setNombre(userDTO.getNombre());
 		user.setPassword(userDTO.getPassword());
 		user.setRol(Rol.builder().idRol(userDTO.getIdRol()).build());
+		user.setEstado(true);
 
 		try {
 			usuarioRepository.save(user);
@@ -59,6 +60,7 @@ public class UsuarioServicio implements IUsuarioService{
 		user.setUsername(userDTO.getUsername());
 		user.setNombre(userDTO.getNombre());
 		user.setRol(Rol.builder().idRol(userDTO.getIdRol()).build());
+		user.setEstado(userDTO.getEstado());
 		try {
 			usuarioRepository.save(user);
 			return true;

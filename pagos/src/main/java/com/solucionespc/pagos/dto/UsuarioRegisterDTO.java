@@ -18,4 +18,6 @@ public class UsuarioRegisterDTO {
     private String nombre;
     
     private Integer idRol;
+    
+    private Boolean estado;
 }

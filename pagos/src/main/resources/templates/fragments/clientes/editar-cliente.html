@@ -20,7 +20,7 @@
 		<div class="row">
 			<div class="col-12">
 				<label for="nombreEditar">Nombre Completo: </label>
-				<input th:value="${cliente.nombre}" id="nombreEditar" name="nombre" class="form-control">
+				<input th:value="${cliente.nombre}" id="nombreEditar" name="nombre" class="form-control" required>
 			</div>
 
 		</div>
@@ -47,7 +47,7 @@
 			<div class="col-6">
 				<label for="coordenadasEditar">Ubicación: </label>
 				<input th:value="${cliente.coordenadas}" id="coordenadasEditar" name="coordenadas" class="form-control"
-					required>
+					>
 			</div>
 		</div>
 		<div class="row">
@@ -79,13 +79,13 @@
 			<div class="col-12">
 				<label for="observacionesEditar">Observaciones: </label>
 				<textarea th:text="${cliente.observaciones}" id="observacionesEditar" name="observaciones"
-					class="form-control" rows="3"></textarea>
+					class="form-control" rows="5"></textarea>
 			</div>
 		</div>
 
 		<div class="modal-footer">
 			<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-			<button type="submit" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+			<button type="submit" class="btn btn-success">Guardar</button>
 		</div>
 	</form>
 </div>

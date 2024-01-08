@@ -1,6 +1,7 @@
 var currentPage = 0;
 
 document.body.addEventListener("refresh", function() {
+	$('.modal').modal('hide');
 	cargarUsuarios(currentPage);
 })
 function editarUsuario(id) {

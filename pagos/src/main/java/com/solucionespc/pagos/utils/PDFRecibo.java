@@ -155,7 +155,7 @@ public class PDFRecibo {
 	    
 	    	    	    	    	    	    	    	    
 	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);
-	    Paragraph total = new Paragraph("Total: "+pago.getTotal(), totalFont);
+	    Paragraph total = new Paragraph("Total: $"+pago.getTotal(), totalFont);
 	    total.setAlignment(Element.ALIGN_RIGHT);
 	    total.setSpacingAfter(15f);
 	    document.add(total);

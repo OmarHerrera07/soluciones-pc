@@ -32,6 +32,8 @@ public class Usuario {
     
     private String nombre;
     
+    private Boolean estado;
+    
     @ManyToOne
     @JoinColumn(name = "id_rol")
     private Rol rol;
