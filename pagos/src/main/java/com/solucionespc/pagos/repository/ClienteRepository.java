@@ -18,10 +18,10 @@ import com.solucionespc.pagos.entity.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	
-    @Query(value = "select c.id_cliente as idCliente, c.nombre,c.telefono,p.precio as paquete,c.fecha_pago as fechaPago,c.ultimo_pago as ultimoPago, c.estado  from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%')",
-            countQuery = "select COUNT(*) from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%')",
+    @Query(value = "select c.id_cliente as idCliente, c.nombre,c.telefono,p.precio as paquete,c.fecha_pago as fechaPago,c.ultimo_pago as ultimoPago, c.estado  from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null)",
+            countQuery = "select COUNT(*) from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null)",
             nativeQuery = true)
-    Page<ClienteDTO> paginacionCliente(String nombre, Pageable pageable);
+    Page<ClienteDTO> paginacionCliente(String nombre,Integer idColonia, Pageable pageable);
     
     @Query(value = "select c.nombre,c.telefono, c.fecha_pago as fechaPago,p.precio as paquete from cliente c join paquete_internet p on c.id_paquete = p.id_paquete",
             nativeQuery = true)

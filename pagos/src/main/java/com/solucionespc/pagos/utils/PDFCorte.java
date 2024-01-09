@@ -94,7 +94,7 @@ public class PDFCorte {
             cell.setPadding(paddig);
             table.addCell(cell);
 
-            cell = new PdfPCell(new Phrase("$"+Float.toString(corte.getTotalPago()),fontTableBody));
+            cell = new PdfPCell(new Phrase("$"+Float.toString(corte.getTotalPago())+"0",fontTableBody));
             cell.setBorder(Rectangle.NO_BORDER);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setPadding(paddig);
@@ -105,7 +105,7 @@ public class PDFCorte {
         
         document.add(table);
 	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, negro);
-	    Paragraph total = new Paragraph("Total: $"+totalCorte, totalFont);
+	    Paragraph total = new Paragraph("Total: $"+totalCorte+"0", totalFont);
 	    total.setAlignment(Element.ALIGN_RIGHT);
 	    total.setSpacingAfter(15f);
 	    document.add(total);

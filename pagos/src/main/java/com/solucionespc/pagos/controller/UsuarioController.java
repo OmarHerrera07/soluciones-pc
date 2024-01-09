@@ -40,7 +40,7 @@ public class UsuarioController {
     
     /**
      * Registrar un usuario nuevo
-     * @param usuario	Usuario a registrar
+     * @param 	usuario	Usuario a registrar
      * @return	Resultado sobre el registro del usuario
      */
     @HxTrigger("refresh")

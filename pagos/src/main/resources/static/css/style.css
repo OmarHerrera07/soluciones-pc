@@ -30,7 +30,7 @@
 .client-option{
     display: flex;
     justify-content: space-between;
-    margin-top: 4rem !important;
+    margin-top: 1.5rem !important;
 }
 
 .user-option{

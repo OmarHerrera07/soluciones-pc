@@ -53,6 +53,10 @@ public class PagoController {
 	@Autowired
 	private IUsuarioService usuarioService;
 
+	/**
+	 * Redirege a la vista de pagos
+	 * @return	vista para pagos (archivo html)
+	 */
 	@GetMapping
 	public String pagos() {
 		return "pagos";
@@ -87,10 +91,10 @@ public class PagoController {
 	
 	/**
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws DocumentException
-	 * @throws IOException
+	 * @param request				representa la solicitud HTTP que llega al servidor. Proporciona información sobre la solicitud web, como los parámetros de la URL, encabezados, tipo de solicitud, etc.
+	 * @param response				representa la respuesta HTTP que el servidor enviará de vuelta al cliente				
+	 * @throws DocumentException	indica que el método puede arrojar una excepción del tipo DocumentException
+	 * @throws IOException			indica que el método puede arrojar una excepción del tipo IOException
 	 */
 
 	@GetMapping("/recibo")
@@ -109,11 +113,10 @@ public class PagoController {
 	
 	/**
 	 * 
-	 * @param id
-	 * @param request
-	 * @param response
-	 * @throws DocumentException
-	 * @throws IOException
+	 * @param request				representa la solicitud HTTP que llega al servidor. Proporciona información sobre la solicitud web, como los parámetros de la URL, encabezados, tipo de solicitud, etc.
+	 * @param response				representa la respuesta HTTP que el servidor enviará de vuelta al cliente				
+	 * @throws DocumentException	indica que el método puede arrojar una excepción del tipo DocumentException
+	 * @throws IOException			indica que el método puede arrojar una excepción del tipo IOException
 	 */
 	
 	@GetMapping("/reciboCliente")
@@ -134,6 +137,11 @@ public class PagoController {
 		export.export(response);
 	}
 	
+	/**
+	 * Descarga el recibo de pago del cliente en formato pdf
+	 * @param id	id del recibo a descargar
+	 * @return		descarga el recibo en formato pdf
+	 */
 	@GetMapping("/descargarRecibo")
 	public ResponseEntity<byte[]> descargarReporteFinal(@RequestParam(value="id") Integer id) {
 		Pago pago = pagoService.findById(id);

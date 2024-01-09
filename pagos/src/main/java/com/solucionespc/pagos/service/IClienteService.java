@@ -15,7 +15,7 @@ public interface IClienteService{
 	
 	List<Cliente> findAll();
 	
-	Page<ClienteDTO> paginacionCliente(String nombre,Pageable pageable);
+	Page<ClienteDTO> paginacionCliente(String nombre,Integer idColonia,Pageable pageable);
 	
 	List<ClienteDTO> prueba();
 	

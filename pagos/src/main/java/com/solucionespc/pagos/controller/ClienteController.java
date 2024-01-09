@@ -52,9 +52,6 @@ public class ClienteController {
 	
 	@Autowired
 	private IUsuarioService usuarioService;
-
-    @Autowired
-    private PagoService pagoService;
 	
     /**
      * Registrar un cliente nuevo
@@ -150,11 +147,20 @@ public class ClienteController {
     @GetMapping("/paginacion")
     public Page<ClienteDTO> paginacion(Pageable pageable,
     		@RequestParam(name = "nombre", required = false) String nombre,
+    		@RequestParam(name = "idColonia", required = false) Integer idColonia,
     		@RequestParam(name = "size", required = false, defaultValue = "5") Integer size) {
     	pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
-        return clienteService.paginacionCliente(nombre,pageable);
+        return clienteService.paginacionCliente(nombre,idColonia,pageable);
     }
     
+    /**
+     * 
+     * @param id 					id del cliente a realizar el pago 
+     * @param authentication		authentication		representa la información de autenticación del usuario que realiza la solicitud
+     * @return						resultado sobre si se realizo el pago
+	 * @throws DocumentException	indica que el método puede arrojar una excepción del tipo DocumentException
+	 * @throws IOException			indica que el método puede arrojar una excepción del tipo IOException
+     */
     @PostMapping(value = "/realizar-pago",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -174,17 +180,15 @@ public class ClienteController {
         meses.add(fechaString);
         
         clienteService.pagoMasivo(meses, cliente, user.getIdUsuario());
-        /*
-    	if(clienteService.realizarPago(id,authentication.getName())) {
-    		System.out.println("dsfiodsjfidosfdio");
-    	}else {
-    		System.out.println("Elrrorrrr");
-    	
-    		System.out.println(cliente.getFechaPago());
-    	}
-    	*/
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
+    
+    /**
+     * 
+     * @param id		id del cliente a mostrar sus pagos
+     * @param model		modelo que proporcionar datos a la vista para que se muestren dinámicamente
+     * @return			vista para mostrar los pagos que ha realizado el cliente (html)
+     */
     
     @GetMapping("/pagos")
     public String pagosClientes(@RequestParam(value="id") Integer id,Model model){

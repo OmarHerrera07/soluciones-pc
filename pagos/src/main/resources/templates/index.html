@@ -27,23 +27,6 @@
 		<div class="container-lg d-flex mt-1 client-option">
 			<div class="filtro">
 				<h2>Clientes</h2>
-				<div class="row filtros">
-					<div class="col-8">
-						<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
-							placeholder="Filtrar por nombre">
-					</div>
-
-					<div class="col-4">
-						Número de registros
-						<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
-							<option selected value="5">5</option>
-							<option value="10">10</option>
-							<option value="20">20</option>
-							<option value="50">50</option>
-						</select>
-					</div>
-
-				</div>
 			</div>
 			<div>
 				<a href="/clientes/reporte" target="_blank" class="btn btn-success">
@@ -58,7 +41,34 @@
 		</div>
 		<br>
 		<div class="container">
+				<div class="row filtros">
+					<div class="col-6">
+						<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
+							placeholder="Filtrar por nombre">
+					</div>
 
+
+					<div class="col-4">
+						Colonia
+						<select class="form-control" onchange="colonias();" name="" id="colonia-filtro">
+							<option value="" selected>Todas</option>
+									<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
+										th:text="${colonia.colonia}"></option>
+						</select>
+					</div>
+
+					<div class="col-2">
+						Número de registros
+						<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
+							<option selected value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="50">50</option>
+						</select>
+					</div>
+
+				</div>
+				<br>
 			<table class="table text-center">
 				<thead>
 					<tr>

@@ -50,8 +50,8 @@ public class ClienteService implements IClienteService{
 	}
 	
 	@Override
-	public Page<ClienteDTO> paginacionCliente(String nombre,Pageable pageable){
-		return clienteRepository.paginacionCliente(nombre,pageable);
+	public Page<ClienteDTO> paginacionCliente(String nombre,Integer idColonia,Pageable pageable){
+		return clienteRepository.paginacionCliente(nombre,idColonia,pageable);
 	}
 	
 	@Override
