@@ -19,6 +19,8 @@ public class ClienteRegisterDTO {
 	private String nombre;
 
 	private String telefono;
+	
+	private String telefono2;
 
 	private String observaciones;
 

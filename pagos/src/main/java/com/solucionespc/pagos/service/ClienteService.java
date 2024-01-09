@@ -64,6 +64,7 @@ public class ClienteService implements IClienteService{
 		Cliente cliente = new Cliente();
 		cliente.setNombre(c.getNombre());
 		cliente.setTelefono(c.getTelefono());
+		cliente.setTelefono2(c.getTelefono2());
 		cliente.setCoordenadas(c.getCoordenadas());
 		cliente.setFechaPago(c.getFecha());
 		cliente.setRfc(c.getRfc());
@@ -94,6 +95,7 @@ public class ClienteService implements IClienteService{
 		Cliente cliente = clienteRepository.findById(c.getIdCliente()).get();
 		cliente.setNombre(c.getNombre());
 		cliente.setTelefono(c.getTelefono());
+		cliente.setTelefono2(c.getTelefono2());
 		cliente.setCoordenadas(c.getCoordenadas());
 		cliente.setFechaPago(c.getFecha());
 		cliente.setRfc(c.getRfc());

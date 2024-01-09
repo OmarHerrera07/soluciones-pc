@@ -16,16 +16,21 @@
 
 <div th:fragment="datos-consultar-cliente">
 	<div class="row">
-		<div class="col-12">
+		<div class="col-6">
 			<label for="nombreCliente">Nombre Completo: </label>
 			<input th:value="${cliente.nombre}" class="form-control" disabled>
+		</div>
+
+		<div class="col-6">
+			<label for="telefono">Teléfono: </label>
+			<input th:value="${cliente.telefono}" class="form-control" disabled>
 		</div>
 
 	</div>
 	<div class="row">
 		<div class="col-6">
-			<label for="telefono">Teléfono: </label>
-			<input th:value="${cliente.telefono}" class="form-control" disabled>
+			<label for="telefono2">Teléfono 2 (opcional): </label>
+			<input th:value="${cliente.telefono2}" class="form-control" disabled>
 		</div>
 
 		<div class="col-6">

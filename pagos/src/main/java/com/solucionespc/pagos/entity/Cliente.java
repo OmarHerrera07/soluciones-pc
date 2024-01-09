@@ -33,6 +33,8 @@ public class Cliente {
     
     private String telefono;
     
+    private String telefono2;
+    
     private String observaciones;
     
     @Column(name = "fecha_pago")
