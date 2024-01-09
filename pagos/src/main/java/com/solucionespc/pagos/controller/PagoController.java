@@ -63,7 +63,16 @@ public class PagoController {
 	public List<Corte> get() {
 		return pagoService.getInfoCorte();
 	}
-
+	
+	/**
+	 * Obtiene una lista paginada de todos los pagos realizados
+	 * @param nombre		filtro por nombre del cliente
+	 * @param size			tamaño del listado de pagos
+	 * @param fechaInicio	filtro de rango fecha para la paginación
+	 * @param fechaFin		filtro de rango fecha para la paginación
+	 * @param pageable		clase para la paginación
+	 * @return				lista paginada con los pagos realizados
+	 */
 	@ResponseBody
 	@GetMapping("/paginacion")
 	public Page<PagoDTO> paginacion(@RequestParam(name = "nombre", required = false) String nombre,
@@ -75,6 +84,14 @@ public class PagoController {
 		pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
 		return pagoRepository.paginacionPagos(nombre, fechaInicio, fechaFin, pageable);
 	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws DocumentException
+	 * @throws IOException
+	 */
 
 	@GetMapping("/recibo")
 	@ResponseBody
@@ -89,6 +106,15 @@ public class PagoController {
 		PDFExporter export = new PDFExporter(null);
 		export.export(response);
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param request
+	 * @param response
+	 * @throws DocumentException
+	 * @throws IOException
+	 */
 	
 	@GetMapping("/reciboCliente")
 	@ResponseBody
@@ -118,6 +144,15 @@ public class PagoController {
 	    return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
 	
+	
+	/**
+	 * Genera un pdf con información de corte de caja
+	 * @param request				representa la solicitud HTTP que llega al servidor. Proporciona información sobre la solicitud web, como los parámetros de la URL, encabezados, tipo de solicitud, etc.
+	 * @param response				representa la respuesta HTTP que el servidor enviará de vuelta al cliente				
+	 * @param authentication		representa la información de autenticación del usuario que realiza la solicitud
+	 * @throws DocumentException	indica que el método puede arrojar una excepción del tipo DocumentException
+	 * @throws IOException			indica que el método puede arrojar una excepción del tipo IOException
+	 */
     @GetMapping("/corte")
     @ResponseBody
     public void exportPDFCorte(HttpServletRequest request, HttpServletResponse response,Authentication authentication) throws DocumentException, IOException {

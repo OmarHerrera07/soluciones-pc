@@ -144,7 +144,7 @@ public class PDFReciboExporter {
 	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	        table.addCell(cell);
 
-	        cell = new PdfPCell(new Phrase("$"+mes.getPrecio(),fontTableBody));
+	        cell = new PdfPCell(new Phrase("$"+mes.getPrecio()+"0",fontTableBody));
 	        cell.setBorder(Rectangle.NO_BORDER);
 	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 	        table.addCell(cell);
@@ -162,7 +162,7 @@ public class PDFReciboExporter {
 	    
 	    
 	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);
-	    Paragraph total = new Paragraph("Total: "+pago.getTotal(), totalFont);
+	    Paragraph total = new Paragraph("Total: $"+pago.getTotal()+"0", totalFont);
 	    total.setAlignment(Element.ALIGN_RIGHT);
 	    total.setSpacingAfter(15f);
 	    document.add(total);

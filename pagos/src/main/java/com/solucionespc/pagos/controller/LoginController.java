@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
     /**
      * Regresa la vista para Iniciar sesión
-     * *@return     Vista para Login
+     * *@return     vista para Login
      */
     @GetMapping("/login")
     String login() {

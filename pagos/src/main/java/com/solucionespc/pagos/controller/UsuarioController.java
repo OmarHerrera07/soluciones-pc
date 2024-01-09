@@ -113,6 +113,13 @@ public class UsuarioController {
     	return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al editar al usuario</div>";
     }
     
+    /**
+     * Obtiene una lista paginada de los usuarios del sistema
+     * @param nombre	filtro de nombre de usuario
+     * @param size		tamaño de la lista paginada
+     * @param pageable	clase para la paginación
+     * @return			lista de usuairos paginda
+     */
     @GetMapping("/paginacion")
     @ResponseBody
     public Page<Usuario> obtenerUsuariosPaginados(
