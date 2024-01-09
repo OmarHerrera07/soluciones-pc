@@ -115,3 +115,4 @@ $(document).ready(function() {
 function numRegistros() {
 	cargarPagos(0);
 }
+

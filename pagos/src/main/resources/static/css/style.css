@@ -104,4 +104,14 @@
 	font-weight: 200;
 }
 
+.total-meses{
+	display: flex!important;
+    align-content: center;
+    justify-content: flex-end;
+}
+
+.meses-pagar{
+	font-size: 1.2rem;
+}
+
 

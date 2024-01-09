@@ -22,19 +22,6 @@
 				<div>
 					<h2>Pagos</h2>
 					<div class="col-6 filtro-anios">
-						<!-- 
-							
-							Año
-							<select onchange="numRegistros();" name="" id="num-registros">
-								<option selected value="2022">2022</option>
-								<option selected value="2023">2023</option>
-								<option value="2024">2024</option>
-								<option value="2025">2025</option>
-								<option value="2026">2026</option>
-								<option value="2027">2027</option>
-							</select>					
-							
-						-->
 						<form hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container" hx-swap="innerHTML" class="filtro-anios">
 							<input hidden name="id" th:value="${idCliente}">
 							<label>Año</label>
@@ -52,7 +39,7 @@
 				</div>
 				<div>
 					<h2 th:text="${cliente.nombre}"></h2>
-					<h3>Paquete: $ <span th:text="${cliente.Paquete.precio}"></span></h2>
+					<h3>Paquete: $ <span id="precioPaquete" th:text="${cliente.Paquete.precio}"></span></h2>
 						<h4>Colonia: <span th:text="${cliente.Colonia.colonia}"></span>
 					</h3>
 				</div>
@@ -69,9 +56,11 @@
 				</form>
 				<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-confirm="¿Seguro?">
-					<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+					<button type="button" onclick="pagarMeses();" class="btn btn-success">
 						Pagar
 					</button>
+					<span id="alerta-pagar-mes" style="color: red; margin:0;padding: 0;visibility: 
+					hidden;">Seleccione un mes a pagar</span>
 					<input hidden name="idCliente" th:value="${idCliente}">
 
 					<br><br>
@@ -114,8 +103,8 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
-								<div class="modal-body">
-									¿Realizar Pago?
+								<div id="confirmarMeses" class="modal-body">
+									
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger"

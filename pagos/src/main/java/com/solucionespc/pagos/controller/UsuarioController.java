@@ -123,4 +123,22 @@ public class UsuarioController {
         return usuarioService.paginacionUsuariosFiltro(nombre, pageable);
     }
     
+    @PostMapping("/validarUsername")
+    public String validarCorreo(@RequestParam(value="username") String username) {
+    	
+    	System.out.println(username);
+    	
+    	if(username.isEmpty()) {
+    		return "fragments/usuarios/registro-usuario :: username(valid=null, value='" + username + "')  ";
+    	}
+
+        if (usuarioService.finUserByUsername(username)!= null) {
+            return "fragments/usuarios/registro-usuario :: username(valid=false, value='" + username
+                    + "', correoMsg='El username ya está registrado.')";
+        }
+
+        // Si es institucional y no está registrado se valida correctamente
+        return "fragments/usuarios/registro-usuario :: username(valid=true, value='" + username + "')  ";
+    }
+    
 }

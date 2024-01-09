@@ -1,4 +1,5 @@
-<div th:fragment="modal-agregar-usuario" class="modal fade" id="modal-agregar-usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div th:fragment="modal-agregar-usuario" class="modal fade" id="modal-agregar-usuario" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -9,11 +10,16 @@
 				<div th:fragment="registrar-usuario-form">
 					<form hx-post="/usuarios/registrar" hx-target="#result-msg" hx-swap="innerHTML">
 						<div class="row">
-							<div class="col-6">
+							<div class="col-6" th:fragment="username" hx-target="this" hx-swap="outerHTML">
 								<label for="nombreCliente">Username: </label>
-								<input id="nombreCliente" name="username" class="form-control" required>
+								<input id="nombreCliente" name="username" class="form-control" required
+								hx-post="/usuarios/validarUsername"
+									th:classappend="${valid == null} ? '' : (${valid} ? 'is-valid' : 'is-invalid')"
+									th:value="${value} ?: ''"
+								
+								>
+								<div class="invalid-feedback" th:text="${correoMsg} ?: ''"></div>
 							</div>
-
 							<div class="col-6">
 								<label for="apellidoPaterno">Nombre Completo: </label>
 								<input id="apellidoPaterno" name="nombre" class="form-control" required>
@@ -22,15 +28,9 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="apellidoMaterno">Password: </label>
-								<input id="apellidoMaterno" name="password" class="form-control" required>
+								<input id="apellidoMaterno" name="password"  class="form-control" required>
 							</div>
 
-							<div class="col-6">
-								<label for="password">Repetir password: </label>
-								<input id="password" class="form-control">
-							</div>
-						</div>
-						<div class="row">
 							<div class="col-6">
 								<label for="rol">Rol: </label>
 								<Select id="rol" name="idRol" class="form-control">
@@ -38,6 +38,9 @@
 									<option value="2">Administrador</option>
 								</Select>
 							</div>
+						</div>
+						<div class="row">
+
 						</div>
 						<br>
 
