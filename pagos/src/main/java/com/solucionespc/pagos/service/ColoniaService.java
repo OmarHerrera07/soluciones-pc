@@ -14,6 +14,11 @@ public class ColoniaService implements IColoniaService{
 	@Autowired
 	private ColoniaRepository coloniaRepository;
 	
+	/**
+	 * Recupera todas las colonias almacenadas en el sistema.
+	 *
+	 * @return Lista de objetos Colonia.
+	 */
 	public List<Colonia> findAll(){
 		return coloniaRepository.findAll();
 	}

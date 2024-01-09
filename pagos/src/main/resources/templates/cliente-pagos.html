@@ -56,7 +56,7 @@
 				</form>
 				<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-confirm="¿Seguro?">
-					<button type="button" onclick="pagarMeses();" class="btn btn-success">
+					<button th:disabled="${cliente.estado == false}" type="button" onclick="pagarMeses();" class="btn btn-success">
 						Pagar
 					</button>
 					<span id="alerta-pagar-mes" style="color: red; margin:0;padding: 0;visibility: 

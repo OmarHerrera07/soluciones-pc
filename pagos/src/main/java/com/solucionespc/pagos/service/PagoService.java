@@ -20,23 +20,47 @@ public class PagoService implements IPagoService{
 	@Autowired
 	private MesesPagoRepositoty mesesPagoRepositoty;
 	
+	/**
+	 * Recupera todos los pagos almacenados en el sistema.
+	 *
+	 * @return Lista de objetos Pago.
+	 */
 	@Override
 	public List<Pago> findAll(){
 		return pagoRepository.findAll();
 	}
+	
+	/**
+	 * Recupera un objeto Pago por su ID.
+	 *
+	 * @param id El ID del pago a recuperar.
+	 * @return El objeto Pago correspondiente al ID proporcionado.
+	 */
 
 	@Override
 	public Pago findById(Integer id) {
 		// TODO Auto-generated method stub
 		return pagoRepository.findById(id).get();
 	}
-
+	
+	/**
+	 * Obtiene la lista de meses pagados para un recibo específico.
+	 *
+	 * @param idCliente ID del cliente asociado al recibo.
+	 * @param idPago    ID del recibo para el cual se obtienen los meses pagados.
+	 * @return Lista de objetos MesesRecibo representando los meses pagados en el recibo.
+	 */
 	@Override
 	public List<MesesRecibo> obtnerMesesPagadosRecibo(Integer idCliente, Integer idPago) {
 		// TODO Auto-generated method stub
 		return mesesPagoRepositoty.obtnerMesesPagadosRecibo(idCliente, idPago);
 	}
 
+	/**
+	 * Obtiene información de corte relacionada con los pagos.
+	 *
+	 * @return Lista de objetos Corte que representan la información de corte.
+	 */
 	@Override
 	public List<Corte> getInfoCorte() {
 		// TODO Auto-generated method stub

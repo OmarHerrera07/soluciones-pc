@@ -211,6 +211,15 @@ public class ClienteController {
         return "cliente-pagos";
     }
     
+    /**
+     * 
+     * @param idCliente				id del cliente a realizar sus pagos
+     * @param meses					meses que se van a pagar
+     * @param authentication		Obtiene información sobre la autenticación actual
+     * @return						resultado sobre si se realizo el pago
+	 * @throws DocumentException	indica que el método puede arrojar una excepción del tipo DocumentException
+	 * @throws IOException			indica que el método puede arrojar una excepción del tipo IOException
+     */
     @PostMapping(value = "/realizar-pago-masivo",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.TEXT_HTML_VALUE)
@@ -239,22 +248,44 @@ public class ClienteController {
         System.out.println(clienteService.finById(idCliente));
     	return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
     }
-    
-    @GetMapping("/meses")
-    @ResponseBody
-    public List<Date> meses(Model model){
-    	
-        return clienteService.generarMeses(14);
-    }
-    
-    @GetMapping("/prueba")
-    @ResponseBody
-    public List<ReporteCliente> meses2(Model model){
-    	
-        return clienteService.getReporteClientes();
-    }
-    
-    
+ 
+/**
+ * Maneja la solicitud para obtener una lista de fechas representando los últimos 14 meses.
+ * Utiliza la anotación {@code @GetMapping} para mapear las solicitudes HTTP GET dirigidas a "/meses".
+ * Devuelve la lista de fechas como cuerpo de respuesta en formato JSON.
+ *
+ * @param model El modelo utilizado para la vista (no utilizado en este caso).
+ * @return Una lista de objetos {@code Date} representando los últimos 14 meses.
+ */
+@GetMapping("/meses")
+@ResponseBody
+public List<Date> meses(Model model) {
+    return clienteService.generarMeses(14);
+}
+
+/**
+ * Maneja la solicitud para obtener una lista de informes de clientes.
+ * Utiliza la anotación {@code @GetMapping} para mapear las solicitudes HTTP GET dirigidas a "/prueba".
+ * Devuelve la lista de informes de clientes como cuerpo de respuesta en formato JSON.
+ *
+ * @param model El modelo utilizado para la vista (no utilizado en este caso).
+ * @return Una lista de objetos {@code ReporteCliente}.
+ */
+@GetMapping("/prueba")
+@ResponseBody
+public List<ReporteCliente> meses2(Model model) {
+    return clienteService.getReporteClientes();
+}
+
+/**
+ * Maneja la solicitud para refrescar la lista de meses pagados de un cliente.
+ * Utiliza la anotación {@code @GetMapping} para mapear las solicitudes HTTP GET dirigidas a "/refrescar-meses".
+ *
+ * @param id El ID del cliente.
+ * @param anio El año para filtrar los meses.
+ * @param model El modelo utilizado para la vista.
+ * @return La vista "cliente-pagos :: lista-meses" actualizada con la información de los meses pagados.
+ */
     @GetMapping("/refrescar-meses")
     public String refrescarMeses(@RequestParam(value="idRefresh") Integer id,@RequestParam(value="anioRefresh") String anio,Model model){
     	
@@ -266,6 +297,7 @@ public class ClienteController {
         Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
     	System.out.println(fechaPago);
     	int anioPago = calendar.get(Calendar.YEAR);
+    	model.addAttribute("cliente",clienteService.finById(id));
     	model.addAttribute("anio",anioPago);
     	model.addAttribute("idCliente",id);
     	model.addAttribute("mesPago",fechaPago);	
@@ -274,7 +306,15 @@ public class ClienteController {
     	  	
         return "cliente-pagos :: lista-meses";
     }
-    
+    /**
+     * Maneja la solicitud para obtener la lista de meses pagados de un cliente con filtro por año.
+     * Utiliza la anotación {@code @GetMapping} para mapear las solicitudes HTTP GET dirigidas a "/pagos-meses-filtro".
+     *
+     * @param id El ID del cliente.
+     * @param anio El año para filtrar los meses pagados.
+     * @param model El modelo utilizado para la vista.
+     * @return La vista "cliente-pagos :: lista-meses" con la información de los meses pagados filtrada por año.
+     */
     @GetMapping("/pagos-meses-filtro")
     public String mesesPagadosFiltro(@RequestParam(value="id") Integer id,@RequestParam(value="anio") String anio,Model model){
     	
@@ -287,7 +327,7 @@ public class ClienteController {
         Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
     	System.out.println(fechaPago);
     	int anioPago = calendar.get(Calendar.YEAR);
-    	System.out.println("ANIOOOOOOOOOOOOOoo");
+    	model.addAttribute("cliente",clienteService.finById(id));
     	model.addAttribute("anio",anio);
     	model.addAttribute("idCliente",id);
     	model.addAttribute("mesPago",fechaPago);	
@@ -297,6 +337,18 @@ public class ClienteController {
     	
         return "cliente-pagos :: lista-meses";
     }
+    
+    /**
+     * Maneja la solicitud para exportar un informe en formato PDF.
+     *
+     * Este método utiliza la anotación {@code @GetMapping} para mapear las solicitudes HTTP GET
+     * dirigidas a la ruta "/reporte". Devuelve un archivo PDF como respuesta.
+     *
+     * @param request La solicitud HTTP recibida.
+     * @param response La respuesta HTTP que se enviará al cliente.
+     * @throws DocumentException Excepción lanzada en caso de problemas al manipular el documento PDF.
+     * @throws IOException Excepción lanzada en caso de problemas de entrada/salida.
+     */
     @GetMapping("/reporte")
     @ResponseBody
     public void exportPDF(HttpServletRequest request, HttpServletResponse response) throws DocumentException, IOException {

@@ -44,20 +44,47 @@ public class ClienteService implements IClienteService{
 	@Autowired
 	private MesesPagoRepositoty mesesPagoRepositoty;
 	
+	
+	/**
+	 * Recupera todos los clientes almacenados en el sistema.
+	 *
+	 * @return Lista de objetos Cliente.
+	 */
 	@Override
 	public List<Cliente> findAll(){
 		return clienteRepository.findAll();
 	}
 	
+	/**
+	 * Realiza una paginación de clientes según el nombre y la colonia proporcionados.
+	 *
+	 * @param nombre    El nombre del cliente a buscar.
+	 * @param idColonia El ID de la colonia a la que pertenece el cliente.
+	 * @param pageable  Información sobre la paginación.
+	 * @return Una página de objetos ClienteDTO que cumplen con los criterios de búsqueda.
+	 */
 	@Override
 	public Page<ClienteDTO> paginacionCliente(String nombre,Integer idColonia,Pageable pageable){
 		return clienteRepository.paginacionCliente(nombre,idColonia,pageable);
 	}
 	
+	/**
+	 * Realiza una operación de prueba recuperando una lista de objetos ClienteDTO.
+	 *
+	 * @return Lista de objetos ClienteDTO.
+	 */
+	
 	@Override
 	public List<ClienteDTO> prueba(){
 		return clienteRepository.prueba();
 	}
+	
+	/**
+	 * Registra un nuevo cliente en el sistema utilizando la información proporcionada en un objeto ClienteRegisterDTO.
+	 *
+	 * @param c Objeto ClienteRegisterDTO con la información del nuevo cliente.
+	 * @return true si el registro fue exitoso, false en caso contrario.
+	 */
 
 	@Override
 	public boolean registrarCliente(ClienteRegisterDTO c) {
@@ -83,13 +110,25 @@ public class ClienteService implements IClienteService{
 			return false;
 		}		
 	}
-
+	
+	/**
+	 * Recupera un cliente por su ID.
+	 *
+	 * @param id El ID del cliente a recuperar.
+	 * @return El objeto Cliente correspondiente al ID proporcionado.
+	 */
 	@Override
 	public Cliente finById(Integer id) {
 		// TODO Auto-generated method stub
 		return clienteRepository.findById(id).get();
 	}
-
+	
+	/**
+	 * Edita la información de un cliente existente en el sistema utilizando la información proporcionada en un objeto ClienteRegisterDTO.
+	 *
+	 * @param c Objeto ClienteRegisterDTO con la información actualizada del cliente.
+	 * @return true si la edición fue exitosa, false en caso contrario.
+	 */
 	@Override
 	public boolean editarCliente(ClienteRegisterDTO c) {
 		Cliente cliente = clienteRepository.findById(c.getIdCliente()).get();
@@ -110,6 +149,14 @@ public class ClienteService implements IClienteService{
 			return false;
 		}		
 	}
+	
+	/**
+	 * Realiza un pago para un cliente y actualiza la información en la base de datos.
+	 *
+	 * @param idCliente ID del cliente para el cual se realiza el pago.
+	 * @param username  Nombre de usuario asociado al pago.
+	 * @return true si el pago se realiza con éxito, false en caso contrario.
+	 */
 	
 	@Override
 	public boolean realizarPago(Integer idCliente,String username) {
@@ -151,12 +198,24 @@ public class ClienteService implements IClienteService{
 		
 	}
 
+	/**
+	 * Obtiene la lista de meses pagados para un cliente.
+	 *
+	 * @param idCliente ID del cliente.
+	 * @return Lista de fechas representando los meses pagados.
+	 */
 	@Override
 	public List<Date> obtenerMesesPagados(Integer idCliente) {
 		// TODO Auto-generated method stub
 		return mesesPagoRepositoty.obtnerMesesPagados(idCliente);
 	}
 
+	/**
+	 * Genera una lista de fechas representando los meses para un año específico y un día de pago.
+	 *
+	 * @param diaDePago Día de pago para los clientes.
+	 * @return Lista de fechas representando los meses generados.
+	 */
 	@Override
 	public List<Date> generarMeses(Integer diaDePago) {
         List<Date> todosLosMeses = new ArrayList();
@@ -171,6 +230,13 @@ public class ClienteService implements IClienteService{
         return todosLosMeses;
 	}
 	
+	/**
+	 * Genera una lista de objetos MesesDTO representando los meses para un año específico y un día de pago.
+	 *
+	 * @param diaDePago Día de pago para los clientes.
+	 * @param anio      Año para el cual se generan los meses.
+	 * @return Lista de objetos MesesDTO representando los meses generados.
+	 */
 	@Override
 	public List<MesesDTO> generarMeses2(Integer diaDePago, Integer anio) {
 	    List<MesesDTO> todosLosMeses = new ArrayList<>();
@@ -187,7 +253,13 @@ public class ClienteService implements IClienteService{
 	    return todosLosMeses;
 	}
 
-    
+	/**
+	 * Genera una lista de objetos MesesDTO representando los meses para un año específico y un día de pago.
+	 *
+	 * @param diaDePago Día de pago para los clientes.
+	 * @param anio      Año para el cual se generan los meses.
+	 * @return Lista de objetos MesesDTO representando los meses generados.
+	 */
     @Override
     public List<MesesDTO> generarMesesPorAnio(Integer diaDePago, Integer anio) {
         List<MesesDTO> todosLosMeses = new ArrayList<>();
@@ -204,12 +276,28 @@ public class ClienteService implements IClienteService{
         return todosLosMeses;
     }
 
-
+    /**
+     * Obtiene la fecha de pago para un cliente.
+     *
+     * @param idCliente ID del cliente.
+     * @return La fecha de pago del cliente.
+     */
+    
 	@Override
 	public Date obtenerFechaPago(Integer idCliente) {
 		// TODO Auto-generated method stub
 		return clienteRepository.obtenerFechaPago(idCliente);
 	}
+	
+	/**
+	 * Realiza un pago masivo para un cliente y actualiza la información en la base de datos.
+	 *
+	 * @param meses   Lista de meses para los cuales se realiza el pago masivo.
+	 * @param cliente Cliente para el cual se realiza el pago masivo.
+	 * @param idUsuario ID del usuario asociado al pago.
+	 * @throws DocumentException Excepción lanzada en caso de problemas al manipular el documento PDF.
+	 * @throws IOException       Excepción lanzada en caso de problemas de entrada/salida.
+	 */
 
 	@Override
 	public void pagoMasivo(List<String> meses,Cliente cliente, Integer idUsuario) throws DocumentException, IOException {
@@ -229,11 +317,25 @@ public class ClienteService implements IClienteService{
 		byte[] pdfBytes = recibo.getPdfBytes();
 		pagoRepository.actualizarRecibo(pdfBytes,res.getIdPago());
 	}
+	
+	/**
+	 * Obtiene la lista de meses pagados para un cliente filtrada por año.
+	 *
+	 * @param anio      Año para el cual se filtran los meses pagados.
+	 * @param idCliente ID del cliente.
+	 * @return Lista de fechas representando los meses pagados filtrados por año.
+	 */
 
 	@Override
 	public List<Date> obtnerMesesPagadosFiltro(String anio, Integer idCliente) {
 		return mesesPagoRepositoty.obtnerMesesPagadosFiltro(anio, idCliente);
 	}
+	
+	/**
+	 * Obtiene un informe de clientes que tienen adeudo.
+	 *
+	 * @return Lista de objetos ReporteCliente que representan el informe de los clientes que tienen adeudo.
+	 */
 
 	@Override
 	public List<ReporteCliente> getReporteClientes() {

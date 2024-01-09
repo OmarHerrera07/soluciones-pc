@@ -15,6 +15,11 @@ public class PaqueteService implements IPaqueteService{
 	@Autowired
 	private PaqueteRepository paqueteRepository;
 	
+	/**
+	 * Recupera todos los paquetes (Paquetes de internet) almacenados en el sistema.
+	 *
+	 * @return Lista de objetos Paquete.
+	 */
 	@Override
 	public List<Paquete> findAll(){
 		return paqueteRepository.findAll();

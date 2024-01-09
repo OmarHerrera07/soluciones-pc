@@ -32,7 +32,13 @@ public class UsuarioController {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    
+    /**
+     * Maneja las solicitudes HTTP GET dirigidas a la ruta raíz ("/") de /usuarios.
+     * Devuelve el nombre de la vista "users".
+     *
+     * @return La vista para usuarios.
+     */
     @GetMapping
     public String user(){
         return "users";
@@ -89,7 +95,19 @@ public class UsuarioController {
     	model.addAttribute("roles", usuarioService.findRoles());
         return "fragments/usuarios/editar-usuario :: editar-usuario-form";
     }
-    
+    /**
+     * Maneja la solicitud para editar un usuario.
+     * Utiliza la anotación {@code @HxTrigger("refresh")} para indicar que este método es un controlador de eventos de HTMX.
+     * Utiliza la anotación {@code @PostMapping} para mapear las solicitudes HTTP POST dirigidas a "/editar".
+     * El método consume datos en formato URL codificado y produce una respuesta en formato HTML.
+     * Utiliza la anotación {@code @ResponseBody} para indicar que el valor de retorno debe ser utilizado como cuerpo de la respuesta HTTP.
+     * Utiliza la anotación {@code @ResponseStatus} para establecer el código de estado HTTP 201 (CREATED) en caso de éxito.
+     *
+     * @param usuario Un objeto de tipo {@code UsuarioRegisterDTO} que contiene la información del usuario a editar.
+     * @return Un fragmento HTML indicando el resultado de la operación de edición.
+     *         Si la edición fue exitosa, devuelve un mensaje de éxito.
+     *         Si ocurre un error durante la edición, devuelve un mensaje de error.
+     */
     @HxTrigger("refresh")
     @PostMapping(value = "/editar",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
@@ -129,7 +147,16 @@ public class UsuarioController {
     	pageable = PageRequest.of(pageable.getPageNumber(), size, pageable.getSort());
         return usuarioService.paginacionUsuariosFiltro(nombre, pageable);
     }
-    
+    /**
+     * Maneja la solicitud para validar la disponibilidad de un nombre de usuario (correo electrónico).
+     * Utiliza la anotación {@code @PostMapping} para mapear las solicitudes HTTP POST dirigidas a "/validarUsername".
+     *
+     * @param username El nombre de usuario (correo electrónico) a validar.
+     * @return Un fragmento de vista que indica la validez del nombre de usuario.
+     *         Si el nombre de usuario es nulo o vacío, devuelve un fragmento indicando un valor no válido.
+     *         Si el nombre de usuario ya está registrado, devuelve un fragmento indicando que el nombre de usuario ya está en uso.
+     *         Si el nombre de usuario es institucional y no está registrado, devuelve un fragmento indicando que el nombre de usuario es válido.
+     */
     @PostMapping("/validarUsername")
     public String validarCorreo(@RequestParam(value="username") String username) {
     	
@@ -143,8 +170,6 @@ public class UsuarioController {
             return "fragments/usuarios/registro-usuario :: username(valid=false, value='" + username
                     + "', correoMsg='El username ya está registrado.')";
         }
-
-        // Si es institucional y no está registrado se valida correctamente
         return "fragments/usuarios/registro-usuario :: username(valid=true, value='" + username + "')  ";
     }
     
