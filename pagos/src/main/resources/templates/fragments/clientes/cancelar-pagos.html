@@ -1,0 +1,33 @@
+<div th:fragment="modal-eliminar-pago" class="modal fade" id="modal-eliminar-pago" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Eliminar pago</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="body-cancelar-pago">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="form-eliminar-pago">
+	<form hx-post="/clientes/cancelar-pago" hx-target="#result-msg" hx-swap="innerHTML"
+	hx-confirm="¿Seguro?"
+	>
+		<input hidden th:value="${clienteId}" name="clienteId">
+		<div class="row">
+			<div th:each="m : ${mesesPagados}" class="col-md-3 col-4">
+					<input th:id="${m}" th:value="${m}" name="mesesCancelar" type="checkbox" class="btn-check" id="btn-check-outlined" autocomplete="off">
+					<label th:for="${m}" th:text="${#dates.format(m, 'dd-MM-yyyy')}" class="btn btn-outline-danger" for="btn-check-outlined">Single toggle</label><br>
+			</div>
+		</div>
+		<br>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+			<button type="submit" class="btn btn-success">Guardar</button>
+		</div>
+	</form>
+</div>

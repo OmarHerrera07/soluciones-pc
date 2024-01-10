@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -170,6 +171,24 @@ public class PagoController {
         String sbHeaderValue = "inline; filename=Reporte.pdf";
         response.setHeader(headerKey, sbHeaderValue);
         List<Corte> infoCorte = pagoService.getInfoCorte();
+        Usuario user = usuarioService.finUserByUsername(authentication.getName());
+        PDFCorte reporte = new PDFCorte(infoCorte,user);
+        reporte.export(response);
+
+    }
+    
+    @GetMapping("/corte-dinamico")
+    @ResponseBody
+    public void exportPDFCorteDinamico(HttpServletRequest request, HttpServletResponse response,Authentication authentication,
+    		@RequestParam(name = "fechaInicio", required = false) String fechaInicio,
+			@RequestParam(name = "fechaFin", required = false) String fechaFin
+    		) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+
+        String headerKey = "Content-Disposition";
+        String sbHeaderValue = "inline; filename=Reporte.pdf";
+        response.setHeader(headerKey, sbHeaderValue);
+        List<Corte> infoCorte = pagoService.getInfoCorteDinamico(fechaInicio, fechaFin);
         Usuario user = usuarioService.finUserByUsername(authentication.getName());
         PDFCorte reporte = new PDFCorte(infoCorte,user);
         reporte.export(response);

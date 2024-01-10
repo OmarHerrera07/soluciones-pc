@@ -22,9 +22,13 @@
 				<br>
 			</div>
 			<div>
-				<a href="/pagos/corte"  target="_blank" class="btn btn-success">
+				<a href="/pagos/corte" target="_blank" class="btn btn-success">
 					Generar corte
-				</a>	
+				</a>
+
+				<button data-bs-toggle="modal" data-bs-target="#modal-corte-dinamico" class="btn btn-primary">
+					Generar dinamico
+				</button>
 			</div>
 		</div>
 
@@ -88,107 +92,8 @@
 
 	</main>
 
-	<!-- MODAL REGISTRAR CLIENTE -->
-
-	<div class="modal fade" id="modal-agregar-cliente" tabindex="-1" aria-labelledby="exampleModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Cliente</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<form id="formRegistrarUbicacion" action="#">
-
-						<div class="row">
-							<div class="col-6">
-								<label for="nombreCliente">Nombre: </label>
-								<input id="nombreCliente" name="nombre" class="form-control" required>
-							</div>
-
-							<div class="col-6">
-								<label for="apellidoPaterno">Apellido Paterno: </label>
-								<input id="apellidoPaterno" name="apellidoPaterno" class="form-control" required>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<label for="apellidoMaterno">Apellido Materno: </label>
-								<input id="apellidoMaterno" name="apellidoMaterno" class="form-control" required>
-							</div>
-
-							<div class="col-6">
-								<label for="rfc">RFC: </label>
-								<input id="rfc" name="rfc" class="form-control" required>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<label for="numCliente">Num. Cliente: </label>
-								<input id="numCliente" name="numCliente" class="form-control" required>
-							</div>
-
-							<div class="col-6">
-								<label for="telefono">Telefono: </label>
-								<input id="telefono" name="telefono" class="form-control" required>
-							</div>
-						</div>
-						<div class="row">
-
-							<div class="col-6">
-								<label for="colonia">Colonia: </label>
-								<input id="colonia" name="colonia" class="form-control" required>
-							</div>
-							<div class="col-6">
-								<label for="pauqete">Paquete de Internet: </label>
-								<Select id="paquete" name="paquete" class="form-control">
-									<option value="1">Paquete 1</option>
-									<option value="2">Paquete 2</option>
-									<option value="3">Paquete 3</option>
-									<option value="4">Paquete 4</option>
-									<option value="5">Paquete 5</option>
-								</Select>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<label for="colonia">Observaciones: </label>
-								<textarea id="editarDescripcion" class="form-control" rows="3" required></textarea>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-success">Guardar</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--FIN MODAL REGISTRAR CLIENTE -->
-
-	<!-- MODAL PARA CONFIRMAR PAGO  -->
-	<div class="modal fade" id="modal-confirmar-pago" tabindex="-1" aria-labelledby="exampleModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Confirmar Pago</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					¿Confirmar pago?
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-success" id="confirmarEliminar">Confirmar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- MODAL PARA CONFIRMAR PAGO -->
+	<div th:replace="~{fragments/pagos/corte-dinamico :: modal-corte-dinamico}"></div>
+	
 	<div th:replace="~{fragments/layout :: scripts}"></div>
 	<script th:src="@{/js/pagos/pagos.js}"></script>
 </body>

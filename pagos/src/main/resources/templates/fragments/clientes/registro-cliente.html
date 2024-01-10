@@ -36,7 +36,7 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="colonia">Colonia</label>
-								<Select id="colonia" name="idColonia" class="form-control" required>
+								<Select id="colonia" name="idColonia" class="form-control js-example-basic-single" required>								
 									<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
 										th:text="${colonia.colonia}"></option>
 								</Select>

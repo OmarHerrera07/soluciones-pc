@@ -76,4 +76,8 @@ public interface PagoRepository extends JpaRepository<Pago, Integer>{
     @Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where p.fecha = curdate()",
             nativeQuery = true)
     List<Corte> getInfoCorte();
+    
+    @Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null)",
+            nativeQuery = true)
+    List<Corte> getInfoCorteDinamico(String fechaInico, String fechaFIn);
 }

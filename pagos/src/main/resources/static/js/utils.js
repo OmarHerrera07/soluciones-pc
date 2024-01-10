@@ -14,6 +14,7 @@ const observer = new MutationObserver((mutationsList, observer) => {
 	var notify = $('#result').data('notify');
 	if (notify == '1') {
 		notificaExito(texto);
+		$('.modal').modal('hide');
 	} else if (notify == '2') {
 		notificaError(texto);
 	}

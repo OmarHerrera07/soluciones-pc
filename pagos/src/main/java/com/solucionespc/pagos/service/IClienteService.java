@@ -7,6 +7,7 @@ import java.util.List;
 import com.solucionespc.pagos.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.entity.Cliente;
@@ -42,5 +43,7 @@ public interface IClienteService{
 	List<Date> obtnerMesesPagadosFiltro(String anio,Integer idCliente);
 
 	List<ReporteCliente> getReporteClientes();
+	
+	Integer cancelarPago(Integer idCliente, String fecha) throws IOException, DocumentException;
 
 }

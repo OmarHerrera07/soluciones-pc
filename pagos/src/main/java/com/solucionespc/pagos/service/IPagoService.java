@@ -14,4 +14,6 @@ public interface IPagoService {
 	List<MesesRecibo> obtnerMesesPagadosRecibo(Integer idCliente,Integer idPago);
 	
 	List<Corte> getInfoCorte();
+	
+	List<Corte> getInfoCorteDinamico(String fechaInico, String fechaFIn);
 }

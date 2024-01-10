@@ -85,4 +85,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
             "  fecha_pago < CURDATE() and c.estado = 1",
             nativeQuery = true)
     List<ReporteCliente> getReporteClientes();
+    
+    
+    @Procedure(name = "cancelarPago")
+    Integer cancelarPago(@Param("p_id_cliente") Integer idCliente, @Param("p_fecha") String fecha);
 }
