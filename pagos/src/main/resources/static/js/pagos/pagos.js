@@ -116,3 +116,11 @@ function numRegistros() {
 	cargarPagos(0);
 }
 
+function corteDinamico(){
+	window.open(`/pagos/corte-dinamico?fechaInicio=${$("#fechaInicio").val()}&fechaFin=${$("#fechaFin").val()}`, '_blank');
+	$("#fechaInicio").val('');
+	$("#fechaFin").val('');
+	$('.modal').modal('hide');
+
+}
+

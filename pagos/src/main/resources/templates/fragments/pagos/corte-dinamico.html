@@ -7,18 +7,15 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form hx-post="/pagos/corte-dinamico" hx-swap="none"
-					>
 					<div class="filtro-fecha">
 						<span>Fecha</span>
-						<input id="fecha-inicio" name="fechaInicio" class="form-control input-date" type="date"> <span>a</span> <input
-							name="fechaFin" class="form-control input-date" id="fecha-fin" type="date">
+						<input id="fechaInicio" name="fechaInicio" class="form-control input-date" type="date"> <span>a</span> <input
+							name="fechaFin" class="form-control input-date" id="fechaFin" type="date">
 					</div>
 					<br>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-success">Generar Corte</button>
+						<button onclick="corteDinamico();" type="submit" class="btn btn-success">Generar Corte</button>
 					</div>
-				</form>
 			</div>
 		</div>
 	</div>
