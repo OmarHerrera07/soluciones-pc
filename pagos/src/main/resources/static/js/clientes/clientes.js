@@ -164,6 +164,7 @@ $(document).ready(function() {
 		$("#filtroNombre").on("input", function () {
 		cargarClientes(0);
 	});
+	$('.js-example-basic-single').select2();
 });
 
 function numRegistros() {

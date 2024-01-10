@@ -114,4 +114,27 @@
 	font-size: 1.2rem;
 }
 
+.select-colonia{
+	display: block;
+    width: 100%!important;
+    padding: .375rem .75rem!important;
+	height: 50%!important;
+}
+
+.select2-container--default .select2-selection--single{
+	padding: 1.1rem;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+}
+
+.filtros{
+	display: flex;
+}
+
+.filtro-colonia{
+	display: flex;
+	flex-direction: column;
+}
 

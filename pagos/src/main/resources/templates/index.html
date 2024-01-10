@@ -5,7 +5,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<link rel="stylesheet" href="/select2/css/select2.min.css">
 	<div th:replace="~{fragments/layout :: estilos}"></div>
+	
+
+	
 </head>
 
 <body>
@@ -41,34 +45,34 @@
 		</div>
 		<br>
 		<div class="container">
-				<div class="row filtros">
-					<div class="col-6">
-						<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
-							placeholder="Filtrar por nombre">
-					</div>
-
-
-					<div class="col-4">
-						Colonia
-						<select class="form-control" onchange="colonias();" name="" id="colonia-filtro">
-							<option value="" selected>Todas</option>
-									<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
-										th:text="${colonia.colonia}"></option>
-						</select>
-					</div>
-
-					<div class="col-2">
-						Número de registros
-						<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
-							<option selected value="5">5</option>
-							<option value="10">10</option>
-							<option value="20">20</option>
-							<option value="50">50</option>
-						</select>
-					</div>
-
+			<div class="row filtros">
+				<div class="col-6">
+					<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
+						placeholder="Filtrar por nombre">
 				</div>
-				<br>
+
+
+				<div class="col-4 filtro-colonia">
+					Colonia:
+					<select class="form-control js-example-basic-single" onchange="colonias();" name="" id="colonia-filtro">
+						<option value="" selected>Todas</option>
+						<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
+							th:text="${colonia.colonia}"></option>
+					</select>
+				</div>
+
+				<div class="col-2">
+					Número de registros
+					<select class="form-control" onchange="numRegistros();" name="" id="num-registros">
+						<option selected value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+				</div>
+
+			</div>
+			<br>
 			<table class="table text-center">
 				<thead>
 					<tr>
@@ -132,6 +136,7 @@
 
 	<div th:replace="~{fragments/layout :: scripts}"></div>
 	<script th:src="@{/js/clientes/clientes.js}"></script>
+	<script th:src="@{/select2/js/select2.min.js}"></script>
 </body>
 
 </html>
