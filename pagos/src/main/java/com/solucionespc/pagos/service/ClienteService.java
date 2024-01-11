@@ -27,6 +27,7 @@ import com.solucionespc.pagos.repository.MesesPagoRepositoty;
 import com.solucionespc.pagos.repository.PagoRepository;
 import com.solucionespc.pagos.repository.UsuarioRepository;
 import com.solucionespc.pagos.utils.PDFRecibo;
+import com.solucionespc.pagos.utils.PrintTicket;
 
 import jakarta.transaction.Transactional;
 
@@ -313,6 +314,8 @@ public class ClienteService implements IClienteService {
 	@Override
 	public void pagoMasivo(List<String> meses, Cliente cliente, Integer idUsuario)
 			throws DocumentException, IOException {
+		
+		PrintTicket printTicket = new PrintTicket();
 		Pago pago = new Pago();
 		pago.setFecha(new Date());
 		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
@@ -328,6 +331,7 @@ public class ClienteService implements IClienteService {
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
 				res.getIdPago());
 		PDFRecibo recibo = new PDFRecibo(i, mesesR);
+		printTicket.printTicket(i,mesesR);
 		byte[] pdfBytes = recibo.getPdfBytes();
 		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
 	}
