@@ -115,7 +115,37 @@ public class PrintTicket {
 	}
 	 public static void main(String... args) throws IOException, GeneralSecurityException {
 		 
-
+		 String nombreImpresora = "Canon TS3100 series";
+	        FileInputStream archivo = null;
+	        try {
+	            archivo = new FileInputStream("recibo.pdf");
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        }
+	        if (archivo == null) {
+	            return;
+	        }
+	        DocFlavor formato = DocFlavor.INPUT_STREAM.AUTOSENSE;
+	        Doc documento = new SimpleDoc(archivo, formato, null);
+	        PrintService[] impresoras = PrintServiceLookup.lookupPrintServices(formato, null);
+	        PrintService impresora = null;
+	        for (PrintService p : impresoras) {
+	            if (p.getName().equals(nombreImpresora)) {
+	                impresora = p;
+	                break;
+	            }
+	        }
+	        if (impresora != null) {
+	            DocPrintJob trabajoImpresion = impresora.createPrintJob();
+	            try {
+	                trabajoImpresion.print(documento, null);
+	            } catch (Exception e) {
+	                System.err.println("Error: " + e.toString());
+	            }
+	        } else {
+	            System.err.println("No se encontró la impresora.");
+	        }
+	    }
 		 
-	 }
+	 
 }

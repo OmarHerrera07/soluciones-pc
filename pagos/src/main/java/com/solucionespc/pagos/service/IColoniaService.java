@@ -7,5 +7,7 @@ import com.solucionespc.pagos.entity.Colonia;
 public interface IColoniaService {
 	
 	List<Colonia> findAll();
+	
+	boolean save(Colonia colonia);
 
 }

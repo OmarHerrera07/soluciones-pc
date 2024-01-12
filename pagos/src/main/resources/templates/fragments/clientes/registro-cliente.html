@@ -9,7 +9,7 @@
 			<div class="modal-body" id="form-registrar-cliente">
 				<div th:fragment="registrar-cliente-form">
 
-					<form id="formRegistrarUbicacion" hx-post="/clientes/registrar" hx-target="#result-msg"
+					<form  hx-post="/clientes/registrar" hx-target="#result-msg"
 						hx-swap="innerHTML">
 						<div class="row">
 							<div class="col-6">
@@ -51,7 +51,7 @@
 
 							<div class="col-6">
 								<label for="telefono">Fecha de pago: </label>
-								<input type="date" id="fechaPago" name="fecha" class="form-control" required>
+								<input onchange="validarfecha();" type="date" id="fechaPago" name="fecha" class="form-control" required>
 							</div>
 							<div class="col-6">
 								<label for="idPaquete">Paquete de Internet: </label>

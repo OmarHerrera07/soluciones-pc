@@ -1,8 +1,17 @@
 var currentPage = 0;
 
-document.body.addEventListener("refresh", function(){
+document.body.addEventListener("refresh", function() {
 	$('.modal').modal('hide');
-    cargarClientes(currentPage);
+	cargarClientes(currentPage);
+})
+document.body.addEventListener("refreshCol", function() {
+	// Esperar 1000 milisegundos (1 segundo) antes de ejecutar el código
+	setTimeout(function() {
+		// Tu código aquí
+			$('.js-example-basic-single').select2();
+	}, 150);
+
+
 })
 
 function concultarCliente(id) {
@@ -19,7 +28,7 @@ function editarCliente(id) {
 	boton.click();
 }
 
-function confirmarPago(id,nombreCliente,totalPago) {
+function confirmarPago(id, nombreCliente, totalPago) {
 	$('#idUser').val(id);
 	$('#clientePago').text(nombreCliente);
 	$('#totalPago').text(totalPago);
@@ -27,7 +36,7 @@ function confirmarPago(id,nombreCliente,totalPago) {
 
 
 function cargarClientes(page) {
-	$.get("/clientes/paginacion?page=" + page+"&nombre="+$("#filtroNombre").val()+ "&size=" + $("#num-registros").val()+ "&idColonia=" + $("#colonia-filtro").val(), function(data) {
+	$.get("/clientes/paginacion?page=" + page + "&nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val() + "&idColonia=" + $("#colonia-filtro").val(), function(data) {
 		currentPage = page;
 		console.log(data);
 		actualizarTabla(data.content);
@@ -161,7 +170,7 @@ function cargarPaginacion(totalPages) {
 
 $(document).ready(function() {
 	cargarClientes(0);
-		$("#filtroNombre").on("input", function () {
+	$("#filtroNombre").on("input", function() {
 		cargarClientes(0);
 	});
 	$('.js-example-basic-single').select2();
@@ -173,4 +182,21 @@ function numRegistros() {
 
 function colonias() {
 	cargarClientes(0);
+}
+
+function validarfecha(){
+	var fechaIngresada = $('#fechaPago').val();
+	
+
+        // Convertimos la fecha ingresada en un objeto de fecha de JavaScript
+        var fecha = new Date(fechaIngresada);
+        console.log(fechaIngresada);
+        console.log(fecha.getDate());
+
+        // Verificamos si el día es igual a 29
+        if (fecha.getDate()+1 == 29) {
+          alert('No se permiten fechas con el día 29.');
+          $('#fechaPago').val('');
+          
+          }
 }

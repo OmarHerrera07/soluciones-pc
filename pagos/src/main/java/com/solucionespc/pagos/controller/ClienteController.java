@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.entity.Cliente;
+import com.solucionespc.pagos.entity.Colonia;
 import com.solucionespc.pagos.entity.Usuario;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
@@ -417,5 +418,35 @@ public class ClienteController {
 		}
 		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
 	}
+	
+	/**
+	 * Registrar un cliente nuevo
+	 * 
+	 * @param cliente cliente a registrar
+	 * @return Resultado sobre el registro del usuario
+	 */
+	@PostMapping(value = "/registrar-colonia", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refreshCol")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String registrarColonia(@RequestParam(value = "colonia") String colonia) {
+		
+		Colonia col = new Colonia();
+		col.setColonia(colonia);
+		boolean res = coloniaService.save(col);
+
+		if (res) {
+			return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el cliente</div>";
+		}
+		return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error en el registro del cliente</div>";
+	}
+	
+	@GetMapping("/refrescar-colonias")
+	public String getColonias(Model model) {
+		model.addAttribute("colonias", coloniaService.findAll());
+		System.out.println("ENTROOOOOOOOOOO");
+		return "index :: select-colonias";
+	}
+
 
 }

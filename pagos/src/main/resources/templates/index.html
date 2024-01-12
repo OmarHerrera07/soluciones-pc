@@ -7,9 +7,9 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="/select2/css/select2.min.css">
 	<div th:replace="~{fragments/layout :: estilos}"></div>
-	
 
-	
+
+
 </head>
 
 <body>
@@ -27,6 +27,10 @@
 		hx-include="[name='id']">
 	</button>
 
+	<div hx-target="#col" hx-swap="innerHTML" hx-trigger="refreshCol from:body"
+		hx-get="/clientes/refrescar-colonias">
+	</div>
+
 	<main>
 		<div class="container-lg d-flex mt-1 client-option">
 			<div class="filtro">
@@ -39,7 +43,11 @@
 				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-cliente" type="button"
 					class="btn btn-success" hx-get="/clientes/get-form-registrar" hx-target="#form-registrar-cliente"
 					hx-swap="innerHTML">
-					Registrar
+					Registrar Cliente
+				</button>
+				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-colonia" type="button"
+					class="btn btn-warning">
+					Registrar Colonia
 				</button>
 			</div>
 		</div>
@@ -54,11 +62,16 @@
 
 				<div class="col-4 filtro-colonia">
 					Colonia:
-					<select class="form-control js-example-basic-single" onchange="colonias();" name="" id="colonia-filtro">
-						<option value="" selected>Todas</option>
-						<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
-							th:text="${colonia.colonia}"></option>
-					</select>
+					<div th:fragment="select-colonias" id="col">
+						<select class="form-control js-example-basic-single" onchange="colonias();" name=""
+							id="colonia-filtro">
+							<option value="" selected>Todas</option>
+
+							<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
+								th:text="${colonia.colonia}"></option>
+
+						</select>
+					</div>
 				</div>
 
 				<div class="col-2">
@@ -109,6 +122,8 @@
 	<!--FIN MODAL EDITAR CLIENTE -->
 
 	<div th:replace="~{fragments/clientes/editar-cliente :: modal-editar-cliente}"></div>
+
+	<div th:replace="~{fragments/clientes/registro-colonia :: modal-registrar-colonia}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->
 	<div class="modal fade" id="modal-confirmar-pago" tabindex="-1" aria-labelledby="exampleModalLabel"

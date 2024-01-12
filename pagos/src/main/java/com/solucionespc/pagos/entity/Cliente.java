@@ -53,9 +53,6 @@ public class Cliente {
     @JoinColumn(name = "id_colonia")
     private Colonia colonia;
         
-    @Column(name = "fecha_alerta")
-    private Date fechaAlerta;
-    
     private String coordenadas;
     
     @Column(name = "dias_atraso")
