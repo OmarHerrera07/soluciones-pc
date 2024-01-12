@@ -32,7 +32,7 @@ public class ClienteRegisterDTO {
 
 	private String coordenadas;
 	
-	private Boolean estado;
+	private int estado;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fecha;

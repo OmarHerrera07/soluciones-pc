@@ -9,8 +9,7 @@
 			<div class="modal-body" id="form-registrar-cliente">
 				<div th:fragment="registrar-cliente-form">
 
-					<form  hx-post="/clientes/registrar" hx-target="#result-msg"
-						hx-swap="innerHTML">
+					<form hx-post="/clientes/registrar" hx-target="#result-msg" hx-swap="innerHTML">
 						<div class="row">
 							<div class="col-6">
 								<label for="nombreCliente">Nombre Completo: </label>
@@ -18,14 +17,16 @@
 							</div>
 							<div class="col-6">
 								<label for="telefono">Teléfono: </label>
-								<input type="text" pattern="^[0-9]{0,10}$" id="telefono" name="telefono" class="form-control" required>
+								<input type="text" pattern="^[0-9]{0,10}$" id="telefono" name="telefono"
+									class="form-control" required>
 							</div>
 
 						</div>
 						<div class="row">
 							<div class="col-6">
 								<label for="telefono2">Teléfono 2 (opcional): </label>
-								<input type="text" pattern="^[0-9]{0,10}$" id="telefono2" name="telefono2" class="form-control">
+								<input type="text" pattern="^[0-9]{0,10}$" id="telefono2" name="telefono2"
+									class="form-control">
 							</div>
 
 							<div class="col-6">
@@ -36,7 +37,8 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="colonia">Colonia</label>
-								<Select id="colonia" name="idColonia" class="form-control js-example-basic-single" required>								
+								<Select id="colonia" name="idColonia" class="form-control js-example-basic-single"
+									required>
 									<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
 										th:text="${colonia.colonia}"></option>
 								</Select>
@@ -51,13 +53,25 @@
 
 							<div class="col-6">
 								<label for="telefono">Fecha de pago: </label>
-								<input onchange="validarfecha();" type="date" id="fechaPago" name="fecha" class="form-control" required>
+								<input onchange="validarfecha();" type="date" id="fechaPago" name="fecha"
+									class="form-control" required>
 							</div>
 							<div class="col-6">
 								<label for="idPaquete">Paquete de Internet: </label>
 								<Select id="idPaquete" name="paquete" class="form-control" required>
 									<option th:each="paquete : ${paquetes}" th:value="${paquete.idPaquete}"
 										th:text="${ '$' + paquete.precio}"></option>
+								</Select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<label for="estado">Estado: </label>
+								<Select id="estado" name="estado" class="form-control"
+									required>
+									<option selected value="1">Activo</option>
+									<option value="2">Inactivo</option>
+									<option value="3">Especial</option>
 								</Select>
 							</div>
 						</div>

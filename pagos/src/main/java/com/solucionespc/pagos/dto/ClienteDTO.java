@@ -18,6 +18,6 @@ public interface ClienteDTO {
     
     Date getUltimoPago();
     
-    Boolean getEstado();
+    int getEstado();
     
 }

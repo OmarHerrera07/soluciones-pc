@@ -99,7 +99,7 @@ public class ClienteService implements IClienteService {
 		cliente.setCoordenadas(c.getCoordenadas());
 		cliente.setFechaPago(c.getFecha());
 		cliente.setRfc(c.getRfc());
-		cliente.setEstado(true);
+		cliente.setEstado(c.getEstado());
 		cliente.setObservaciones(c.getObservaciones());
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
