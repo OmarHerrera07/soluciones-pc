@@ -46,7 +46,7 @@ function cargarClientes(page) {
 		console.log(data);
 		actualizarTabla(data.content);
 		cargarPaginacion(data.totalPages);
-		$('#totalClientes').text(data.numberOfElements);
+		$('#totalClientes').text(data.totalElements);
 	});
 }
 
