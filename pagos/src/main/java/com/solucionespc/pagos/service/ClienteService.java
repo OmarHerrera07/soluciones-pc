@@ -101,13 +101,10 @@ public class ClienteService implements IClienteService {
 		cliente.setRfc(c.getRfc());
 		cliente.setEstado(true);
 		cliente.setObservaciones(c.getObservaciones());
-
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
-
 		cliente.setFechaAlerta(c.getFecha());
 		cliente.setDiasAtraso(0);
-		cliente.setUltimoPago(c.getFecha());
 		try {
 			clienteRepository.save(cliente);
 			return true;

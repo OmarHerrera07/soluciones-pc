@@ -3,14 +3,13 @@
                                 
                Fecha: 11/01/2024
                                 
- RFC: HC81J3E931                
+ RFC:                           
                                 
      Mes de Pago    Subtotal    
                                 
-     01/01/2024     $240.00     
-     01/03/2024     $240.00     
+     11/12/2021     $190.00     
                                 
-               Total: $480.00   
+               Total: $190.00   
                                 
  Cobrado por:                   
- gadiel salazar                 
+ Admin                          
