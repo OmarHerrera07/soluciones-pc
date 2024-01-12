@@ -71,4 +71,8 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
 	@Query(value = "SELECT mp.fecha,p.precio FROM meses_pago mp join paquete_internet p on mp.id_paquete = p.id_paquete  where mp.id_cliente =?1 and mp.id_pago =?2",
             nativeQuery = true)
 	List<MesesRecibo> obtnerMesesPagadosRecibo(Integer idCliente,Integer idPago);
+	
+	@Query(value = "select COUNT(*) as registro from meses_pago mp where mp.id_cliente = ?1",
+            nativeQuery = true)
+    Integer totalMesesPagados(Integer idCliente);
 }

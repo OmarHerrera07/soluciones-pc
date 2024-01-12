@@ -1,5 +1,7 @@
 package com.solucionespc.pagos.utils;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.List;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
@@ -113,39 +116,32 @@ public class PrintTicket {
 			 System.err.println("No hay impresora instalada");
 		 }
 	}
-	 public static void main(String... args) throws IOException, GeneralSecurityException {
-		 
-		 String nombreImpresora = "Canon TS3100 series";
-	        FileInputStream archivo = null;
-	        try {
-	            archivo = new FileInputStream("recibo.pdf");
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        }
-	        if (archivo == null) {
-	            return;
-	        }
-	        DocFlavor formato = DocFlavor.INPUT_STREAM.AUTOSENSE;
-	        Doc documento = new SimpleDoc(archivo, formato, null);
-	        PrintService[] impresoras = PrintServiceLookup.lookupPrintServices(formato, null);
-	        PrintService impresora = null;
-	        for (PrintService p : impresoras) {
-	            if (p.getName().equals(nombreImpresora)) {
-	                impresora = p;
-	                break;
-	            }
-	        }
-	        if (impresora != null) {
-	            DocPrintJob trabajoImpresion = impresora.createPrintJob();
-	            try {
-	                trabajoImpresion.print(documento, null);
-	            } catch (Exception e) {
-	                System.err.println("Error: " + e.toString());
-	            }
-	        } else {
-	            System.err.println("No se encontró la impresora.");
-	        }
-	    }
+    public static void printFile(String filePath) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            DocFlavor docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+            Doc doc = new SimpleDoc(fileInputStream, docFlavor, null);
+
+            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+
+            if (printServices.length > 0) {
+                PrintService printService = printServices[0]; // Selecciona la primera impresora disponible
+
+                DocPrintJob printJob = printService.createPrintJob();
+                printJob.print(doc, null);
+            } else {
+                System.out.println("No se encontraron impresoras disponibles.");
+            }
+
+            fileInputStream.close();
+        } catch (IOException | PrintException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args) {
+        String filePath = "ticket.txt";
+        printFile(filePath);
+    }
 		 
 	 
 }

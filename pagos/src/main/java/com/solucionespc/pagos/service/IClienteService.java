@@ -45,5 +45,9 @@ public interface IClienteService{
 	List<ReporteCliente> getReporteClientes();
 	
 	Integer cancelarPago(Integer idCliente, String fecha) throws IOException, DocumentException;
+	
+	boolean deteleCliente(Integer idCliente);
+	
+	boolean totalMesesPagados(Integer idCliente);
 
 }

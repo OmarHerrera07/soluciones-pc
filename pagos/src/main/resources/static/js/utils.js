@@ -17,7 +17,9 @@ const observer = new MutationObserver((mutationsList, observer) => {
 		$('.modal').modal('hide');
 	} else if (notify == '2') {
 		notificaError(texto);
-	}
+	}else if (notify == '3') {
+		notificaAdvertencia(texto);
+	}	
 });
 const config = { childList: true };
 observer.observe(myDiv, config);

@@ -34,6 +34,11 @@ function confirmarPago(id, nombreCliente, totalPago) {
 	$('#totalPago').text(totalPago);
 }
 
+function EliminarUsuario(id,nombre){
+	$('#idEliminar').val(id);
+	$('#clienteEliminar').text(nombre);
+}
+
 
 function cargarClientes(page) {
 	$.get("/clientes/paginacion?page=" + page + "&nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val() + "&idColonia=" + $("#colonia-filtro").val(), function(data) {
@@ -88,6 +93,11 @@ function actualizarTabla(clientes) {
                                     <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
                                     <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z"/>
                                   </svg>
+                            </button>
+                            <button data-bs-toggle="modal" data-bs-target="#modal-eliminar-cliente" onclick="EliminarUsuario('${cliente.idCliente}','${cliente.nombre}');" class="btn btn-danger">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+									  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+									</svg>
                             </button>
                         </td>
                         <td>

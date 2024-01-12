@@ -138,6 +138,31 @@ public class ClienteController {
 		System.out.println(cliente);
 		return "fragments/clientes/editar-cliente :: editar-cliente-form";
 	}
+	
+	/**
+	 * Editar un usuario nuevo
+	 * 
+	 * @param usuario a editar
+	 * @return Resultado sobre el la edición del usuario
+	 */
+	@PostMapping(value = "/eliminar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refresh")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String eliminarCliente(@RequestParam(value = "idEliminar") Integer id) {
+		
+		boolean totalRegistros = clienteService.totalMesesPagados(id);
+		
+		if(totalRegistros) {
+			return "<div id=\"result\" data-notify=\"3\" hidden>No se puede eliminar un cliente con pagos</div>";
+		}
+		boolean res = clienteService.deteleCliente(id);
+		if (res) {
+			return "<div id=\"result\" data-notify=\"1\" hidden>Se ha eliminado el cliente</div>";
+		}
+
+		return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al eliminar al cliente</div>";
+	}
 
 	/**
 	 * 

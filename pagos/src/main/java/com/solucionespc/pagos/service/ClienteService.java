@@ -371,4 +371,24 @@ public class ClienteService implements IClienteService {
 		}
 		return idPago;
 	}
+
+	@Override
+	public boolean deteleCliente(Integer idCliente) {
+		try {
+			clienteRepository.deleteById(idCliente);
+			return true;
+		}catch(Exception e){
+			return false;
+		}		
+	}
+
+	@Override
+	public boolean totalMesesPagados(Integer idCliente) {
+		Integer res = mesesPagoRepositoty.totalMesesPagados(idCliente);
+		
+		if(res > 0) {
+			return true;
+		}
+		return false;
+	}
 }

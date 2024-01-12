@@ -1,0 +1,30 @@
+<div th:fragment="modal-eliminar-cliente" class="modal fade" id="modal-eliminar-cliente" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Eliminar Cliente</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="form-registrar-cliente">
+				<div>
+
+					<form hx-post="/clientes/eliminar" hx-target="#result-msg" hx-swap="innerHTML">
+						<div class="row">
+							<div class="col-8">
+								<input hidden id="idEliminar" name="idEliminar">
+								<p class="fw-bold">Cliente: <span class="no-bold" id="clienteEliminar">Omar Herrera
+										Santos</span></p>
+							</div>
+						</div>
+						<br>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success">Confirmar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
