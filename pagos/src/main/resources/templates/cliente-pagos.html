@@ -56,14 +56,26 @@
 				hx-swap="innerHTML" hx-include="[name='idCliente']">
 				Cancelar pago
 			</button>
+			
 			<div th:fragment="lista-meses" id="meses-container">
-
+					<div class="row">
+						<div class="col-6">
+							<h3 class="col-6">Abono: $<span th:text="${cliente.abono}"></span></h3>
+						</div>
+					</div>
+					
 				<form name="refresh">
 					<input name="idRefresh" th:value="${idCliente}" hidden>
 					<input name="anioRefresh" th:value="${anio}" hidden>
 				</form>
+				<button th:disabled="${cliente.estado == false}" type="button" data-bs-toggle="modal" data-bs-target="#modal-abono-cliente"
+						class="btn btn-success">
+						Abono
+				</button>
+				<br>
 				<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-confirm="¿Seguro?">
+					<br>	
 					<button th:disabled="${cliente.estado == false}" type="button" onclick="pagarMeses();"
 						class="btn btn-success">
 						Pagar
@@ -147,6 +159,8 @@
 	<!--FIN MODAL EDITAR CLIENTE -->
 
 	<div th:replace="~{fragments/clientes/cancelar-pagos :: modal-eliminar-pago}"></div>
+	
+	<div th:replace="~{fragments/clientes/abono-cliente :: modal-abono-cliente}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->
 </body>

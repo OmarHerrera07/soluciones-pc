@@ -84,4 +84,16 @@ public class PagoService implements IPagoService{
 		// TODO Auto-generated method stub
 		return pagoRepository.getInfoCorteTransferencia();
 	}
+
+	@Override
+	public List<Corte> getInfoCorteDinamicoEfectivo(String fechaInico, String fechaFIn) {
+		// TODO Auto-generated method stub
+		return pagoRepository.getInfoCorteDinamicoEfectivo(fechaInico, fechaFIn);
+	}
+
+	@Override
+	public List<Corte> getInfoCorteDinamicoTransferencia(String fechaInico, String fechaFIn) {
+		// TODO Auto-generated method stub
+		return pagoRepository.getInfoCorteDinamicoTransferencia(fechaInico, fechaFIn);
+	}
 }

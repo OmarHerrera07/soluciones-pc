@@ -88,4 +88,18 @@ public interface PagoRepository extends JpaRepository<Pago, Integer>{
     @Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null)",
             nativeQuery = true)
     List<Corte> getInfoCorteDinamico(String fechaInico, String fechaFIn);
+    
+    
+    @Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null) and p.tipo_pago  = 1",
+            nativeQuery = true)
+    List<Corte> getInfoCorteDinamicoEfectivo(String fechaInico, String fechaFIn);
+    
+    @Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null) and p.tipo_pago  = 2",
+            nativeQuery = true)
+    List<Corte> getInfoCorteDinamicoTransferencia(String fechaInico, String fechaFIn);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update pago set total = ?1 where id_pago = ?2", nativeQuery = true)
+    int actualizarTotal(Float total, Integer idPago);
 }

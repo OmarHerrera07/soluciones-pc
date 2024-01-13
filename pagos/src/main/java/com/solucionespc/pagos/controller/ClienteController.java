@@ -477,6 +477,32 @@ public class ClienteController {
 		System.out.println("ENTROOOOOOOOOOO");
 		return "index :: select-colonias";
 	}
+	
+	/**
+	 * Registrar un cliente nuevo
+	 * 
+	 * @param cliente cliente a registrar
+	 * @return Resultado sobre el registro del usuario
+	 * @throws DocumentException 
+	 * @throws IOException 
+	 */
+	@PostMapping(value = "/abono", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refresh")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String abono(
+			@RequestParam(value = "abono") Float abono,
+			@RequestParam(value = "idCliente") Integer idCliente,
+			@RequestParam(value = "tipoPagoAbono") Integer tipoPago
+			) throws IOException, DocumentException {
+		
+		
+		System.out.println("DATOS: ");
+		System.out.println(abono);
+		System.out.println(idCliente);
+		clienteService.abonoCliente(idCliente, abono,tipoPago);
+		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el cliente</div>";
+	}
 
 
 }

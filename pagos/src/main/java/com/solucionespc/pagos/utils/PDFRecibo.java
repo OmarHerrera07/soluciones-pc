@@ -29,9 +29,12 @@ public class PDFRecibo {
 	
 	private final List<MesesRecibo> meses;
 	
-	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses) {
+	private Float abono;
+	
+	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses,Float abono) {
 		this.pago = pago;
 		this.meses = meses;
+		this.abono = abono;
 	}
 	
 	
@@ -150,6 +153,27 @@ public class PDFRecibo {
 	        table.addCell(cell);
 	    }
 	    // Agregar la tabla al documento
+	    System.out.println("ESTE ES EL ABONo");
+	    System.out.println(abono);
+	    if(abono == null) {
+	    	abono = 0f;
+	    }
+	    if(abono > 0) {
+	        cell = new PdfPCell(new Phrase("1",fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase("abono",fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+
+	        cell = new PdfPCell(new Phrase("$"+abono,fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+	    }
 	    table.setSpacingAfter(15f);
 	    document.add(table);
 	    

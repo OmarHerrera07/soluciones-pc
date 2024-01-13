@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,6 +105,7 @@ public class ClienteService implements IClienteService {
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
 		cliente.setDiasAtraso(0);
+		cliente.setAbono(0f);
 		try {
 			clienteRepository.save(cliente);
 			return true;
@@ -328,7 +330,7 @@ public class ClienteService implements IClienteService {
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
 				res.getIdPago());
-		PDFRecibo recibo = new PDFRecibo(i, mesesR);
+		PDFRecibo recibo = new PDFRecibo(i, mesesR,null);
 		printTicket.printTicket(i,mesesR);
 		byte[] pdfBytes = recibo.getPdfBytes();
 		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
@@ -366,7 +368,7 @@ public class ClienteService implements IClienteService {
 		if (idPago > 0) {
 			InfoRecibo i = pagoRepository.getInfoRecibo(idPago);
 			List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(idCliente, idPago);
-			PDFRecibo recibo = new PDFRecibo(i, mesesR);
+			PDFRecibo recibo = new PDFRecibo(i, mesesR,null);
 			byte[] pdfBytes = recibo.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, idPago);
 		}
@@ -390,6 +392,67 @@ public class ClienteService implements IClienteService {
 		if(res > 0) {
 			return true;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean abonoCliente(Integer idCliente, Float abono, Integer tipoPago) throws IOException, DocumentException {
+		Cliente cliente = clienteRepository.findById(idCliente).get();
+		
+        float resultado = (abono + cliente.getAbono()) / cliente.getPaquete().getPrecio();
+        int numMeses = (int) Math.floor(resultado);
+        Float residuo = (abono + cliente.getAbono()) % cliente.getPaquete().getPrecio();
+        
+		System.out.println("Num de meses: ");
+		System.out.println(numMeses);
+		System.out.println("Abono proximo mes: ");
+		System.out.println(residuo);
+		
+		clienteRepository.setAbono(residuo, idCliente);
+		
+		
+        // Número de meses a generar
+        int numeroMeses = numMeses;
+
+        // Formato deseado para la impresión
+        DateTimeFormatter formatoDeseado = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate fechaInicio = cliente.getFechaPago().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        // Lista para almacenar las fechas generadas
+        List<String> fechasGeneradas = new ArrayList<>();
+
+        // Generar fechas y agregarlas a la lista
+        for (int i = 0; i < numeroMeses; i++) {
+            LocalDate fechaGenerada = fechaInicio.plusMonths(i);
+            fechasGeneradas.add(fechaGenerada.format(formatoDeseado));
+        }
+
+        // Imprimir la lista de fechas generadas
+        System.out.println("Fechas generadas:");
+        fechasGeneradas.forEach(System.out::println);
+        
+        
+		PrintTicket printTicket = new PrintTicket();
+		Pago pago = new Pago();
+		pago.setFecha(new Date());
+		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
+		pago.setIdUsuario(Usuario.builder().idUsuario(1).build());
+		pago.setTipoPago(tipoPago);
+		Pago res = pagoRepository.save(pago);
+
+		for (String mes : fechasGeneradas) {
+			System.out.println(mes);
+			clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
+					res.getIdPago(), mes);
+		}
+		pagoRepository.actualizarTotal(abono, res.getIdPago());
+		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
+		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
+				res.getIdPago());
+		PDFRecibo recibo = new PDFRecibo(i, mesesR,residuo);
+		printTicket.printTicket(i,mesesR);
+		byte[] pdfBytes = recibo.getPdfBytes();
+		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
+
 		return false;
 	}
 }

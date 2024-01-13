@@ -49,5 +49,7 @@ public interface IClienteService{
 	boolean deteleCliente(Integer idCliente);
 	
 	boolean totalMesesPagados(Integer idCliente);
+	
+	boolean abonoCliente(Integer idCliente, Float abono,Integer tipoPago) throws IOException, DocumentException;
 
 }
