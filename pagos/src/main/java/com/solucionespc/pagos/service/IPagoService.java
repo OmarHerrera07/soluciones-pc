@@ -16,4 +16,8 @@ public interface IPagoService {
 	List<Corte> getInfoCorte();
 	
 	List<Corte> getInfoCorteDinamico(String fechaInico, String fechaFIn);
+	
+    List<Corte> getInfoCorteEfectivo();
+
+    List<Corte> getInfoCorteTransferencia();
 }

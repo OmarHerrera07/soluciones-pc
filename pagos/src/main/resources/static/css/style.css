@@ -1,127 +1,131 @@
-.navbar{
-    background-color: #419BCE !important;
+.navbar {
+	background-color: #419BCE !important;
 }
 
 /* TITULOS */
-.navbar-collapse{
-    justify-content: space-between;
-}
-.navbar-brand{
-    font-size: 2rem;
-    color: white !important;
+.navbar-collapse {
+	justify-content: space-between;
 }
 
-.navbar-nav a{
-    font-weight: 200;
-    color: white !important;
-    font-size: 1.5rem;
-}
-.user{
-    padding: 1rem;
-    margin-right: 5rem;
-}
-.user img:hover{
-    cursor: pointer;
-}
-.user img{
-    width: 3rem;
+.navbar-brand {
+	font-size: 2rem;
+	color: white !important;
 }
 
-.client-option{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1.5rem !important;
+.navbar-nav a {
+	font-weight: 200;
+	color: white !important;
+	font-size: 1.5rem;
 }
 
-.user-option{
+.user {
+	padding: 1rem;
+	margin-right: 5rem;
+}
+
+.user img:hover {
+	cursor: pointer;
+}
+
+.user img {
+	width: 3rem;
+}
+
+.client-option {
 	display: flex;
-    justify-content: space-between;
-    margin-top: 1rem !important;
+	justify-content: space-between;
+	margin-top: 1.5rem !important;
+}
+
+.user-option {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1rem !important;
 }
 
 /* LOGIN */
-.titulo-login{
-    color: white !important;
+.titulo-login {
+	color: white !important;
 }
 
-.login-page{
-    background-color: #419BCE;
+.login-page {
+	background-color: #419BCE;
 }
 
-.btn-color{
-    background-color: #419BCE;
-    color: #fff;
-    
-  }
-  
-  .profile-image-pic{
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-  }
-  
-  
-  
-  .cardbody-color{
-    background-color: #ebf2fa;
-  }
-  
-  a{
-    text-decoration: none;
-  }
-  
-  .fechas{
-	  background-color: white;
-	  color: black;
-	  border: none;
-	  text-align: center;
-  }
+.btn-color {
+	background-color: #419BCE;
+	color: #fff;
 
-.filtro{
+}
+
+.profile-image-pic {
+	height: 200px;
+	width: 200px;
+	object-fit: cover;
+}
+
+
+
+.cardbody-color {
+	background-color: #ebf2fa;
+}
+
+a {
+	text-decoration: none;
+}
+
+.fechas {
+	background-color: white;
+	color: black;
+	border: none;
+	text-align: center;
+}
+
+.filtro {
 	width: 35rem;
 }
 
-.filtro-pagos{
+.filtro-pagos {
 	display: flex;
-	
+
 }
 
-.input-date{
+.input-date {
 	width: 9rem;
 	height: 2.5rem;
 }
 
-.filtro-fecha{
-    display: flex!important;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-end;
-    gap: 5px;
+.filtro-fecha {
+	display: flex !important;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-end;
+	gap: 5px;
 
 }
 
-.no-bold{
+.no-bold {
 	font-weight: 200;
 }
 
-.total-meses{
-	display: flex!important;
-    align-content: center;
-    justify-content: flex-end;
+.total-meses {
+	display: flex !important;
+	align-content: center;
+	justify-content: flex-end;
 }
 
-.meses-pagar{
+.meses-pagar {
 	font-size: 1.2rem;
 }
 
-.select-colonia{
+.select-colonia {
 	display: block;
-    width: 100%!important;
-    padding: .375rem .75rem!important;
-	height: 50%!important;
+	width: 100% !important;
+	padding: .375rem .75rem !important;
+	height: 50% !important;
 }
 
-.select2-container--default .select2-selection--single{
+.select2-container--default .select2-selection--single {
 	padding: 1.1rem;
 	display: flex;
 	justify-content: center;
@@ -129,12 +133,20 @@
 	align-items: center;
 }
 
-.filtros{
+.filtros {
 	display: flex;
 }
 
-.filtro-colonia{
+.filtro-colonia {
 	display: flex;
 	flex-direction: column;
 }
 
+.mayuscula {
+	text-transform: uppercase;
+}
+
+.borde-estado{
+	border: .2px solid black;
+	border-radius: 50%;
+}

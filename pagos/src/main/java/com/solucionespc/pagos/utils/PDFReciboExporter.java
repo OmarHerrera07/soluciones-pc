@@ -59,18 +59,10 @@ public class PDFReciboExporter {
 	    title.setSpacingAfter(10f);
 	    document.add(title);
 	    
-	    
-        // Obtener la fecha actual
-        LocalDate fechaActual = LocalDate.now();
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaFormateada = sdf.format(pago.getFecha());
 
-        // Definir el formato deseado (MM/dd/yyyy)
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-
-        // Formatear la fecha
-        String fechaFormateada = fechaActual.format(formato);
-        
-        
-        
+                   
 	    Font fontTableHead = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
 	 // Crear una tabla con dos columnas
 	    PdfPTable tableHead = new PdfPTable(2);

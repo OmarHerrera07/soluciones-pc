@@ -38,7 +38,7 @@ public interface IClienteService{
 	
 	Date obtenerFechaPago(Integer idCliente);
 	
-	void pagoMasivo(List<String> meses,Cliente cliente,Integer idUsuario) throws DocumentException, IOException;
+	void pagoMasivo(List<String> meses,Cliente cliente,Integer idUsuario,Integer tipoPago) throws DocumentException, IOException;
 	
 	List<Date> obtnerMesesPagadosFiltro(String anio,Integer idCliente);
 

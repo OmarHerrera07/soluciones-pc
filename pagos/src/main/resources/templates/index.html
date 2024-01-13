@@ -9,7 +9,6 @@
 	<div th:replace="~{fragments/layout :: estilos}"></div>
 
 
-
 </head>
 
 <body>
@@ -27,8 +26,7 @@
 		hx-include="[name='id']">
 	</button>
 
-	<div hx-target="#col" hx-swap="innerHTML" hx-trigger="refreshCol from:body"
-		hx-get="/clientes/refrescar-colonias">
+	<div hx-target="#col" hx-swap="innerHTML" hx-trigger="refreshCol from:body" hx-get="/clientes/refrescar-colonias">
 	</div>
 
 	<main>
@@ -57,7 +55,7 @@
 			<div class="row filtros">
 				<div class="col-6">
 					<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
-						placeholder="Filtrar por nombre">
+						placeholder="Filtrar por nombre" oninput="this.value = this.value.toUpperCase()">
 				</div>
 
 
@@ -66,7 +64,7 @@
 					<div th:fragment="select-colonias" id="col">
 						<select class="form-control js-example-basic-single" onchange="colonias();" name=""
 							id="colonia-filtro">
-							<option value="" selected>Todas</option>
+							<option value="" selected>TODAS</option>
 
 							<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
 								th:text="${colonia.colonia}"></option>
@@ -129,7 +127,7 @@
 
 	<!-- MODAL PARA AGREGAR COLONIA  -->
 	<div th:replace="~{fragments/clientes/registro-colonia :: modal-registrar-colonia}"></div>
-	
+
 	<!-- MODAL PARA ELIMINAR CLIENTE  -->
 	<div th:replace="~{fragments/clientes/registro-colonia :: modal-registrar-colonia}"></div>
 
@@ -143,15 +141,32 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<p class="fw-bold">Cliente: <span class="no-bold" id="clientePago">Omar Herrera Santos</span></p>
-					<p class="fw-bold">Pago: $<span class="no-bold" id="totalPago">198.0</span></p>
+
+					<form hx-post="/clientes/realizar-pago" hx-target="#result-msg" hx-swap="innerHTML">
+						<p class="fw-bold">Cliente: <span class="no-bold" id="clientePago">Omar Herrera Santos</span>
+						</p>
+						<p class="fw-bold">Pago: $<span class="no-bold" id="totalPago">198.0</span></p>
+						<input hidden id="clienteId" name="clienteId">
+						<div class="container">
+							<div class="row">
+								<div class="col-6">
+									<p class="fw-bold">Tipo de pago:</p>
+									<select name="tipoPago" class="form-control">
+										<option selected value="1">EFECTIVO</option>
+										<option value="2">TRANSFERENCIA</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+								id="confirmarEliminar">Confirmar</button>
+						</div>
+					</form>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-					<button hx-post="/clientes/realizar-pago" hx-target="#result-msg" hx-swap="innerHTML"
-						hx-include="[name='id']" type="button" class="btn btn-success" data-bs-dismiss="modal"
-						id="confirmarEliminar">Confirmar</button>
-				</div>
+
 			</div>
 		</div>
 	</div>

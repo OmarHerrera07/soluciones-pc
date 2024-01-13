@@ -20,7 +20,7 @@
 		<div class="row">
 			<div class="col-6">
 				<label for="nombreEditar">Nombre Completo: </label>
-				<input th:value="${cliente.nombre}" id="nombreEditar" name="nombre" class="form-control" required>
+				<input oninput="this.value = this.value.toUpperCase()" th:value="${cliente.nombre}" id="nombreEditar" name="nombre" class="form-control" required>
 			</div>
 			<div class="col-6">
 				<label for="telefonoEditar">Teléfono: </label>
@@ -36,7 +36,7 @@
 
 			<div class="col-6">
 				<label for="rfcEditar">RFC: </label>
-				<input pattern="[A-Za-z0-9]{0,13}" th:value="${cliente.rfc}" id="rfcEditar" name="rfc" class="form-control">
+				<input oninput="this.value = this.value.toUpperCase()" pattern="[A-Za-z0-9]{0,13}" th:value="${cliente.rfc}" id="rfcEditar" name="rfc" class="form-control">
 			</div>
 		</div>
 		<div class="row">
@@ -73,9 +73,10 @@
 			<div class="col-6">
 				<label for="estado">Estado: </label>
 				<Select id="estado" name="estado" class="form-control" required>
-					<option th:selected="${cliente.estado == 1}" value="1" >Activo</option>
-					<option th:selected="${cliente.estado == 2}" value="2">Inactivo</option>
-					<option th:selected="${cliente.estado == 3}" value="3">Especial</option>
+					<option th:selected="${cliente.estado == 1}" value="1" >ACTIVO</option>
+					<option th:selected="${cliente.estado == 2}" value="2">INACTIVO</option>
+					<option th:selected="${cliente.estado == 3}" value="3">ESPECIAL</option>
+					<option th:selected="${cliente.estado == 4}" value="4">SUSPENSIÓN</option>
 				</Select>
 			</div>
 		</div>

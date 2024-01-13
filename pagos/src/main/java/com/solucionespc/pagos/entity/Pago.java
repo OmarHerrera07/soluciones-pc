@@ -30,6 +30,8 @@ public class Pago {
     @JoinColumn(name = "id_usuario")
     private Usuario idUsuario;
 
+    @Column(name = "tipo_pago")
+    private Integer tipoPago;
     
     @Column(name = "fecha")
     @DateTimeFormat(pattern = "dd-MM-yyyy")

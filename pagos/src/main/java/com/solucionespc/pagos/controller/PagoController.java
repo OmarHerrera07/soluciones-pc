@@ -34,6 +34,7 @@ import com.solucionespc.pagos.repository.PagoRepository;
 import com.solucionespc.pagos.service.IPagoService;
 import com.solucionespc.pagos.service.IUsuarioService;
 import com.solucionespc.pagos.utils.PDFCorte;
+import com.solucionespc.pagos.utils.PDFCorteExporter;
 import com.solucionespc.pagos.utils.PDFExporter;
 import com.solucionespc.pagos.utils.PDFReciboExporter;
 import com.solucionespc.pagos.utils.PDFReporteClientes;
@@ -126,12 +127,10 @@ public class PagoController {
 			throws DocumentException, IOException {
 		
 		Pago pago = pagoService.findById(id);
-		List<MesesRecibo> meses = pagoService.obtnerMesesPagadosRecibo(pago.getIdCliente().getIdCliente(), id);
-		
+		List<MesesRecibo> meses = pagoService.obtnerMesesPagadosRecibo(pago.getIdCliente().getIdCliente(), id);		
 		response.setContentType("application/pdf");
-
 		String headerKey = "Content-Disposition";
-		String sbHeaderValue = "attachment; filename=Recibo.pdf";
+		String sbHeaderValue = "inline; filename=Recibo.pdf";
 		response.setHeader(headerKey, sbHeaderValue);
 		// System.out.println(solicitud.get());
 		PDFReciboExporter export = new PDFReciboExporter(pago,meses);
@@ -166,13 +165,20 @@ public class PagoController {
     @ResponseBody
     public void exportPDFCorte(HttpServletRequest request, HttpServletResponse response,Authentication authentication) throws DocumentException, IOException {
         response.setContentType("application/pdf");
-
+        
+//        String headerKey = "Content-Disposition";
+//        String sbHeaderValue = "inline; filename=Reporte.pdf";
+//        response.setHeader(headerKey, sbHeaderValue);
+//        List<Corte> infoCorte = pagoService.getInfoCorte();
+//        Usuario user = usuarioService.finUserByUsername(authentication.getName());
+//        PDFCorte reporte = new PDFCorte(infoCorte,user);
         String headerKey = "Content-Disposition";
         String sbHeaderValue = "inline; filename=Reporte.pdf";
         response.setHeader(headerKey, sbHeaderValue);
-        List<Corte> infoCorte = pagoService.getInfoCorte();
+        List<Corte> infoCorteEfectivo = pagoService.getInfoCorteEfectivo();
+        List<Corte> infoCorteTransferencia = pagoService.getInfoCorteTransferencia();
         Usuario user = usuarioService.finUserByUsername(authentication.getName());
-        PDFCorte reporte = new PDFCorte(infoCorte,user);
+        PDFCorteExporter reporte = new PDFCorteExporter(infoCorteEfectivo,infoCorteTransferencia,user);
         reporte.export(response);
 
     }
@@ -191,6 +197,22 @@ public class PagoController {
         List<Corte> infoCorte = pagoService.getInfoCorteDinamico(fechaInicio, fechaFin);
         Usuario user = usuarioService.finUserByUsername(authentication.getName());
         PDFCorte reporte = new PDFCorte(infoCorte,user);
+        reporte.export(response);
+
+    }
+    
+    @GetMapping("/cortePrueba")
+    @ResponseBody
+    public void exportPDFCorteNew(HttpServletRequest request, HttpServletResponse response,Authentication authentication) throws DocumentException, IOException {
+        response.setContentType("application/pdf");
+
+        String headerKey = "Content-Disposition";
+        String sbHeaderValue = "inline; filename=Reporte.pdf";
+        response.setHeader(headerKey, sbHeaderValue);
+        List<Corte> infoCorteEfectivo = pagoService.getInfoCorteEfectivo();
+        List<Corte> infoCorteTransferencia = pagoService.getInfoCorteTransferencia();
+        Usuario user = usuarioService.finUserByUsername(authentication.getName());
+        PDFCorteExporter reporte = new PDFCorteExporter(infoCorteEfectivo,infoCorteTransferencia,user);
         reporte.export(response);
 
     }

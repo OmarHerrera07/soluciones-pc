@@ -51,9 +51,9 @@
 
 			</div>
 			<br>
-			<button type="button" data-bs-toggle="modal" data-bs-target="#modal-eliminar-pago" class="btn btn-danger float-end"
-				hx-get="/clientes/get-meses-pagados" hx-target="#body-cancelar-pago" hx-swap="innerHTML"
-				hx-include="[name='idCliente']">
+			<button sec:authorize="hasAnyRole('ADMINISTRADOR')" type="button" data-bs-toggle="modal" data-bs-target="#modal-eliminar-pago"
+				class="btn btn-danger float-end" hx-get="/clientes/get-meses-pagados" hx-target="#body-cancelar-pago"
+				hx-swap="innerHTML" hx-include="[name='idCliente']">
 				Cancelar pago
 			</button>
 			<div th:fragment="lista-meses" id="meses-container">
@@ -116,6 +116,19 @@
 								<div id="confirmarMeses" class="modal-body">
 
 								</div>
+								<div class="container">
+									<div class="row">
+										<div class="col-6">
+											<p class="fw-bold">Tipo de pago:</p>
+											<select name="tipoPago" class="form-control">
+												<option selected value="1">EFECTIVO</option>
+												<option value="2">TRANSFERENCIA</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<br>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger"
 										data-bs-dismiss="modal">Cancelar</button>

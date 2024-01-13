@@ -56,3 +56,12 @@ function pagarMeses() {
 
 
 }
+
+$(document).ready(function() {
+  $("input[type='text']").on("keypress", function() {
+    $input = $(this);
+    setTimeout(function() {
+      $input.val($input.val().toUpperCase());
+    }, 50);
+  });
+});

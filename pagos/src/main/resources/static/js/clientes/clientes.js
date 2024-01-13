@@ -30,6 +30,7 @@ function editarCliente(id) {
 
 function confirmarPago(id, nombreCliente, totalPago) {
 	$('#idUser').val(id);
+	$('#clienteId').val(id);
 	$('#clientePago').text(nombreCliente);
 	$('#totalPago').text(totalPago);
 }
@@ -60,8 +61,8 @@ function actualizarTabla(clientes) {
 			                    <tr>
 			                    
 			            <td>
-			            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
-						  <circle cx="8" cy="8" r="8" fill="${cliente.estado === 1 ? 'green' : cliente.estado === 2 ? 'red' : cliente.estado === 3 ? 'yellow' : 'gray'}"/>
+			            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill borde-estado" viewBox="0 0 16 16">
+						  <circle cx="8" cy="8" r="8" fill="${cliente.estado === 1 ? 'green' : cliente.estado === 2 ? 'red' : cliente.estado === 3 ? 'yellow' : 'orange'}"/>
 						</svg>
 						</td>        
                         <td>${cliente.nombre}</td>

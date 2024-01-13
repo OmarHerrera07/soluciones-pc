@@ -309,7 +309,7 @@ public class ClienteService implements IClienteService {
 	 */
 
 	@Override
-	public void pagoMasivo(List<String> meses, Cliente cliente, Integer idUsuario)
+	public void pagoMasivo(List<String> meses, Cliente cliente, Integer idUsuario, Integer tipoPago)
 			throws DocumentException, IOException {
 		
 		PrintTicket printTicket = new PrintTicket();
@@ -317,6 +317,7 @@ public class ClienteService implements IClienteService {
 		pago.setFecha(new Date());
 		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
 		pago.setIdUsuario(Usuario.builder().idUsuario(idUsuario).build());
+		pago.setTipoPago(tipoPago);
 		Pago res = pagoRepository.save(pago);
 
 		for (String mes : meses) {

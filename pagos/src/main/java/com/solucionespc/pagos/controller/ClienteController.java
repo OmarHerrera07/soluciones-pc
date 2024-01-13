@@ -197,7 +197,9 @@ public class ClienteController {
 	@HxTrigger("refresh")
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public String realizarPago(@RequestParam(value = "id") Integer id, Authentication authentication)
+	public String realizarPago(@RequestParam(value = "clienteId") Integer id, 
+			@RequestParam(value = "tipoPago") Integer tipoPago,
+			Authentication authentication)
 			throws DocumentException, IOException {
 
 		Cliente cliente = clienteService.finById(id);
@@ -210,7 +212,7 @@ public class ClienteController {
 		String fechaString = formatoFecha.format(cliente.getFechaPago());
 		meses.add(fechaString);
 
-		clienteService.pagoMasivo(meses, cliente, user.getIdUsuario());
+		clienteService.pagoMasivo(meses, cliente, user.getIdUsuario(),tipoPago);
 		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
 	}
 
@@ -259,7 +261,9 @@ public class ClienteController {
 	@ResponseBody
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String pagoMasivo(@RequestParam(value = "idCliente") Integer idCliente,
-			@RequestParam(value = "meses") List<String> meses, Authentication authentication)
+			@RequestParam(value = "meses") List<String> meses, 
+			@RequestParam(value = "tipoPago") Integer tipoPago,
+			Authentication authentication)
 			throws IOException, DocumentException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -278,8 +282,9 @@ public class ClienteController {
 
 		Usuario user = usuarioService.finUserByUsername(authentication.getName());
 		Cliente cliente = clienteService.finById(idCliente);
-		clienteService.pagoMasivo(meses, cliente, user.getIdUsuario());
-		System.out.println(clienteService.finById(idCliente));
+		clienteService.pagoMasivo(meses, cliente, user.getIdUsuario(),tipoPago);
+		System.out.println("TIPO DE PAGO: ");
+		System.out.println(tipoPago);
 		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
 	}
 
