@@ -1,0 +1,22 @@
+<div th:fragment="modal-corte-dinamico" class="modal fade" id="modal-corte-dinamico" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Generar Corte Dinamico</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+					<div class="filtro-fecha">
+						<span>Fecha</span>
+						<input id="fechaInicio" name="fechaInicio" class="form-control input-date" type="date"> <span>a</span> <input
+							name="fechaFin" class="form-control input-date" id="fechaFin" type="date">
+					</div>
+					<br>
+					<div class="modal-footer">
+						<button onclick="corteDinamico();" type="submit" class="btn btn-success">Generar Corte</button>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>

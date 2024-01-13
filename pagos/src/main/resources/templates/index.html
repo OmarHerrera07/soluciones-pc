@@ -7,9 +7,8 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="/select2/css/select2.min.css">
 	<div th:replace="~{fragments/layout :: estilos}"></div>
-	
 
-	
+
 </head>
 
 <body>
@@ -27,10 +26,14 @@
 		hx-include="[name='id']">
 	</button>
 
+	<div hx-target="#col" hx-swap="innerHTML" hx-trigger="refreshCol from:body" hx-get="/clientes/refrescar-colonias">
+	</div>
+
 	<main>
 		<div class="container-lg d-flex mt-1 client-option">
 			<div class="filtro">
 				<h2>Clientes</h2>
+				<h3>Total de clientes: <span id="totalClientes">0</span></h3>
 			</div>
 			<div>
 				<a href="/clientes/reporte" target="_blank" class="btn btn-success">
@@ -39,7 +42,11 @@
 				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-cliente" type="button"
 					class="btn btn-success" hx-get="/clientes/get-form-registrar" hx-target="#form-registrar-cliente"
 					hx-swap="innerHTML">
-					Registrar
+					Registrar Cliente
+				</button>
+				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-colonia" type="button"
+					class="btn btn-warning">
+					Registrar Colonia
 				</button>
 			</div>
 		</div>
@@ -48,17 +55,22 @@
 			<div class="row filtros">
 				<div class="col-6">
 					<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
-						placeholder="Filtrar por nombre">
+						placeholder="Filtrar por nombre" oninput="this.value = this.value.toUpperCase()">
 				</div>
 
 
 				<div class="col-4 filtro-colonia">
 					Colonia:
-					<select class="form-control js-example-basic-single" onchange="colonias();" name="" id="colonia-filtro">
-						<option value="" selected>Todas</option>
-						<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
-							th:text="${colonia.colonia}"></option>
-					</select>
+					<div th:fragment="select-colonias" id="col">
+						<select class="form-control js-example-basic-single" onchange="colonias();" name=""
+							id="colonia-filtro">
+							<option value="" selected>TODAS</option>
+
+							<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
+								th:text="${colonia.colonia}"></option>
+
+						</select>
+					</div>
 				</div>
 
 				<div class="col-2">
@@ -106,9 +118,18 @@
 	<div th:replace="~{fragments/clientes/consultar-cliente :: modal-consultar-cliente}"></div>
 
 
-	<!--FIN MODAL EDITAR CLIENTE -->
+	<!--MODAL PARA EDITAR CLIENTE -->
 
 	<div th:replace="~{fragments/clientes/editar-cliente :: modal-editar-cliente}"></div>
+
+	<!-- MODAL PARA ELIMINAR CLIENTE  -->
+	<div th:replace="~{fragments/clientes/eliminar-cliente :: modal-eliminar-cliente}"></div>
+
+	<!-- MODAL PARA AGREGAR COLONIA  -->
+	<div th:replace="~{fragments/clientes/registro-colonia :: modal-registrar-colonia}"></div>
+
+	<!-- MODAL PARA ELIMINAR CLIENTE  -->
+	<div th:replace="~{fragments/clientes/registro-colonia :: modal-registrar-colonia}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->
 	<div class="modal fade" id="modal-confirmar-pago" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -120,15 +141,32 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<p class="fw-bold">Cliente: <span class="no-bold" id="clientePago">Omar Herrera Santos</span></p>
-					<p class="fw-bold">Pago: $<span class="no-bold" id="totalPago">198.0</span></p>
+
+					<form hx-post="/clientes/realizar-pago" hx-target="#result-msg" hx-swap="innerHTML">
+						<p class="fw-bold">Cliente: <span class="no-bold" id="clientePago">Omar Herrera Santos</span>
+						</p>
+						<p class="fw-bold">Pago: $<span class="no-bold" id="totalPago">198.0</span></p>
+						<input hidden id="clienteId" name="clienteId">
+						<div class="container">
+							<div class="row">
+								<div class="col-6">
+									<p class="fw-bold">Tipo de pago:</p>
+									<select name="tipoPago" class="form-control">
+										<option selected value="1">EFECTIVO</option>
+										<option value="2">TRANSFERENCIA</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+								id="confirmarEliminar">Confirmar</button>
+						</div>
+					</form>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-					<button hx-post="/clientes/realizar-pago" hx-target="#result-msg" hx-swap="innerHTML"
-						hx-include="[name='id']" type="button" class="btn btn-success" data-bs-dismiss="modal"
-						id="confirmarEliminar">Confirmar</button>
-				</div>
+
 			</div>
 		</div>
 	</div>

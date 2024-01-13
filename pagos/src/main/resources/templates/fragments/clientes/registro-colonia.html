@@ -1,0 +1,30 @@
+<div th:fragment="modal-registrar-colonia" class="modal fade" id="modal-agregar-colonia" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Agregar Colonia</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="form-registrar-cliente">
+				<div>
+
+					<form id="formcolonia" hx-post="/clientes/registrar-colonia" hx-target="#result-msg"
+						hx-swap="innerHTML">
+						<div class="row">
+							<div class="col-8">
+								<label>Colonia: </label>
+								<input oninput="this.value = this.value.toUpperCase()" class="form-control" name="colonia">
+							</div>
+						</div>
+						<br>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success">Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

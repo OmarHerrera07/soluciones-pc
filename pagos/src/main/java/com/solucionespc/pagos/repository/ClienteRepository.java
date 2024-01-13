@@ -26,7 +26,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	 * @param pageable   Información sobre la paginación.
 	 * @return Una página de objetos ClienteDTO que cumplen con los criterios de paginación y filtrado.
 	 */
-    @Query(value = "select c.id_cliente as idCliente, c.nombre,c.telefono,p.precio as paquete,c.fecha_pago as fechaPago,c.ultimo_pago as ultimoPago, c.estado  from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null)",
+    @Query(value = "select c.id_cliente as idCliente, c.nombre,c.telefono,p.precio as paquete,c.fecha_pago as fechaPago,c.ultimo_pago as ultimoPago, c.estado  from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null) order by c.nombre",
             countQuery = "select COUNT(*) from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null)",
             nativeQuery = true)
     Page<ClienteDTO> paginacionCliente(String nombre,Integer idColonia, Pageable pageable);
@@ -85,4 +85,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
             "  fecha_pago < CURDATE() and c.estado = 1",
             nativeQuery = true)
     List<ReporteCliente> getReporteClientes();
+    
+    
+    @Procedure(name = "cancelarPago")
+    Integer cancelarPago(@Param("p_id_cliente") Integer idCliente, @Param("p_fecha") String fecha);
 }

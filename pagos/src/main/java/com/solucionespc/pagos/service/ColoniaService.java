@@ -23,4 +23,15 @@ public class ColoniaService implements IColoniaService{
 		return coloniaRepository.findAll();
 	}
 
+	@Override
+	public boolean save(Colonia colonia) {
+		try {		
+			coloniaRepository.save(colonia);
+			return true;
+		}catch (Exception e) {
+			return false;
+		}
+		
+	}
+
 }

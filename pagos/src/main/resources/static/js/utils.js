@@ -14,9 +14,12 @@ const observer = new MutationObserver((mutationsList, observer) => {
 	var notify = $('#result').data('notify');
 	if (notify == '1') {
 		notificaExito(texto);
+		$('.modal').modal('hide');
 	} else if (notify == '2') {
 		notificaError(texto);
-	}
+	}else if (notify == '3') {
+		notificaAdvertencia(texto);
+	}	
 });
 const config = { childList: true };
 observer.observe(myDiv, config);
@@ -53,3 +56,12 @@ function pagarMeses() {
 
 
 }
+
+$(document).ready(function() {
+  $("input[type='text']").on("keypress", function() {
+    $input = $(this);
+    setTimeout(function() {
+      $input.val($input.val().toUpperCase());
+    }, 50);
+  });
+});

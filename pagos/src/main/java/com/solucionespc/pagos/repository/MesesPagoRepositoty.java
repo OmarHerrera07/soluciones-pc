@@ -44,7 +44,7 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
 	 * @param idCliente ID del cliente para el cual se obtienen los meses de pagos realizados.
 	 * @return Lista de objetos Date que representan los meses en los que se realizaron pagos.
 	 */
-	@Query(value = "SELECT mp.fecha FROM meses_pago mp join cliente c on mp.id_cliente = c.id_cliente  WHERE mp.id_cliente = ?1 AND YEAR(fecha) = YEAR(c.fecha_pago)",
+	@Query(value = "SELECT mp.fecha FROM meses_pago mp join cliente c on mp.id_cliente = c.id_cliente  WHERE mp.id_cliente = ?1 AND YEAR(fecha) = YEAR(c.fecha_pago) ORDER BY mp.fecha asc",
             nativeQuery = true)
     List<Date> obtnerMesesPagados(Integer idCliente);
 	
@@ -71,4 +71,8 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
 	@Query(value = "SELECT mp.fecha,p.precio FROM meses_pago mp join paquete_internet p on mp.id_paquete = p.id_paquete  where mp.id_cliente =?1 and mp.id_pago =?2",
             nativeQuery = true)
 	List<MesesRecibo> obtnerMesesPagadosRecibo(Integer idCliente,Integer idPago);
+	
+	@Query(value = "select COUNT(*) as registro from meses_pago mp where mp.id_cliente = ?1",
+            nativeQuery = true)
+    Integer totalMesesPagados(Integer idCliente);
 }
