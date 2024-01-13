@@ -1,9 +1,10 @@
 var currentPage = 0;
 
-document.body.addEventListener("refresh", function() {
+document.body.addEventListener("refresh", function () {
 	$('.modal').modal('hide');
 	cargarUsuarios(currentPage);
 })
+
 function editarUsuario(id) {
 	$('#idUser').val(id);
 	console.log($('#idUser').val());
@@ -11,8 +12,69 @@ function editarUsuario(id) {
 	boton.click();
 }
 
+
+
+	function togglePassword(inputId, iconId) {
+	var inputElement = document.getElementById(inputId);
+	var iconElement = document.getElementById(iconId);
+
+	if (inputElement.type === "password") {
+	inputElement.type = "text";
+	iconElement.classList.remove("bi-eye");
+	iconElement.classList.add("bi-eye-slash");
+	} else {
+		inputElement.type = "password";
+		iconElement.classList.remove("bi-eye-slash");
+		iconElement.classList.add("bi-eye");
+			}
+	}
+function togglePassword(inputId, eyeIconId) {
+	const passwordInput = document.getElementById(inputId);
+	const eyeIcon = document.getElementById(eyeIconId);
+
+	if (passwordInput.type === "password") {
+		passwordInput.type = "text";
+		eyeIcon.classList.remove("bi-eye");
+		eyeIcon.classList.add("bi-eye-slash");
+	} else {
+		passwordInput.type = "password";
+		eyeIcon.classList.remove("bi-eye-slash");
+		eyeIcon.classList.add("bi-eye");
+	}
+}
+
+function togglePassword(inputId, eyeIconId) {
+	const passwordInput = document.getElementById(inputId);
+	const eyeIcon = document.getElementById(eyeIconId);
+
+	if (passwordInput.type === "password") {
+		passwordInput.type = "text";
+		eyeIcon.classList.remove("bi-eye");
+		eyeIcon.classList.add("bi-eye-slash");
+	} else {
+		passwordInput.type = "password";
+		eyeIcon.classList.remove("bi-eye-slash");
+		eyeIcon.classList.add("bi-eye");
+	}
+
+}
+
+function comparePasswords() {
+	const passwordInput = document.getElementById("Password");
+	const confirmarPasswordInput = document.getElementById("confirmarPassword");
+	const passwordMatchMessage = document.getElementById("passwordMatchMessage");
+	const guardarButton = document.getElementById("guardarButton");
+
+	if (passwordInput.value !== confirmarPasswordInput.value) {
+		passwordMatchMessage.textContent = "Las contraseñas no coinciden";
+		guardarButton.disabled = true;
+	} else {
+		passwordMatchMessage.textContent = "";
+		guardarButton.disabled = false;
+	}
+}
 function cargarUsuarios(page) {
-	$.get("/usuarios/paginacion?page=" + page + "&nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val(), function(data) {
+	$.get("/usuarios/paginacion?page=" + page + "&nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val(), function (data) {
 		currentPage = page;
 		console.log(data);
 		actualizarTabla(data.content);
@@ -29,7 +91,7 @@ function actualizarTabla(usuarios) {
 	button.attr('hx-target', '#form-editar-usuario');
 	button.attr('hx-swap', 'innerHTML');
 	if (usuarios.length !== 0) {
-		usuarios.forEach(function(user) {
+		usuarios.forEach(function (user) {
 			tabla.append(`
 								<tr>
 						<td>${user.nombre}</td>
@@ -113,9 +175,9 @@ function cargarPaginacion(totalPages) {
 }
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 	cargarUsuarios(0);
-	$("#filtroNombre").on("input", function() {
+	$("#filtroNombre").on("input", function () {
 		cargarUsuarios(0);
 	});
 });
@@ -123,3 +185,4 @@ $(document).ready(function() {
 function numRegistros() {
 	cargarUsuarios(0);
 }
+
