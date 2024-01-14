@@ -9,20 +9,27 @@
 			<div class="modal-body">
 				<form hx-post="/clientes/abono" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-include="[name='idCliente']">
-					<label>Total de abono: </label>
-					<input name="abono" class="form-control" type="number">
 
 					<div class="container">
 						<div class="row">
 							<div class="col-6">
-								<p class="fw-bold">Tipo de pago:</p>
+								<label class="fw-bold">Total de abono: </label>
+								<input oninput="mostrarMesesAbono(this.value)" min="0" max="2000" name="abono"
+									class="form-control" type="number">
+							</div>
+							<div class="col-6">
+								<label class="fw-bold">Tipo de pago:</label>
 								<select name="tipoPagoAbono" class="form-control">
 									<option selected value="1">EFECTIVO</option>
 									<option value="2">TRANSFERENCIA</option>
 								</select>
 							</div>
 						</div>
+						<div id="mesesAbonos">
+
+						</div>
 					</div>
+					<br>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 						<button type="submit" class="btn btn-primary">Confirmar</button>

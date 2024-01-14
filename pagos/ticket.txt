@@ -7,10 +7,9 @@
                                 
      Mes de Pago    Subtotal    
                                 
-     13/03/2024     $300.00     
-     13/04/2024     $300.00     
+     13/01/2024     $300.00     
                                 
-               Total: $700.00   
+               Total: $400.00   
                                 
  Cobrado por:                   
  Admin                          

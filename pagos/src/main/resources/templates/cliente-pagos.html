@@ -19,6 +19,9 @@
 
 			</div>
 			<div class="container-lg d-flex client-info">
+				
+				<input hidden id="fechaPagoCliente" type="date" th:value="${mesPago}">
+				
 				<div>
 					<h2>Pagos</h2>
 					<div class="col-6 filtro-anios">
@@ -58,7 +61,7 @@
 			</button>
 			
 			<div th:fragment="lista-meses" id="meses-container">
-					<div class="row">
+					<div th:if="${cliente.abono > 0}" class="row">
 						<div class="col-6">
 							<h3 class="col-6">Abono: $<span th:text="${cliente.abono}"></span></h3>
 						</div>
@@ -137,9 +140,8 @@
 												<option value="2">TRANSFERENCIA</option>
 											</select>
 										</div>
-									</div>
+									</div>									
 								</div>
-
 								<br>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger"
@@ -166,5 +168,6 @@
 </body>
 
 <div th:replace="~{fragments/layout :: scripts}"></div>
+<script th:src="@{/js/clientes/cliente-pagos.js}"></script>
 
 </html>

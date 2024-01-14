@@ -320,6 +320,10 @@ public class ClienteService implements IClienteService {
 		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
 		pago.setIdUsuario(Usuario.builder().idUsuario(idUsuario).build());
 		pago.setTipoPago(tipoPago);
+		
+		
+
+		
 		Pago res = pagoRepository.save(pago);
 
 		for (String mes : meses) {
@@ -327,10 +331,19 @@ public class ClienteService implements IClienteService {
 			clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
 					res.getIdPago(), mes);
 		}
+				
+		
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
+		if(cliente.getAbono() > 0) {
+			pagoRepository.actualizarTotal(i.getTotal()-cliente.getAbono(), res.getIdPago());
+			i = pagoRepository.getInfoRecibo(res.getIdPago());
+			clienteRepository.setAbono(0f, cliente.getIdCliente());
+		}
+		
+		
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
 				res.getIdPago());
-		PDFRecibo recibo = new PDFRecibo(i, mesesR,null);
+		PDFRecibo recibo = new PDFRecibo(i, mesesR,0f,cliente.getAbono());
 		printTicket.printTicket(i,mesesR);
 		byte[] pdfBytes = recibo.getPdfBytes();
 		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
@@ -368,7 +381,7 @@ public class ClienteService implements IClienteService {
 		if (idPago > 0) {
 			InfoRecibo i = pagoRepository.getInfoRecibo(idPago);
 			List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(idCliente, idPago);
-			PDFRecibo recibo = new PDFRecibo(i, mesesR,null);
+			PDFRecibo recibo = new PDFRecibo(i, mesesR,null,0f);
 			byte[] pdfBytes = recibo.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, idPago);
 		}
@@ -448,7 +461,7 @@ public class ClienteService implements IClienteService {
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
 				res.getIdPago());
-		PDFRecibo recibo = new PDFRecibo(i, mesesR,residuo);
+		PDFRecibo recibo = new PDFRecibo(i, mesesR,residuo,0f);
 		printTicket.printTicket(i,mesesR);
 		byte[] pdfBytes = recibo.getPdfBytes();
 		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());

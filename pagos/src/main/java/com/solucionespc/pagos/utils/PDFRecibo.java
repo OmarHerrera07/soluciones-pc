@@ -31,10 +31,13 @@ public class PDFRecibo {
 	
 	private Float abono;
 	
-	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses,Float abono) {
+	private Float abonoRestado;
+	
+	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses,Float abono,Float abonoRestado) {
 		this.pago = pago;
 		this.meses = meses;
 		this.abono = abono;
+		this.abonoRestado = abonoRestado;
 	}
 	
 	
@@ -176,9 +179,16 @@ public class PDFRecibo {
 	    }
 	    table.setSpacingAfter(15f);
 	    document.add(table);
-	    
-	    	    	    	    	    	    	    	    
 	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);
+	    if(abonoRestado>0) {
+		    
+		    Paragraph restoAbono = new Paragraph("abono: $"+abonoRestado, totalFont);
+		    restoAbono.setAlignment(Element.ALIGN_RIGHT);
+		    restoAbono.setSpacingAfter(15f);
+		    document.add(restoAbono);
+	    }
+	    	    	    	    	    	    	    	    
+
 	    Paragraph total = new Paragraph("Total: $"+pago.getTotal(), totalFont);
 	    total.setAlignment(Element.ALIGN_RIGHT);
 	    total.setSpacingAfter(15f);
