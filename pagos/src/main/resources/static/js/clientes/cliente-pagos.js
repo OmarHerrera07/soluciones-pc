@@ -1,7 +1,10 @@
 function mostrarMesesAbono(abono) {
-
+	
+	
 	const precioPaquete = $('#precioPaquete').text();
 	const fechaInput = $('#fechaPagoCliente').val();
+	
+	abono = parseFloat(abono) + parseFloat($('#cantidadAbono').text());
 
 	let resultado = abono / precioPaquete;
 	let residuo = abono % precioPaquete;
@@ -10,7 +13,7 @@ function mostrarMesesAbono(abono) {
 	console.log(fechaInput);
 	console.log(abono);
 	console.log(numMeses);
-	console.log(residuo);
+	console.log();
 
 	// Convertir la fecha de "yyyy/MM/dd" a "dd/MM/yyyy"
 	const fechaParts = fechaInput.split("-");

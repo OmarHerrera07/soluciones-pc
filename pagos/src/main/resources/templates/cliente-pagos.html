@@ -61,9 +61,9 @@
 			</button>
 			
 			<div th:fragment="lista-meses" id="meses-container">
-					<div th:if="${cliente.abono > 0}" class="row">
+					<div class="row">
 						<div class="col-6">
-							<h3 class="col-6">Abono: $<span th:text="${cliente.abono}"></span></h3>
+							<h3 class="col-6">Abono: $<span id="cantidadAbono" th:text="${cliente.abono}"></span></h3>
 						</div>
 					</div>
 					
@@ -128,9 +128,6 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
-								<div id="confirmarMeses" class="modal-body">
-
-								</div>
 								<div class="container">
 									<div class="row">
 										<div class="col-6">
@@ -141,6 +138,9 @@
 											</select>
 										</div>
 									</div>									
+								</div>
+								<div id="confirmarMeses" class="modal-body">
+
 								</div>
 								<br>
 								<div class="modal-footer">
