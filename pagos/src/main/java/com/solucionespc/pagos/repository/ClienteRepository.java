@@ -101,4 +101,10 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     @Transactional
     @Query(value = "update cliente set abono = ?1 where id_cliente = ?2", nativeQuery = true)
     int setAbono(Float abono, Integer idCliente);
+    
+    
+    @Query(value = "select c.abono from cliente c where c.id_cliente = ?1",
+            nativeQuery = true)
+    Float obtenerAbonoActual(Integer idCliente);
+    
 }

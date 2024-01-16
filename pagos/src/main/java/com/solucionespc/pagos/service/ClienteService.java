@@ -509,10 +509,18 @@ public class ClienteService implements IClienteService {
 					if ((residuo != cliente.getAbono()) && residuo == 0) {
 						residuo = cliente.getAbono();
 					}
-
+					
 					tipoRecibo = 4;
+					Float abonoCurrent = clienteRepository.obtenerAbonoActual(idCliente);
+					if((residuo - abonoCurrent) == 0) {
+						residuo = residuo - cliente.getAbono();
+						tipoRecibo = 3;
+						System.out.println("ENTRO EN LA CONDICIÓN");
+					}
 					System.out.println("Este es el abono last");
 					System.out.println(cliente.getAbono());
+					System.out.println("Abono actual");
+					System.out.println(clienteRepository.obtenerAbonoActual(idCliente));
 					System.out.println("Este es el residuo");
 					System.out.println(residuo);
 				}
@@ -548,5 +556,11 @@ public class ClienteService implements IClienteService {
 	@Override
 	public List<Date> obtenerMesesPagadosPorAnio(Integer idCliente, Integer anio) {
 		return mesesPagoRepositoty.obtenerMesesPagadosPorAnio(idCliente,anio);
+	}
+
+	@Override
+	public Float obtenerAbonoActual(Integer idCliente) {
+		// TODO Auto-generated method stub
+		return clienteRepository.obtenerAbonoActual(idCliente);
 	}
 }

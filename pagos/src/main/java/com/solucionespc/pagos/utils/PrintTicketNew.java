@@ -32,7 +32,8 @@ public class PrintTicketNew {
 	public static void printTicket(InfoRecibo pago, List<MesesRecibo> meses,Float abono, Integer TipoTicket) { 
 		 PrinterMatrix printer = new PrinterMatrix();
 		 
-		 int numCol = 12 + meses.size()+2;
+		 int espacio = 11;
+		 int numCol = 12 + meses.size()+2 + espacio;
 		 
 		 if(TipoTicket == 3 || TipoTicket == 4 || TipoTicket == 2) {
 			 numCol+=2;
@@ -47,8 +48,7 @@ public class PrintTicketNew {
 		 e.setNumber(101.85);
 		 
 		 printer.setOutSize(numCol, 32);
-		 
-		 printer.printCharAtCol(1, 1, 32, "=");		 
+		 	 
 		 printer.printTextWrap(1, 2, 8, 32, nombre);
 		 printer.printTextWrap(2, 3, 8, 32, "");
 		 printer.printTextWrap(3,4, 15, 32, "Fecha: "+sdf.format(pago.getFecha())); 
@@ -98,6 +98,7 @@ public class PrintTicketNew {
 		 printer.printTextWrap(colPagos, colPagos+1, 1, 32, "Cobrado por: ");
 		 colPagos+=1;
 		 printer.printTextWrap(colPagos, colPagos+1, 1, 32, pago.getNombreUsuario());
+		 printer.printCharAtCol(colPagos+espacio, 1, 32, "");
 		 
 		 
 		 
