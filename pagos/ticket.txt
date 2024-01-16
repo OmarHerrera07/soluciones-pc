@@ -3,15 +3,13 @@
                                 
                Fecha: 15/01/2024
                                 
- RFC: FSKN3923J                 
+ RFC:                           
                                 
      Mes de Pago    Subtotal    
                                 
-     15/02/2024     $300.00     
-     abono        - $100.00     
+     16/01/2025     $190.00     
                                 
-               Total: $200.00   
+               Total: $190.00   
                                 
  Cobrado por:                   
  Admin                          
-                                

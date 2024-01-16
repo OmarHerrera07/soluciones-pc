@@ -65,10 +65,14 @@
 		<div class="col-6">
 			<label for="estado">Estado: </label>
 			<Select th:value="${cliente.estado}" id="estado" name="estado" class="form-control" disabled>
-					<option th:selected="${cliente.estado == 1}" value="1" >Activo</option>
-					<option th:selected="${cliente.estado == 2}" value="2">Inactivo</option>
-					<option th:selected="${cliente.estado == 3}" value="3">Especial</option>
+				<option th:selected="${cliente.estado == 1}" value="1">Activo</option>
+				<option th:selected="${cliente.estado == 2}" value="2">Inactivo</option>
+				<option th:selected="${cliente.estado == 3}" value="3">Especial</option>
 			</Select>
+		</div>
+		<div class="col-6">
+			<label >Abono: </label>
+			<input disabled th:value="${cliente.abono}" class="form-control">
 		</div>
 	</div>
 	<div class="row">

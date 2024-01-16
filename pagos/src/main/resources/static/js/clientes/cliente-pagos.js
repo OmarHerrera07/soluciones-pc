@@ -17,11 +17,6 @@ function mostrarMesesAbono(abono) {
 	let resultado = abono / precioPaquete;
 	let residuo = abono % precioPaquete;
 	let numMeses = Math.floor(resultado);
-	console.log("FECHAAA");
-	console.log(fechaInput);
-	console.log(abono);
-	console.log(numMeses);
-	console.log();
 
 	// Convertir la fecha de "yyyy/MM/dd" a "dd/MM/yyyy"
 	const fechaParts = fechaInput.split("-");

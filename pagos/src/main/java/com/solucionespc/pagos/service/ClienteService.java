@@ -149,6 +149,7 @@ public class ClienteService implements IClienteService {
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
 		cliente.setObservaciones(c.getObservaciones());
+		cliente.setAbono(c.getAbono());
 		try {
 			clienteRepository.save(cliente);
 			return true;
@@ -315,7 +316,10 @@ public class ClienteService implements IClienteService {
 	@Override
 	public void pagoMasivo(List<String> meses, Cliente cliente, Integer idUsuario, Integer tipoPago)
 			throws DocumentException, IOException {
-
+		
+		
+		Integer tipoRecibo = 1;
+		Float residuo = 0f;
 		PrintTicket printTicket = new PrintTicket();
 		Pago pago = new Pago();
 		pago.setFecha(new Date());
@@ -336,6 +340,8 @@ public class ClienteService implements IClienteService {
 			pagoRepository.actualizarTotal(i.getTotal() - cliente.getAbono(), res.getIdPago());
 			i = pagoRepository.getInfoRecibo(res.getIdPago());
 			clienteRepository.setAbono(0f, cliente.getIdCliente());
+			tipoRecibo = 4;
+			residuo = cliente.getAbono();
 			
 		}
 
@@ -356,6 +362,9 @@ public class ClienteService implements IClienteService {
 			byte[] pdfBytes = recibo.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
 		}
+		PrintTicketNew printTicketNew = new PrintTicketNew();
+		
+		printTicketNew.printTicket(i, mesesR, residuo, tipoRecibo);
 
 	}
 
