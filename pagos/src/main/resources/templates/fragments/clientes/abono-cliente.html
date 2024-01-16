@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">Abono</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button onclick="resetAbono();" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form hx-post="/clientes/abono" hx-target="#result-msg" hx-swap="innerHTML"
@@ -14,7 +14,7 @@
 						<div class="row">
 							<div class="col-6">
 								<label class="fw-bold">Total de abono: </label>
-								<input oninput="mostrarMesesAbono(this.value)" min="0" max="2000" name="abono"
+								<input id="cantidadAbonoinput" oninput="mostrarMesesAbono(this.value)" min="0" max="2000" name="abono"
 									class="form-control" type="number">
 							</div>
 							<div class="col-6">
@@ -32,7 +32,7 @@
 					</div>
 					<br>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button onclick="resetAbono();" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 						<button type="submit" class="btn btn-primary">Confirmar</button>
 					</div>
 				</form>

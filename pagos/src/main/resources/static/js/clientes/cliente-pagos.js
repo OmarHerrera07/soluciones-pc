@@ -1,3 +1,11 @@
+document.body.addEventListener("resetForm", function() {
+	
+	$('#cantidadAbonoinput').val('');
+	console.log("Hola que hace");
+	document.getElementById('mesesAbonos').innerHTML = ' ';
+	$('.modal').modal('hide');
+})
+
 function mostrarMesesAbono(abono) {
 	
 	
@@ -58,4 +66,11 @@ function mostrarMesesAbono(abono) {
 	document.getElementById('mesesAbonos').innerHTML = contenedorMeses;
 	// Mostrar las fechas generadas en la consola (puedes ajustar esto según tus necesidades)
 	console.log(fechasGeneradas);
+}
+
+function resetAbono(){
+	$('#cantidadAbonoinput').val('');
+	console.log("Hola que hace");
+	document.getElementById('mesesAbonos').innerHTML = ' ';
+	$('.modal').modal('hide');
 }

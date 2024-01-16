@@ -19,13 +19,11 @@
 
 			</div>
 			<div class="container-lg d-flex client-info">
-				
-				<input hidden id="fechaPagoCliente" type="date" th:value="${mesPago}">
-				
+												
 				<div>
 					<h2>Pagos</h2>
 					<div class="col-6 filtro-anios">
-						<form hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container" hx-swap="innerHTML"
+						<form name="formAnio" hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container" hx-swap="innerHTML"
 							class="filtro-anios">
 							<input hidden name="id" th:value="${idCliente}">
 							<label>Año</label>
@@ -56,11 +54,12 @@
 			<br>
 			<button sec:authorize="hasAnyRole('ADMINISTRADOR')" type="button" data-bs-toggle="modal" data-bs-target="#modal-eliminar-pago"
 				class="btn btn-danger float-end" hx-get="/clientes/get-meses-pagados" hx-target="#body-cancelar-pago"
-				hx-swap="innerHTML" hx-include="[name='idCliente']">
+				hx-swap="innerHTML" hx-include="[name='formAnio']">
 				Cancelar pago
 			</button>
 			
 			<div th:fragment="lista-meses" id="meses-container">
+				<input hidden id="fechaPagoCliente" type="date" th:value="${mesPago}">
 					<div class="row">
 						<div class="col-6">
 							<h3 class="col-6">Abono: $<span id="cantidadAbono" th:text="${cliente.abono}"></span></h3>

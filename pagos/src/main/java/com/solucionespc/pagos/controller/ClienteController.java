@@ -330,6 +330,7 @@ public class ClienteController {
 	 *         información de los meses pagados.
 	 */
 	@GetMapping("/refrescar-meses")
+	@HxTrigger("resetForm")
 	public String refrescarMeses(@RequestParam(value = "idRefresh") Integer id,
 			@RequestParam(value = "anioRefresh") String anio, Model model) {
 
@@ -344,6 +345,7 @@ public class ClienteController {
 		model.addAttribute("cliente", clienteService.finById(id));
 		model.addAttribute("anio", anioPago);
 		model.addAttribute("idCliente", id);
+		model.addAttribute("fechaPagoCliente", fechaPago);
 		model.addAttribute("mesPago", fechaPago);
 		model.addAttribute("meses", clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio)));
 		model.addAttribute("mesesPagados", clienteService.obtnerMesesPagadosFiltro(anio, id));
@@ -415,8 +417,10 @@ public class ClienteController {
 	}
 
 	@GetMapping("/get-meses-pagados")
-	public String getMesesPagados(@RequestParam(value = "idCliente") Integer id, Model model) {
-		List<Date> meses = clienteService.obtenerMesesPagados(id);
+	public String getMesesPagados(@RequestParam(value = "id") Integer id, 
+			@RequestParam(value = "anio") Integer anio,
+			Model model) {
+		List<Date> meses = clienteService.obtenerMesesPagadosPorAnio(id,anio);
 		model.addAttribute("mesesPagados", meses);
 		model.addAttribute("clienteId", id);
 		return "fragments/clientes/cancelar-pagos :: form-eliminar-pago";

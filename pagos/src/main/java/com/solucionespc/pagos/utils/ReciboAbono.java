@@ -22,17 +22,22 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.solucionespc.pagos.dto.InfoRecibo;
 import com.solucionespc.pagos.dto.MesesRecibo;
-import com.solucionespc.pagos.entity.Pago;
 
-public class PDFRecibo {
+public class ReciboAbono {
 	private final InfoRecibo pago;
 	
 	private final List<MesesRecibo> meses;
-
 	
-	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses) {
+	private Integer tipoRecibo;
+	
+	private Float abono;
+	
+	public ReciboAbono(InfoRecibo pago, List<MesesRecibo> meses,Float abono,Integer tipoRecibo) {
 		this.pago = pago;
 		this.meses = meses;
+		this.tipoRecibo = tipoRecibo;
+		this.abono = abono;
+		
 	}
 	
 	
@@ -151,11 +156,52 @@ public class PDFRecibo {
 	        table.addCell(cell);
 	    }
 	    
-	    
-	    table.setSpacingAfter(15f);
-	    document.add(table);
-	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);	    	    	    	    	    	    	    	    
+	    if(tipoRecibo == 1) {
+	    	
+	    }else if(tipoRecibo == 2) {
+	        cell = new PdfPCell(new Phrase("1",fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase("abono",fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
 
+	        cell = new PdfPCell(new Phrase("$"+abono,fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+	    	
+	    }else if(tipoRecibo == 3) {
+	        cell = new PdfPCell(new Phrase("1",fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase("abono",fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+
+	        cell = new PdfPCell(new Phrase("$"+abono,fontTableBody));
+	        cell.setBorder(Rectangle.NO_BORDER);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(cell);
+	    	
+	    }
+	    document.add(table);
+	    if(tipoRecibo == 4) {
+		    Paragraph descuentoAbono = new Paragraph("abono: -$"+abono, fontTableHead);
+		    descuentoAbono.setAlignment(Element.ALIGN_RIGHT);
+		    descuentoAbono.setSpacingAfter(15f);
+		    document.add(descuentoAbono);
+
+	    }
+
+	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);
+	    	    	    	    	    	    	    	    
 	    Paragraph total = new Paragraph("Total: $"+pago.getTotal(), totalFont);
 	    total.setAlignment(Element.ALIGN_RIGHT);
 	    total.setSpacingAfter(15f);
@@ -169,5 +215,6 @@ public class PDFRecibo {
 	    document.add(caja);	    
 	    document.close();
 	    return baos.toByteArray();
+
 	}
 }
