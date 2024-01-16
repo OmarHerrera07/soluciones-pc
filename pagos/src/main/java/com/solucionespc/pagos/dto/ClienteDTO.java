@@ -14,6 +14,8 @@ public interface ClienteDTO {
 
     Float getPaquete();
     
+    Float getAbono();
+    
     Date getFechaPago();
     
     Date getUltimoPago();
