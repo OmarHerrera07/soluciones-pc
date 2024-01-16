@@ -15,6 +15,8 @@ import org.springframework.data.repository.query.Param;
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.entity.Cliente;
 
+import jakarta.transaction.Transactional;
+
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	
@@ -89,4 +91,14 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     
     @Procedure(name = "cancelarPago")
     Integer cancelarPago(@Param("p_id_cliente") Integer idCliente, @Param("p_fecha") String fecha);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "update pago set total = ?1 where id_pago = ?2", nativeQuery = true)
+    int actualizarTotal(Float total, Integer idPago);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "update cliente set abono = ?1 where id_cliente = ?2", nativeQuery = true)
+    int setAbono(Float abono, Integer idCliente);
 }

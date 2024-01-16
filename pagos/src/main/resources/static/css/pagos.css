@@ -33,3 +33,8 @@
 .filtro-anios input{
 	width: 6rem;
 }
+
+.meses-abonos{
+	flex-wrap: wrap;
+	align-content: flex-end;
+}

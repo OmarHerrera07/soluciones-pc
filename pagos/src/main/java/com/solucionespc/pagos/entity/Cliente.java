@@ -55,6 +55,8 @@ public class Cliente {
         
     private String coordenadas;
     
+    private Float abono;
+    
     @Column(name = "dias_atraso")
     private Integer diasAtraso;
     

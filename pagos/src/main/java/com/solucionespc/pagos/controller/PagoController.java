@@ -142,15 +142,15 @@ public class PagoController {
 	 * @param id	id del recibo a descargar
 	 * @return		descarga el recibo en formato pdf
 	 */
-	@GetMapping("/descargarRecibo")
-	public ResponseEntity<byte[]> descargarReporteFinal(@RequestParam(value="id") Integer id) {
-		Pago pago = pagoService.findById(id);
-	    byte[] bytes = pago.getRecibo();
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_PDF);
-	    headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Reporte Final.pdf").build());
-	    return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
-	}
+    @GetMapping("/generar-recibo")
+    public ResponseEntity<byte[]> descargarReporteFinal(@RequestParam(value = "id") Integer id) {
+        Pago pago = pagoService.findById(id);
+        byte[] bytes = pago.getRecibo();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename("Reporte Final.pdf").build());
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
 	
 	
 	/**
@@ -194,9 +194,10 @@ public class PagoController {
         String headerKey = "Content-Disposition";
         String sbHeaderValue = "inline; filename=Reporte.pdf";
         response.setHeader(headerKey, sbHeaderValue);
-        List<Corte> infoCorte = pagoService.getInfoCorteDinamico(fechaInicio, fechaFin);
+        List<Corte> infoCorteEfectivo = pagoService.getInfoCorteDinamicoEfectivo(fechaInicio, fechaFin);
+        List<Corte> infoCorteTransferencia = pagoService.getInfoCorteDinamicoTransferencia(fechaInicio, fechaFin);
         Usuario user = usuarioService.finUserByUsername(authentication.getName());
-        PDFCorte reporte = new PDFCorte(infoCorte,user);
+        PDFCorte reporte = new PDFCorte(infoCorteEfectivo,infoCorteTransferencia,user,fechaInicio,fechaFin);
         reporte.export(response);
 
     }

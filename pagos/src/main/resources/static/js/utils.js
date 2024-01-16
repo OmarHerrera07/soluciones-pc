@@ -41,11 +41,20 @@ function pagarMeses() {
 
 		});
 		var paquete = $('#precioPaquete').text();
+		var abono = $('#cantidadAbono').text();
+		
+		if(abono > 0){
+			contenedorMeses += `<div class="text-right total-meses d-flex flex-column justify-content-end meses-abonos">
+							  <p class="fw-bold meses-pagar"> Abono: - $<span class="no-bold">${abono}</span></p>
+							  <p class="fw-bold meses-pagar"> Total: $<span class="no-bold">${valoresSeleccionados.length * paquete - abono}</span></p>
+							</div>`;
+		}else{
+			
+		contenedorMeses += `<div class="text-right total-meses meses-abono">
+							  <p class="fw-bold meses-pagar"> Total: $<span class="no-bold">${valoresSeleccionados.length * paquete}</span></p>
+							</div>`;
+		}
 
-		contenedorMeses += `<div class="text-right total-meses">
-  <p class="fw-bold meses-pagar"> Total: $<span class="no-bold">${valoresSeleccionados.length * paquete}</span></p>
-</div>
-`;
 		document.getElementById('confirmarMeses').innerHTML = contenedorMeses;
 		$('#alerta-pagar-mes').css('visibility', 'hidden');
 		$('#exampleModal').modal('show');

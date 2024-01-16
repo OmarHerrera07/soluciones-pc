@@ -33,6 +33,8 @@ public class ClienteRegisterDTO {
 	private String coordenadas;
 	
 	private int estado;
+	
+	private Float abono;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fecha;

@@ -79,6 +79,14 @@
 					<option th:selected="${cliente.estado == 4}" value="4">SUSPENSIÓN</option>
 				</Select>
 			</div>
+			<div sec:authorize="hasAnyRole('ADMINISTRADOR')" class="col-6">
+				<label for="estado">Abono: </label>
+				<input name="abono" th:value="${cliente.abono}" class="form-control">
+			</div>
+			<div sec:authorize="hasAnyRole('CAJA')" class="col-6">
+				<label hidden for="estado">Abono: </label>
+				<input hidden name="abono" th:value="${cliente.abono}" class="form-control">
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-12">

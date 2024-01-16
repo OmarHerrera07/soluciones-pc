@@ -330,6 +330,7 @@ public class ClienteController {
 	 *         información de los meses pagados.
 	 */
 	@GetMapping("/refrescar-meses")
+	@HxTrigger("resetForm")
 	public String refrescarMeses(@RequestParam(value = "idRefresh") Integer id,
 			@RequestParam(value = "anioRefresh") String anio, Model model) {
 
@@ -344,6 +345,7 @@ public class ClienteController {
 		model.addAttribute("cliente", clienteService.finById(id));
 		model.addAttribute("anio", anioPago);
 		model.addAttribute("idCliente", id);
+		model.addAttribute("fechaPagoCliente", fechaPago);
 		model.addAttribute("mesPago", fechaPago);
 		model.addAttribute("meses", clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio)));
 		model.addAttribute("mesesPagados", clienteService.obtnerMesesPagadosFiltro(anio, id));
@@ -415,8 +417,10 @@ public class ClienteController {
 	}
 
 	@GetMapping("/get-meses-pagados")
-	public String getMesesPagados(@RequestParam(value = "idCliente") Integer id, Model model) {
-		List<Date> meses = clienteService.obtenerMesesPagados(id);
+	public String getMesesPagados(@RequestParam(value = "id") Integer id, 
+			@RequestParam(value = "anio") Integer anio,
+			Model model) {
+		List<Date> meses = clienteService.obtenerMesesPagadosPorAnio(id,anio);
 		model.addAttribute("mesesPagados", meses);
 		model.addAttribute("clienteId", id);
 		return "fragments/clientes/cancelar-pagos :: form-eliminar-pago";
@@ -476,6 +480,32 @@ public class ClienteController {
 		model.addAttribute("colonias", coloniaService.findAll());
 		System.out.println("ENTROOOOOOOOOOO");
 		return "index :: select-colonias";
+	}
+	
+	/**
+	 * Registrar un cliente nuevo
+	 * 
+	 * @param cliente cliente a registrar
+	 * @return Resultado sobre el registro del usuario
+	 * @throws DocumentException 
+	 * @throws IOException 
+	 */
+	@PostMapping(value = "/abono", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refresh")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String abono(
+			@RequestParam(value = "abono") Float abono,
+			@RequestParam(value = "idCliente") Integer idCliente,
+			@RequestParam(value = "tipoPagoAbono") Integer tipoPago
+			) throws IOException, DocumentException {
+		
+		
+		System.out.println("DATOS: ");
+		System.out.println(abono);
+		System.out.println(idCliente);
+		clienteService.abonoCliente(idCliente, abono,tipoPago);
+		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el cliente</div>";
 	}
 
 

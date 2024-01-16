@@ -19,10 +19,11 @@
 
 			</div>
 			<div class="container-lg d-flex client-info">
+												
 				<div>
 					<h2>Pagos</h2>
 					<div class="col-6 filtro-anios">
-						<form hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container" hx-swap="innerHTML"
+						<form name="formAnio" hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container" hx-swap="innerHTML"
 							class="filtro-anios">
 							<input hidden name="id" th:value="${idCliente}">
 							<label>Año</label>
@@ -53,17 +54,30 @@
 			<br>
 			<button sec:authorize="hasAnyRole('ADMINISTRADOR')" type="button" data-bs-toggle="modal" data-bs-target="#modal-eliminar-pago"
 				class="btn btn-danger float-end" hx-get="/clientes/get-meses-pagados" hx-target="#body-cancelar-pago"
-				hx-swap="innerHTML" hx-include="[name='idCliente']">
+				hx-swap="innerHTML" hx-include="[name='formAnio']">
 				Cancelar pago
 			</button>
+			
 			<div th:fragment="lista-meses" id="meses-container">
-
+				<input hidden id="fechaPagoCliente" type="date" th:value="${mesPago}">
+					<div class="row">
+						<div class="col-6">
+							<h3 class="col-6">Abono: $<span id="cantidadAbono" th:text="${cliente.abono}"></span></h3>
+						</div>
+					</div>
+					
 				<form name="refresh">
 					<input name="idRefresh" th:value="${idCliente}" hidden>
 					<input name="anioRefresh" th:value="${anio}" hidden>
 				</form>
+				<button th:disabled="${cliente.estado == false}" type="button" data-bs-toggle="modal" data-bs-target="#modal-abono-cliente"
+						class="btn btn-success">
+						Abono
+				</button>
+				<br>
 				<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-confirm="¿Seguro?">
+					<br>	
 					<button th:disabled="${cliente.estado == false}" type="button" onclick="pagarMeses();"
 						class="btn btn-success">
 						Pagar
@@ -113,9 +127,6 @@
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
-								<div id="confirmarMeses" class="modal-body">
-
-								</div>
 								<div class="container">
 									<div class="row">
 										<div class="col-6">
@@ -125,9 +136,11 @@
 												<option value="2">TRANSFERENCIA</option>
 											</select>
 										</div>
-									</div>
+									</div>									
 								</div>
+								<div id="confirmarMeses" class="modal-body">
 
+								</div>
 								<br>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-danger"
@@ -147,10 +160,13 @@
 	<!--FIN MODAL EDITAR CLIENTE -->
 
 	<div th:replace="~{fragments/clientes/cancelar-pagos :: modal-eliminar-pago}"></div>
+	
+	<div th:replace="~{fragments/clientes/abono-cliente :: modal-abono-cliente}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->
 </body>
 
 <div th:replace="~{fragments/layout :: scripts}"></div>
+<script th:src="@{/js/clientes/cliente-pagos.js}"></script>
 
 </html>

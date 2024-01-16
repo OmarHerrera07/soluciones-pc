@@ -48,6 +48,11 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
             nativeQuery = true)
     List<Date> obtnerMesesPagados(Integer idCliente);
 	
+	@Query(value = "SELECT mp.fecha FROM meses_pago mp JOIN cliente c ON mp.id_cliente = c.id_cliente WHERE mp.id_cliente = ?1 AND YEAR(mp.fecha) = ?2 ORDER BY mp.fecha ASC",
+	        nativeQuery = true)
+	List<Date> obtenerMesesPagadosPorAnio(Integer idCliente, Integer anio);
+
+	
 	
 	/**
 	 * Obtiene los meses en los que se realizaron pagos para un cliente específico en un año determinado.

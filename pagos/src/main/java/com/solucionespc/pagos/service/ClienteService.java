@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,8 @@ import com.solucionespc.pagos.repository.PagoRepository;
 import com.solucionespc.pagos.repository.UsuarioRepository;
 import com.solucionespc.pagos.utils.PDFRecibo;
 import com.solucionespc.pagos.utils.PrintTicket;
+import com.solucionespc.pagos.utils.PrintTicketNew;
+import com.solucionespc.pagos.utils.ReciboAbono;
 
 import jakarta.transaction.Transactional;
 
@@ -104,6 +107,7 @@ public class ClienteService implements IClienteService {
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
 		cliente.setDiasAtraso(0);
+		cliente.setAbono(0f);
 		try {
 			clienteRepository.save(cliente);
 			return true;
@@ -145,6 +149,7 @@ public class ClienteService implements IClienteService {
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
 		cliente.setObservaciones(c.getObservaciones());
+		cliente.setAbono(c.getAbono());
 		try {
 			clienteRepository.save(cliente);
 			return true;
@@ -312,12 +317,16 @@ public class ClienteService implements IClienteService {
 	public void pagoMasivo(List<String> meses, Cliente cliente, Integer idUsuario, Integer tipoPago)
 			throws DocumentException, IOException {
 		
+		
+		Integer tipoRecibo = 1;
+		Float residuo = 0f;
 		PrintTicket printTicket = new PrintTicket();
 		Pago pago = new Pago();
 		pago.setFecha(new Date());
 		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
 		pago.setIdUsuario(Usuario.builder().idUsuario(idUsuario).build());
 		pago.setTipoPago(tipoPago);
+
 		Pago res = pagoRepository.save(pago);
 
 		for (String mes : meses) {
@@ -325,13 +334,38 @@ public class ClienteService implements IClienteService {
 			clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
 					res.getIdPago(), mes);
 		}
+
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
+		if (cliente.getAbono() > 0) {
+			pagoRepository.actualizarTotal(i.getTotal() - cliente.getAbono(), res.getIdPago());
+			i = pagoRepository.getInfoRecibo(res.getIdPago());
+			clienteRepository.setAbono(0f, cliente.getIdCliente());
+			tipoRecibo = 4;
+			residuo = cliente.getAbono();
+			
+		}
+
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
 				res.getIdPago());
-		PDFRecibo recibo = new PDFRecibo(i, mesesR);
-		printTicket.printTicket(i,mesesR);
-		byte[] pdfBytes = recibo.getPdfBytes();
-		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
+		
+		if(cliente.getAbono() > 0) {
+			ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, cliente.getAbono(), 4);
+
+			System.out.println(i.getTotal());
+			System.out.println(mesesR);
+			System.out.println(tipoPago);
+			byte[] pdfBytes = reciboAbono.getPdfBytes();
+			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
+		}else {
+			PDFRecibo recibo = new PDFRecibo(i, mesesR);
+			printTicket.printTicket(i, mesesR);
+			byte[] pdfBytes = recibo.getPdfBytes();
+			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
+		}
+		PrintTicketNew printTicketNew = new PrintTicketNew();
+		
+		printTicketNew.printTicket(i, mesesR, residuo, tipoRecibo);
+
 	}
 
 	/**
@@ -378,18 +412,141 @@ public class ClienteService implements IClienteService {
 		try {
 			clienteRepository.deleteById(idCliente);
 			return true;
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
-		}		
+		}
 	}
 
 	@Override
 	public boolean totalMesesPagados(Integer idCliente) {
 		Integer res = mesesPagoRepositoty.totalMesesPagados(idCliente);
-		
-		if(res > 0) {
+
+		if (res > 0) {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean abonoCliente(Integer idCliente, Float abono, Integer tipoPago)
+			throws IOException, DocumentException {
+		Cliente cliente = clienteRepository.findById(idCliente).get();
+		/**
+		 * Estado 1: ticket normal Estado 2: Solo abono x Estado 3: Meses mas abono
+		 * Estado 4: Usando el abono x
+		 */
+		Integer tipoTicket;
+		Float residuo = 0f;
+		Pago pago = new Pago();
+		List<String> fechasGeneradas = new ArrayList<>();
+		Integer tipoRecibo = 1;
+		Pago res = new Pago();
+
+		float resultado = (abono + cliente.getAbono()) / cliente.getPaquete().getPrecio();
+		int numMeses = (int) Math.floor(resultado);
+		residuo = (abono + cliente.getAbono()) % cliente.getPaquete().getPrecio();
+
+		System.out.println("Num de meses: ");
+		System.out.println(numMeses);
+		System.out.println("Abono proximo mes: ");
+		System.out.println(residuo);
+
+		clienteRepository.setAbono(residuo, idCliente);
+
+		// Número de meses a generar
+		int numeroMeses = numMeses;
+
+		// Formato deseado para la impresión
+		DateTimeFormatter formatoDeseado = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDate fechaInicio = cliente.getFechaPago().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		// Lista para almacenar las fechas generadas
+
+		// Generar fechas y agregarlas a la lista
+		for (int i = 0; i < numeroMeses; i++) {
+			LocalDate fechaGenerada = fechaInicio.plusMonths(i);
+			fechasGeneradas.add(fechaGenerada.format(formatoDeseado));
+		}
+
+		// Imprimir la lista de fechas generadas
+		System.out.println("Fechas generadas:");
+		fechasGeneradas.forEach(System.out::println);
+
+		pago.setFecha(new Date());
+		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
+		pago.setIdUsuario(Usuario.builder().idUsuario(1).build());
+		pago.setTipoPago(tipoPago);
+		res = pagoRepository.save(pago);
+
+		for (String mes : fechasGeneradas) {
+			System.out.println(mes);
+			clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
+					res.getIdPago(), mes);
+		}
+		pagoRepository.actualizarTotal(abono, res.getIdPago());
+
+		if ((abono + cliente.getAbono()) >= cliente.getPaquete().getPrecio()) {
+			if (cliente.getAbono() == 0) {
+
+				if (residuo == 0) {
+					// Estado 1: ticket normal
+					tipoRecibo = 1;
+				} else {
+					// Estado 3: Meses mas abono
+					tipoRecibo = 3;
+				}
+				/**
+				 * Estado 1: ticket normal Estado 2: Solo abono x Estado 3: Meses mas abono
+				 * Estado 4: Usando el abono x
+				 */
+
+			} else {
+				if ((abono % cliente.getPaquete().getPrecio() == 0)) {
+					// Estado 1: ticket normal
+					tipoRecibo = 1;
+				} else {
+					// Estado 4: Usando el abono
+
+					if ((residuo != cliente.getAbono()) && residuo == 0) {
+						residuo = cliente.getAbono();
+					}
+
+					tipoRecibo = 4;
+					System.out.println("Este es el abono last");
+					System.out.println(cliente.getAbono());
+					System.out.println("Este es el residuo");
+					System.out.println(residuo);
+				}
+
+			}
+
+		} else {
+			// Estado 2: Solo abono
+			tipoRecibo = 2;
+			residuo = abono;
+
+		}
+
+		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
+
+		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
+				res.getIdPago());
+		ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, residuo, tipoRecibo);
+
+		System.out.println(i.getTotal());
+		System.out.println(mesesR);
+		System.out.println(tipoPago);
+		byte[] pdfBytes = reciboAbono.getPdfBytes();
+		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
+		
+		PrintTicketNew printTicket = new PrintTicketNew();
+		
+		printTicket.printTicket(i, mesesR, residuo, tipoRecibo);
+
+		return false;
+	}
+
+	@Override
+	public List<Date> obtenerMesesPagadosPorAnio(Integer idCliente, Integer anio) {
+		return mesesPagoRepositoty.obtenerMesesPagadosPorAnio(idCliente,anio);
 	}
 }
