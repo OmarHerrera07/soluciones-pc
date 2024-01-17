@@ -450,7 +450,7 @@ public class ClienteController {
 				
 			}
 		}
-		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
+		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha cancelado el pago</div>";
 	}
 	
 	/**

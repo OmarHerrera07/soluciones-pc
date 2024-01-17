@@ -88,7 +88,7 @@ public class PrintTicketNew {
 	     System.out.println("Imprimiendo ticket");
 	     if(TipoTicket == 3 || TipoTicket == 2) {
 			 printer.printTextWrap(colPagos, colPagos+1, 5+centrado, 16+centrado, "abono");
-			 printer.printTextWrap(colPagos,colPagos+1, 20+centrado, 32+centrado, "$"+abono+"0");
+			 printer.printTextWrap(colPagos,colPagos+1, 22+centrado, 32+centrado, "$"+abono+"0");
 			 colPagos+=1;
 			 System.out.println("ENTROOOO EN LA CONDICIÓN");
 	     }

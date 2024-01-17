@@ -533,7 +533,8 @@ public class ClienteService implements IClienteService {
 			residuo = abono;
 
 		}
-
+		
+		pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),

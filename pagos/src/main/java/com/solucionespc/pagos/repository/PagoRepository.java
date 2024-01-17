@@ -102,4 +102,9 @@ public interface PagoRepository extends JpaRepository<Pago, Integer>{
     @Transactional
     @Query(value = "update pago set total = ?1 where id_pago = ?2", nativeQuery = true)
     int actualizarTotal(Float total, Integer idPago);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "update pago set abono = ?2, tipo_ticket = ?3 where id_pago = ?1", nativeQuery = true)
+    int actualizarInfoPago(Integer idPago,Float abono, Integer tipoTicket);
 }
