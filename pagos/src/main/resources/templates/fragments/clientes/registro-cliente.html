@@ -1,5 +1,5 @@
-<div th:fragment="modal-registrar-cliente" class="modal fade" id="modal-agregar-cliente" data-bs-backdrop="static" data-bs-keyboard= "false" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div th:fragment="modal-registrar-cliente" class="modal fade" id="modal-agregar-cliente" data-bs-backdrop="static"
+	data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -13,12 +13,13 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="nombreCliente">Nombre Completo: </label>
-								<input oninput="this.value = this.value.toUpperCase()" type="text" id="nombreCliente" name="nombre" class="form-control" required>
+								<input oninput="this.value = this.value.toUpperCase()" type="text" id="nombreCliente"
+									name="nombre" class="form-control" required>
 							</div>
 							<div class="col-6">
 								<label for="telefono">Teléfono: </label>
 								<input type="text" pattern="^[0-9]{0,10}$" id="telefono" name="telefono"
-									   class="form-control" required title="Solo se permiten hasta 10 dígitos numéricos.">
+									class="form-control" required title="Solo se permiten hasta 10 dígitos numéricos.">
 							</div>
 
 
@@ -32,14 +33,15 @@
 
 							<div class="col-6">
 								<label for="rfc">RFC: </label>
-								 <input oninput="this.value = this.value.toUpperCase()" pattern="[A-Za-z0-9]{0,13}" id="rfc" name="rfc" class="form-control"  title="Solo se permite ingresar hasta 13 caracteres alfanumericos">
+								<input oninput="this.value = this.value.toUpperCase()" pattern="[A-Za-z0-9]{0,13}"
+									id="rfc" name="rfc" class="form-control"
+									title="Solo se permite ingresar hasta 13 caracteres alfanumericos">
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-6">
 								<label for="colonia">Colonia</label>
-								<Select id="colonia" name="idColonia" class="form-control"
-									required>
+								<Select id="colonia" name="idColonia" class="form-control" required>
 									<option th:each="colonia : ${colonias}" th:value="${colonia.idColonia}"
 										th:text="${colonia.colonia}"></option>
 								</Select>
@@ -68,13 +70,16 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="estado">Estado: </label>
-								<Select id="estado" name="estado" class="form-control"
-									required>
+								<Select id="estado" name="estado" class="form-control" required>
 									<option selected value="1">ACTIVO</option>
 									<option value="2">INACTIVO</option>
 									<option value="3">ESPECIAL</option>
 									<option value="4">SUSPENSIÓN</option>
 								</Select>
+							</div>
+							<div class="col-6">
+								<label for="estado">Abono: </label>
+								<input name="abono" type="number" class="form-control">
 							</div>
 						</div>
 						<br>
