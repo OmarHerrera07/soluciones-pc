@@ -5,14 +5,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/style.css">
+	<div th:replace="~{fragments/layout :: estilos}"></div>
 	<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
 
 	<div th:replace="~{fragments/layout :: nav}"></div>
+	
+	<div id="result-msg"></div>
 	<main>
 		<div class="container-lg d-flex mt-1 client-option">
 			<div>
@@ -31,7 +32,10 @@
 				</button>
 			</div>
 		</div>
-
+		
+		<input id="isAdmin" hidden  sec:authorize="hasAnyRole('ADMINISTRADOR')" value="true">
+		<input id="isAdmin" hidden  sec:authorize="hasAnyRole('CAJA')" value="false">
+		
 		<div class="container-lg">
 			<div class="row filtro-pagos">
 				<div class="col-4">
@@ -64,6 +68,7 @@
 						<th scope="col">Fecha de Pago</th>
 						<th scope="col">Total</th>
 						<th scope="col">Recibo</th>
+						<th sec:authorize="hasAnyRole('ADMINISTRADOR')" scope="col">Eliminar</th>
 					</tr>
 				</thead>
 				<tbody id="tablaPagos">
@@ -93,6 +98,8 @@
 	</main>
 
 	<div th:replace="~{fragments/pagos/corte-dinamico :: modal-corte-dinamico}"></div>
+	
+	<div th:replace="~{fragments/pagos/eliminar-pago :: modal-eliminar-pago}"></div>
 	
 	<div th:replace="~{fragments/layout :: scripts}"></div>
 	<script th:src="@{/js/pagos/pagos.js}"></script>

@@ -4,7 +4,8 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">Abono</h5>
-				<button onclick="resetAbono();" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button onclick="resetAbono();" type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form hx-post="/clientes/abono" hx-target="#result-msg" hx-swap="innerHTML"
@@ -14,8 +15,8 @@
 						<div class="row">
 							<div class="col-6">
 								<label class="fw-bold">Total de abono: </label>
-								<input id="cantidadAbonoinput" oninput="mostrarMesesAbono(this.value)" min="0" max="2000" name="abono"
-									class="form-control" type="number">
+								<input id="cantidadAbonoinput" oninput="mostrarMesesAbono(this.value)" min="0"
+									max="2000" name="abono" class="form-control" type="number">
 							</div>
 							<div class="col-6">
 								<label class="fw-bold">Tipo de pago:</label>
@@ -32,9 +33,40 @@
 					</div>
 					<br>
 					<div class="modal-footer">
-						<button onclick="resetAbono();" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-						<button type="submit" class="btn btn-primary">Confirmar</button>
+						<button onclick="resetAbono();" type="button" class="btn btn-danger"
+							data-bs-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-success" data-bs-toggle="modal" id="confirmarAbonoModal"
+							data-bs-target="#confirmarPagoAbono" disabled>Confirmar</button>
 					</div>
+
+					<!-- Modal -->
+					<div class="modal fade" id="confirmarPagoAbono" data-bs-backdrop="static" data-bs-keyboard="false"
+						tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog custom-modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmación</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="container d-flex align-items-center justify-content-center">
+										<div class="text-center">
+											<p style="font-size: 1.5rem;" class="fw-bold meses-pagar"> ¿Pagar : $<span id="confirmarAbono"></span>?
+											</p>
+										</div>
+									</div>
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger"
+										onclick="cerrarConfirmarAbono();">Cancelar</button>
+									<button type="submit" class="btn btn-success">Confirmar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</form>
 			</div>
 

@@ -1,0 +1,33 @@
+<div th:fragment="modal-eliminar-pago" class="modal fade" id="modal-eliminar-pago" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Eliminar Pago</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="form-registrar-cliente">
+				<div>
+
+					<form hx-post="/pagos/eliminar" hx-target="#result-msg" hx-swap="innerHTML">
+						<div class="row">
+							<div class="col-8">
+								<input hidden id="idEliminar" name="idEliminar">
+								<p class="fw-bold">Cliente: <span class="no-bold" id="clienteEliminar"></span></p>
+								<p class="fw-bold">Pago: $<span class="no-bold" id="pagoEliminar"></span></p>
+										
+								<span class="fw-bold">Fecha:</span> <input id="fechaEliminar" class="fechas" type="date" disabled> 
+							</div>
+						</div>
+						<input hidden id="idPagoEliminar" name="idPagoEliminar">
+						<br>
+						<div class="modal-footer">
+							<button id="cerrarModalPago" type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-success">Confirmar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

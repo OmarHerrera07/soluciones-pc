@@ -334,15 +334,19 @@ public class ClienteService implements IClienteService {
 			clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
 					res.getIdPago(), mes);
 		}
+		
 
+		// Se actualiza el tipo de pago y si hay un abono
+		pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 		if (cliente.getAbono() > 0) {
-			pagoRepository.actualizarTotal(i.getTotal() - cliente.getAbono(), res.getIdPago());
-			i = pagoRepository.getInfoRecibo(res.getIdPago());
-			clienteRepository.setAbono(0f, cliente.getIdCliente());
 			tipoRecibo = 4;
 			residuo = cliente.getAbono();
-			
+			// Se actualiza el tipo de pago y si hay un abono
+			pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
+			pagoRepository.actualizarTotal(i.getTotal() - cliente.getAbono(), res.getIdPago());
+			i = pagoRepository.getInfoRecibo(res.getIdPago());
+			clienteRepository.setAbono(0f, cliente.getIdCliente());			
 		}
 
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
@@ -399,9 +403,24 @@ public class ClienteService implements IClienteService {
 		Integer idPago = clienteRepository.cancelarPago(idCliente, fecha);
 		if (idPago > 0) {
 			InfoRecibo i = pagoRepository.getInfoRecibo(idPago);
+			
+			
 			List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(idCliente, idPago);
-			PDFRecibo recibo = new PDFRecibo(i, mesesR);
-			byte[] pdfBytes = recibo.getPdfBytes();
+			//PDFRecibo recibo = new PDFRecibo(i, mesesR);
+			//byte[] pdfBytes = recibo.getPdfBytes();
+			//pagoRepository.actualizarRecibo(pdfBytes, idPago);
+			
+			ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, i.getAbono(),i.getTipoTicket());
+			
+			if(i.getTipoTicket() == 3) {
+				pagoRepository.actualizarTotal(i.getTotal() + i.getAbono() , idPago);
+				i = pagoRepository.getInfoRecibo(idPago);
+			}else if(i.getTipoTicket() == 4){
+				pagoRepository.actualizarTotal(i.getTotal() - i.getAbono() , idPago);
+				i = pagoRepository.getInfoRecibo(idPago);
+			}
+			
+			byte[] pdfBytes = reciboAbono.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, idPago);
 		}
 		return idPago;
@@ -534,7 +553,10 @@ public class ClienteService implements IClienteService {
 
 		}
 		
+		// Se actualiza el tipo de pago y si hay un abono
 		pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
+		
+		
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),

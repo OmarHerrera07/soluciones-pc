@@ -505,7 +505,7 @@ public class ClienteController {
 		System.out.println(abono);
 		System.out.println(idCliente);
 		clienteService.abonoCliente(idCliente, abono,tipoPago);
-		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el cliente</div>";
+		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
 	}
 
 

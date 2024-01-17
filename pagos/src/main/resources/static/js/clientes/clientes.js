@@ -32,15 +32,16 @@ function confirmarPago(id, nombreCliente, totalPago,abono) {
 	$('#idUser').val(id);
 	$('#clienteId').val(id);
 	$('#clientePago').text(nombreCliente);
+	$('#paquetePago').text(totalPago);
 	$('#totalPago').text(totalPago);
 	
 	if(abono>0){
 		let newTotalPago = totalPago - abono;
 		$('#totalPago').text(newTotalPago);
 		$('#cantidadAbono').text(abono);
-		$('#abonoCliente').css('visibility', 'visible');
+		$('#abonoCliente').css('display', 'block');
 	}else{
-		$('#abonoCliente').css('visibility', 'hidden');
+		$('#abonoCliente').css('display', 'none');
 	}
 	
 }

@@ -63,7 +63,7 @@ public interface PagoRepository extends JpaRepository<Pago, Integer>{
      * @param idRecibo ID del recibo para el cual se obtiene la información.
      * @return Objeto InfoRecibo que representa la información detallada del recibo.
      */
-    @Query(value = "select c.rfc,u.nombre as nombreUsuario,p.fecha,p.total  from pago p join cliente c on p.id_cliente = c.id_cliente join usuario u on u.id_usuario = p.id_usuario where p.id_pago =?1",
+    @Query(value = "select c.rfc,u.nombre as nombreUsuario,p.fecha,p.total,p.abono,p.tipo_ticket as tipoTicket  from pago p join cliente c on p.id_cliente = c.id_cliente join usuario u on u.id_usuario = p.id_usuario where p.id_pago =?1",
             nativeQuery = true)
     InfoRecibo getInfoRecibo(Integer idRecibo);
     
@@ -107,4 +107,8 @@ public interface PagoRepository extends JpaRepository<Pago, Integer>{
     @Transactional
     @Query(value = "update pago set abono = ?2, tipo_ticket = ?3 where id_pago = ?1", nativeQuery = true)
     int actualizarInfoPago(Integer idPago,Float abono, Integer tipoTicket);
+    
+    @Query(value = "select count(*) from meses_pago mp  where mp.id_pago = ?1",
+            nativeQuery = true)
+    Integer mesesConPago(Integer id);
 }

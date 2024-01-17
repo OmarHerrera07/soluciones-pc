@@ -96,4 +96,23 @@ public class PagoService implements IPagoService{
 		// TODO Auto-generated method stub
 		return pagoRepository.getInfoCorteDinamicoTransferencia(fechaInico, fechaFIn);
 	}
+
+	@Override
+	public boolean deletePago(Integer id) {
+		try {
+			pagoRepository.deleteById(id);
+			return true;
+		}catch(Exception e) {
+			return false;		
+		}		
+	}
+
+	@Override
+	public boolean mesesConPago(Integer id) {
+		Integer numMeses = pagoRepository.mesesConPago(id);		
+		if(numMeses > 0) {
+			return true;
+		}
+		return false;
+	}
 }

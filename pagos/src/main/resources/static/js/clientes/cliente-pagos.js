@@ -1,5 +1,5 @@
 document.body.addEventListener("resetForm", function() {
-	
+
 	$('#cantidadAbonoinput').val('');
 	console.log("Hola que hace");
 	document.getElementById('mesesAbonos').innerHTML = ' ';
@@ -8,10 +8,31 @@ document.body.addEventListener("resetForm", function() {
 
 function mostrarMesesAbono(abono) {
 	
+	if(abono > 0){
+		$("#confirmarAbonoModal").prop("disabled", false);
+		console.log();
+	}else{
+		$("#confirmarAbonoModal").prop("disabled", true);
+	}
+
+	let valor = abono;
+
+	// Eliminar caracteres no numéricos
+	valor = valor.replace(/\D/g, '');
+
+	// Limitar a 4 dígitos
+	valor = valor.slice(0, 5);
 	
+	
+	$('#confirmarAbono').text(abono);
+	console.log($('#confirmarAbono'));
+	
+	abono = valor;
+	$('#cantidadAbonoinput').val(valor);
+
 	const precioPaquete = $('#precioPaquete').text();
 	const fechaInput = $('#fechaPagoCliente').val();
-	
+
 	abono = parseFloat(abono) + parseFloat($('#cantidadAbono').text());
 
 	let resultado = abono / precioPaquete;
@@ -56,16 +77,21 @@ function mostrarMesesAbono(abono) {
 							    <p class="fw-bold meses-pagar"> Total: $<span class="no-bold">${fechasGeneradas.length * paquete}</span></p>
 							    <p class="fw-bold meses-pagar"> Resto: $<span class="no-bold">${residuo}</span></p>
 							</div>`;
-		
+
 	}
 	document.getElementById('mesesAbonos').innerHTML = contenedorMeses;
 	// Mostrar las fechas generadas en la consola (puedes ajustar esto según tus necesidades)
 	console.log(fechasGeneradas);
 }
 
-function resetAbono(){
+function resetAbono() {
 	$('#cantidadAbonoinput').val('');
 	console.log("Hola que hace");
 	document.getElementById('mesesAbonos').innerHTML = ' ';
 	$('.modal').modal('hide');
+}
+
+
+function cerrarConfirmarAbono(){
+	$('#confirmarPagoAbono').modal('hide');
 }

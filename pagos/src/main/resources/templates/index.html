@@ -145,9 +145,10 @@
 					<form hx-post="/clientes/realizar-pago" hx-target="#result-msg" hx-swap="innerHTML">
 						<p class="fw-bold">Cliente: <span class="no-bold" id="clientePago">Omar Herrera Santos</span>
 						</p>
-						
+						<p class="fw-bold">Pago: $<span class="no-bold" id="paquetePago">198.0</span></p>
+						<p style="display: none;" id="abonoCliente" class="fw-bold">Abono: -$<span class="no-bold" id="cantidadAbono">0</span></p>
 						<p class="fw-bold">Total pago: $<span class="no-bold" id="totalPago">198.0</span></p>
-						<p style="visibility: hidden;" id="abonoCliente" class="fw-bold">Abono: -$<span class="no-bold" id="cantidadAbono">0</span></p>
+						
 						<input hidden id="clienteId" name="clienteId">
 						<div class="container">
 							<div class="row">
