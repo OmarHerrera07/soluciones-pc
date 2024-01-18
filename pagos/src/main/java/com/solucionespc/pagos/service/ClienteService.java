@@ -107,7 +107,17 @@ public class ClienteService implements IClienteService {
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
 		cliente.setDiasAtraso(0);
-		cliente.setAbono(0f);
+		if(c.getAbono()!=null) {
+			if(c.getAbono() > 0) {
+				cliente.setAbono(c.getAbono());
+			}else {
+				cliente.setAbono(0f);
+			}
+			
+		}else {
+			cliente.setAbono(0f);
+		}
+		
 		try {
 			clienteRepository.save(cliente);
 			return true;
