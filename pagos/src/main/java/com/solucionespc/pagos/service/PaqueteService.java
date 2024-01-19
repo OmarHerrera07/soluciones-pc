@@ -25,4 +25,10 @@ public class PaqueteService implements IPaqueteService{
 		return paqueteRepository.findAll();
 	}
 
+	@Override
+	public Paquete findbyId(Integer idPaquete) {
+		// TODO Auto-generated method stub
+		return paqueteRepository.findById(idPaquete).get();
+	}
+
 }

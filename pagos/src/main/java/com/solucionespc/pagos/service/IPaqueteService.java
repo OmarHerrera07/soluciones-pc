@@ -6,5 +6,7 @@ import com.solucionespc.pagos.entity.Paquete;
 
 public interface IPaqueteService {
 	List<Paquete> findAll();
+	
+	Paquete findbyId(Integer idPaquete);
 
 }
