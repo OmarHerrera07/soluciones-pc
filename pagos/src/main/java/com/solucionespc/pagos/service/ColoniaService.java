@@ -23,6 +23,12 @@ public class ColoniaService implements IColoniaService{
 		return coloniaRepository.findAll();
 	}
 
+	/**
+	 * Guarda una instancia de la entidad Colonia en el repositorio.
+	 *
+	 * @param colonia La instancia de la entidad Colonia que se va a guardar.
+	 * @return {@code true} si la operación de guardado fue exitosa, {@code false} si se produjo una excepción.
+	 */
 	@Override
 	public boolean save(Colonia colonia) {
 		try {		

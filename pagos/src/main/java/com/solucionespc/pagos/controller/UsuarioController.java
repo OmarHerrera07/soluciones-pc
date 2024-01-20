@@ -72,7 +72,7 @@ public class UsuarioController {
     
     /**
      * Obtiene el cuerpo del formulario de registrar usuario
-     *
+     * 
      * @return  fragmento de thymeleaf con el cuerpo del formulario
      */
     @GetMapping("/get-form-registrar")
@@ -81,13 +81,14 @@ public class UsuarioController {
         return "fragments/usuarios/registro-usuario :: registrar-usuario-form";
     }
     
-    /**
-     * Obtiene el cuerpo del formulario de registrar usuario
-     *
-     * @return  fragmento de thymeleaf con el cuerpo del formulario
-     */
-    
 
+    
+    /**
+     * Obtiene el cuerpo del formulario con la información de un cliente en especifico 
+     * @param id		id del cliente a editar
+     * @param model		modelo para pasar variables a la vista
+     * @return			fragmento con el formulario para editar un cliete
+     */
     @GetMapping("/get-form-editar")
     public String getEditarUsuarioForm(@RequestParam(value="id") Integer id, Model model) {
     	Usuario user = usuarioService.findUsuarioById(id);

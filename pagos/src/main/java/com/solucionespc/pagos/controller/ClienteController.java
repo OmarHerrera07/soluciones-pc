@@ -409,8 +409,8 @@ public class ClienteController {
 	 * @param id    El ID del cliente.
 	 * @param anio  El año para filtrar los meses.
 	 * @param model El modelo utilizado para la vista.
-	 * @return La vista "cliente-pagos :: lista-meses" actualizada con la
-	 *         información de los meses pagados.
+	 * @return 		La vista "cliente-pagos :: lista-meses" actualizada con la
+	 *         		información de los meses pagados.
 	 */
 	@GetMapping("/refrescar-meses")
 	@HxTrigger("resetForm")
@@ -444,8 +444,8 @@ public class ClienteController {
 	 * @param id    El ID del cliente.
 	 * @param anio  El año para filtrar los meses pagados.
 	 * @param model El modelo utilizado para la vista.
-	 * @return La vista "cliente-pagos :: lista-meses" con la información de los
-	 *         meses pagados filtrada por año.
+	 * @return 		La vista "cliente-pagos :: lista-meses" con la información de los
+	 *         		meses pagados filtrada por año.
 	 */
 	@GetMapping("/pagos-meses-filtro")
 	public String mesesPagadosFiltro(@RequestParam(value = "id") Integer id, @RequestParam(value = "anio") String anio,
@@ -476,12 +476,12 @@ public class ClienteController {
 	 * solicitudes HTTP GET dirigidas a la ruta "/reporte". Devuelve un archivo PDF
 	 * como respuesta.
 	 *
-	 * @param request  La solicitud HTTP recibida.
-	 * @param response La respuesta HTTP que se enviará al cliente.
-	 * @throws DocumentException Excepción lanzada en caso de problemas al manipular
-	 *                           el documento PDF.
-	 * @throws IOException       Excepción lanzada en caso de problemas de
-	 *                           entrada/salida.
+	 * @param request  				La solicitud HTTP recibida.
+	 * @param response 				La respuesta HTTP que se enviará al cliente.
+	 * @throws DocumentException	Excepción lanzada en caso de problemas al manipular
+	 *                           	el documento PDF.
+	 * @throws IOException       	Excepción lanzada en caso de problemas de
+	 *                           	entrada/salida.
 	 */
 	@GetMapping("/reporte")
 	@ResponseBody
@@ -498,7 +498,14 @@ public class ClienteController {
 		reporte.export(response);
 
 	}
-
+	
+	/**
+	 * Obtiene los meses que ha pagado un cliente para poder cancelarlos
+	 * @param id		id del cliente del cual se le recuperarán los pagos
+	 * @param anio		año del cual se obtendran los meses
+	 * @param model		el modelo utilizado para la vista
+	 * @return			fragemento donde se coloran los meses pagados de acuerdo al año
+	 */
 	@GetMapping("/get-meses-pagados")
 	public String getMesesPagados(@RequestParam(value = "id") Integer id, @RequestParam(value = "anio") Integer anio,
 			Model model) {
@@ -508,13 +515,16 @@ public class ClienteController {
 		return "fragments/clientes/cancelar-pagos :: form-eliminar-pago";
 	}
 
+	
 	/**
-	 * Editar un usuario nuevo
-	 * 
-	 * @param usuario a editar
-	 * @return Resultado sobre el la edición del usuario
-	 * @throws DocumentException
-	 * @throws IOException
+	 * Metodo para cancelar meses pagados
+	 * @param id					id del cliente al cual se le cancelaran los meses pagados 
+	 * @param meses					meses que se van a cancelar 
+	 * @return						fragamento html con información sobre el resultado de la operación
+	 * @throws DocumentException	Excepción lanzada en caso de problemas al manipular
+	 *                           	el documento PDF.
+	 * @throws IOException       	Excepción lanzada en caso de problemas de
+	 *                           	entrada/salida.
 	 */
 	@PostMapping(value = "/cancelar-pago", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refresh")
@@ -536,10 +546,9 @@ public class ClienteController {
 	}
 
 	/**
-	 * Registrar un cliente nuevo
-	 * 
-	 * @param cliente cliente a registrar
-	 * @return Resultado sobre el registro del usuario
+	 * Método para registrar una nueva colonia en el sistema
+	 * @param colonia		nombre de la colonia a registrar
+	 * @return				fragamento html con información sobre el resultado de la operación
 	 */
 	@PostMapping(value = "/registrar-colonia", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refreshCol")
@@ -556,21 +565,26 @@ public class ClienteController {
 		}
 		return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error en el registro del cliente</div>";
 	}
-
+	
+	/**
+	 * Metodo que sirve para actualizar el listado de colonias al momento de agregar una nueva
+	 * @param model		modelo para pasar información a la vista
+	 * @return			fragmento para actualizar el listado de colonias
+	 */
 	@GetMapping("/refrescar-colonias")
 	public String getColonias(Model model) {
 		model.addAttribute("colonias", coloniaService.findAll());
-		System.out.println("ENTROOOOOOOOOOO");
 		return "index :: select-colonias";
 	}
 
 	/**
-	 * Registrar un cliente nuevo
-	 * 
-	 * @param cliente cliente a registrar
-	 * @return Resultado sobre el registro del usuario
-	 * @throws DocumentException
-	 * @throws IOException
+	 * Realiza un pago de un cliente por medio de un abono
+	 * @param abono					cantidad de dinero que paga el cliente
+	 * @param idCliente				id del cliente que realiza el abono
+	 * @param tipoPago				tipo de pago que realizo el cliente (Transferencia o Efectivo)
+	 * @return						resultado sobre si se realizo el pago
+	 * @throws DocumentException 	Excepción lanzada en caso de problemas al manipular el documento PDF.
+	 * @throws IOException       	Excepción lanzada en caso de problemas de entrada/salida.
 	 */
 	@PostMapping(value = "/abono", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refresh")
@@ -583,8 +597,13 @@ public class ClienteController {
 		System.out.println("DATOS: ");
 		System.out.println(abono);
 		System.out.println(idCliente);
-		clienteService.abonoCliente(idCliente, abono, tipoPago);
-		return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
+		boolean res = clienteService.abonoCliente(idCliente, abono, tipoPago);
+		if(res) {
+			return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
+		}else {
+			return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al realizar el pago</div>";
+		}
+		
 	}
 
 }

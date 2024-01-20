@@ -3,15 +3,19 @@
             RFC: ZARE881013I12            
              Tel. 6161651227              
                                           
-                     Fecha: 19/01/2024    
+                     Fecha: 20/01/2024    
                                           
-     RFC: FSKN3923J                       
+     RFC:                                 
                                           
        Mes de Pago         Subtotal       
                                           
-           abono            $100.00       
+       18/06/2024           $190.00       
+       18/07/2024           $190.00       
+       18/08/2024           $190.00       
+       18/09/2024           $190.00       
+         abono            - $10.00        
                                           
-                     Total: $100.00       
+                     Total: $750.00       
                                           
      Cobrado por:                         
      Admin                                
