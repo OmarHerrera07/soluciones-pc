@@ -51,7 +51,7 @@ public class PrintTicketNew {
 		 e.setNumber(101.85);
 		 
 		 printer.setOutSize(numCol, 42);
-		 printer.printCharAtCol(1, 1, 42, "=");
+		 printer.printCharAtCol(1, 1, 42, "");
 		 	 
 		 printer.printTextWrap(1, 2,8+centrado, 42, nombre);
 		 
