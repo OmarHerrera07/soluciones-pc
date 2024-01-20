@@ -9,8 +9,7 @@
                                           
        Mes de Pago         Subtotal       
                                           
-       21/12/2023           $200.00       
-         abono            - $100.00       
+           abono            $100.00       
                                           
                      Total: $100.00       
                                           
