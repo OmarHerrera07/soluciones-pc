@@ -217,11 +217,11 @@ function validarfecha(){
         console.log(fecha.getDate());
 
         // Verificamos si el día es igual a 29
-       // if (fecha.getDate()+1 == 29) {
-       //   alert('No se permiten fechas con el día 29.');
-       //   $('#fechaPago').val('');
+        if (fecha.getDate()+1 == 29) {
+          alert('No se permiten fechas con el día 29.');
+         $('#fechaPago').val('');
           
-       //   }
+          }
           
 }
 
