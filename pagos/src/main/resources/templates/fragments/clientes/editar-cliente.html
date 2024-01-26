@@ -20,23 +20,23 @@
 		<div class="row">
 			<div class="col-6">
 				<label for="nombreEditar">Nombre Completo: </label>
-				<input oninput="this.value = this.value.toUpperCase()" th:value="${cliente.nombre}" id="nombreEditar" name="nombre" class="form-control" required>
+				<input oninput="validarYConvertirMayusculas(this)" th:value="${cliente.nombre}" id="nombreEditar" name="nombre" class="form-control" maxlength="60" required>
 			</div>
 			<div class="col-6">
 				<label for="telefonoEditar">Teléfono: </label>
-				<input type="text" pattern="^[0-9]{0,10}$" th:value="${cliente.telefono}" id="telefonoEditar" name="telefono" class="form-control" required>
+				<input oninput="validarTelefono(this)" type="text" pattern="^[0-9]{0,10}$" th:value="${cliente.telefono}" id="telefonoEditar" name="telefono" class="form-control" maxlength="12" required>
 			</div>
 
 		</div>
 		<div class="row">
 			<div class="col-6">
 				<label for="telefonoEditar2">Teléfono 2 (opcional): </label>
-				<input type="text" pattern="^[0-9]{0,10}$" th:value="${cliente.telefono2}" id="telefonoEditar2" name="telefono2" class="form-control">
+				<input oninput="validarTelefono(this)" type="text" th:value="${cliente.telefono2}" id="telefonoEditar2" name="telefono2" class="form-control" maxlength="12">
 			</div>
 
 			<div class="col-6">
 				<label for="rfcEditar">RFC: </label>
-				<input oninput="this.value = this.value.toUpperCase()" pattern="[A-Za-z0-9]{0,13}" th:value="${cliente.rfc}" id="rfcEditar" name="rfc" class="form-control">
+				<input oninput="validarCaracteres(this)" th:value="${cliente.rfc}" id="rfcEditar" name="rfc" class="form-control">
 			</div>
 		</div>
 		<div class="row">

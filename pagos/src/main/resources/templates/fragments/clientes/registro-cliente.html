@@ -13,12 +13,12 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="nombreCliente">Nombre Completo: </label>
-								<input oninput="this.value = this.value.toUpperCase()" type="text" id="nombreCliente" name="nombre" class="form-control" required>
+								<input oninput="validarYConvertirMayusculas(this)" type="text" id="nombreCliente" name="nombre" class="form-control"  maxlength="60">
 							</div>
 							<div class="col-6">
 								<label for="telefono">Teléfono: </label>
-								<input type="text" pattern="^[0-9]{0,10}$" id="telefono" name="telefono"
-									   class="form-control" required title="Solo se permiten hasta 10 dígitos numéricos.">
+								<input oninput="validarTelefono(this)" type="text" id="telefono" name="telefono"
+									   class="form-control" maxlength="12">
 							</div>
 
 
@@ -26,13 +26,13 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="telefono2">Teléfono 2 (opcional): </label>
-								<input type="text" pattern="^[0-9]{0,10}$" id="telefono2" name="telefono2"
-									class="form-control" title="Solo se permiten hasta 10 dígitos numéricos.">
+								<input oninput="validarTelefono(this)" type="text" id="telefono2" name="telefono2"
+									class="form-control" maxlength="12">
 							</div>
 
 							<div class="col-6">
 								<label for="rfc">RFC: </label>
-								 <input oninput="this.value = this.value.toUpperCase()" pattern="[A-Za-z0-9]{0,13}" id="rfc" name="rfc" class="form-control" required title="Solo se permite ingresar hasta 13 caracteres alfanumericos">
+								 <input oninput="validarCaracteres(this)" id="rfc" name="rfc" class="form-control" required title="Solo se permite ingresar hasta 13 caracteres alfanumericos" maxlength="13">
 							</div>
 						</div>
 						<div class="row">
@@ -53,7 +53,7 @@
 						<div class="row">
 
 							<div class="col-6">
-								<label for="telefono">Fechal actual de pago: </label>
+								<label for="telefono">Fecha A Pagar: </label>
 								<input onchange="validarfecha();" type="date" id="fechaPago" name="fecha"
 									class="form-control" required>
 							</div>

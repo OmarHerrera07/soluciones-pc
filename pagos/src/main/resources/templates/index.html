@@ -7,8 +7,6 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="/select2/css/select2.min.css">
 	<div th:replace="~{fragments/layout :: estilos}"></div>
-
-
 </head>
 
 <body>
@@ -37,7 +35,7 @@
 			</div>
 			<div>
 				<a href="/clientes/reporte" target="_blank" class="btn btn-success">
-					Reporte Clientes
+					Clientes Con Adeudo
 				</a>
 				<button data-bs-toggle="modal" data-bs-target="#modal-agregar-cliente" type="button"
 					class="btn btn-success" hx-get="/clientes/get-form-registrar" hx-target="#form-registrar-cliente"
@@ -55,7 +53,7 @@
 			<div class="row filtros">
 				<div class="col-6">
 					<span>Buscar: </span><input type="text" id="filtroNombre" class="form-control"
-						placeholder="Filtrar por nombre" oninput="this.value = this.value.toUpperCase()">
+						placeholder="Filtrar por nombre" oninput="validarYConvertirMayusculas(this)">
 				</div>
 
 
@@ -95,7 +93,7 @@
 						<th scope="col">Fecha de pago</th>
 						<th scope="col">Ultimo pago</th>
 						<th scope="col">Acciones</th>
-						<th scope="col">Pagos</th>
+						<th scope="col">Pagos-Abonos</th>
 					</tr>
 				</thead>
 				<tbody id="tablaClientes">

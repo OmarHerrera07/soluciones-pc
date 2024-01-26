@@ -3,13 +3,14 @@
                                 
                Fecha: 16/01/2024
                                 
- RFC:                           
+ RFC: IODSIOIOA                 
                                 
      Mes de Pago    Subtotal    
                                 
-     abono          $100.00     
+     16/04/2024     $190.00     
+     abono          $110.00     
                                 
-               Total: $100.00   
+               Total: $300.00   
                                 
  Cobrado por:                   
  Admin                          

@@ -3,6 +3,62 @@ const notificaExito = (msg) => Lobibox.notify("success", { msg });
 const notificaAdvertencia = (msg) => Lobibox.notify("warning", { msg });
 const notificaAviso = (msg) => Lobibox.notify("info", { msg });
 
+//************************************************************/////////
+function validarYConvertirMayusculas(inputElement) {
+	// Obtener el valor actual del campo de entrada
+	var valor = inputElement.value;
+
+	if (valor !== ""){
+	// Expresión regular que permite letras, espacios y algunos caracteres especiales comunes
+	var expresionRegular = /^[a-zA-Z\sáéíóúñÑÁÉÍÓÚüÜ]+$/;
+
+	// Verificar si el valor cumple con la expresión regular
+	if (!expresionRegular.test(valor)) {
+		// Si contiene caracteres especiales, mostrar un mensaje de error y limpiar el valor
+		alert("No debe contener caracteres especiales");
+		inputElement.value = '';
+	} else {
+		// Convertir el valor a mayúsculas si no contiene caracteres especiales
+		inputElement.value = valor.toUpperCase();
+	}
+
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////7
+function validarTelefono(inputElement) {
+	var valor= inputElement.value.trim();  // Se utiliza trim para eliminar espacios en blanco al inicio y al final
+
+	// Expresión regular que permite solo dígitos numéricos
+	var expresionRegular = /^[0-9]+$/;
+
+	// Verificar si el valor no está vacío y cumple con la expresión regular
+	if (valor !== "" && !expresionRegular.test(valor)) {
+		// Si contiene caracteres no permitidos, mostrar un mensaje de error y limpiar el valor
+		alert("El teléfono solo debe contener dígitos numéricos.");
+		inputElement.value = '';
+	}
+}
+
+function validarCaracteres(inputElement){
+	var valor= inputElement.value.trim();
+
+
+	if (valor !== ""){
+		// Expresión regular que permite letras, espacios y algunos caracteres especiales comunes
+		var expresionRegular = /^[a-zA-Z0-9]+$/;
+
+		// Verificar si el valor cumple con la expresión regular
+		if (!expresionRegular.test(valor)) {
+			// Si contiene caracteres especiales, mostrar un mensaje de error y limpiar el valor
+			alert("No debe contener caracteres especiales");
+			inputElement.value = '';
+		} else {
+			// Convertir el valor a mayúsculas si no contiene caracteres especiales
+			inputElement.value = valor.toUpperCase();
+		}
+
+	}
+}
 
 function prueba() {
 	notificaExito("Correcto");
