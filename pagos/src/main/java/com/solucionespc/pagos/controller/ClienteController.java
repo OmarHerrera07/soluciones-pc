@@ -68,9 +68,13 @@ public class ClienteController {
 	public String registrarCliente(ClienteRegisterDTO cliente) {
 		Paquete p = paqueteService.findbyId(cliente.getPaquete());
 		
-		if(cliente.getAbono() > p.getPrecio()) {
-			return "<div id=\"result\" data-notify=\"3\" hidden>El abono no puede ser mayor al paquete</div>";
+		
+		if(cliente.getAbono()!= null) {
+			if(cliente.getAbono() > p.getPrecio()) {
+				return "<div id=\"result\" data-notify=\"3\" hidden>El abono no puede ser mayor al paquete</div>";
+			}
 		}
+
 		
 //		if (cliente.getAbono() < 0) {
 //			cliente.setAbono(cliente.getAbono() * (-1f));			
