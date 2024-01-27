@@ -57,7 +57,7 @@
 
 			<div class="col-6">
 				<label for="fechaPagoEditar">Fecha de pago: </label>
-				<input th:value="${#dates.format(cliente.fechaPago, 'yyyy-MM-dd')}" type="date" id="fechaPagoEditar"
+				<input onchange="validarfechaE();" th:value="${#dates.format(cliente.fechaPago, 'yyyy-MM-dd')}" type="date" id="fechaPagoEditar"
 					name="fecha" class="form-control" required>
 			</div>
 			<div class="col-6">

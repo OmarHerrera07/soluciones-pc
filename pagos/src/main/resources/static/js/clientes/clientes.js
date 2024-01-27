@@ -217,12 +217,33 @@ function validarfecha(){
         console.log(fecha.getDate());
 
         // Verificamos si el día es igual a 29
-        if (fecha.getDate()+1 == 29) {
-          alert('No se permiten fechas con el día 29.');
+        var fechaC = fecha.getDate()+1;
+         console.log(fechaC);
+        if (fechaC == 29 || fechaC == 30 || fechaC == 31) {
+          alert('No se permiten fechas con el día 29,30 y 31');
          $('#fechaPago').val('');
           
           }
           
 }
 
+function validarfechaE(){
+	var fechaIngresada = $('#fechaPagoEditar').val();
+	
+
+        // Convertimos la fecha ingresada en un objeto de fecha de JavaScript
+        var fecha = new Date(fechaIngresada);
+        console.log(fechaIngresada);
+        console.log(fecha.getDate());
+
+        // Verificamos si el día es igual a 29
+        var fechaC = fecha.getDate()+1;
+         console.log(fechaC);
+        if (fechaC == 29 || fechaC == 30 || fechaC == 31) {
+          alert('No se permiten fechas con el día 29,30 y 31');
+         $('#fechaPagoEditar').val('');
+          
+          }
+          
+}
 
