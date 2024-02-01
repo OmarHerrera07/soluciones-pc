@@ -1,6 +1,7 @@
 var currentPage = 0;
 
 document.body.addEventListener("refresh", function() {
+	document.getElementById('tipoPagoSelect').value = '';
 	$('.modal').modal('hide');
 	cargarClientes(currentPage);
 })
@@ -13,6 +14,9 @@ document.body.addEventListener("refreshCol", function() {
 
 
 })
+function resetFormPagoCliente(){
+	document.getElementById('tipoPagoSelect').value = '';
+} 
 
 function concultarCliente(id) {
 	$('#idUser').val(id);

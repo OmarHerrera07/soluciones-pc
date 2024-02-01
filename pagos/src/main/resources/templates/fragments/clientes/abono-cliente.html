@@ -20,8 +20,9 @@
 							</div>
 							<div class="col-6">
 								<label class="fw-bold">Tipo de pago:</label>
-								<select name="tipoPagoAbono" class="form-control">
-									<option selected value="1">EFECTIVO</option>
+								<select onchange="validarTipoPagoAbono();" id="tipoPagoAbono" name="tipoPagoAbono" class="form-control">
+									<option value="" disabled selected>-- Seleccione --</option>
+									<option value="1">EFECTIVO</option>
 									<option value="2">TRANSFERENCIA</option>
 								</select>
 							</div>

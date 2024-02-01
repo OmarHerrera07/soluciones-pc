@@ -125,15 +125,16 @@
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="exampleModalLabel">Confirmar Pago</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
+									<button onclick="resetFormPagoMasivo();" type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
 								<div class="container">
 									<div class="row">
 										<div class="col-6">
 											<p class="fw-bold">Tipo de pago:</p>
-											<select name="tipoPago" class="form-control">
-												<option selected value="1">EFECTIVO</option>
+											<select id="tipoPagoMasivo" required name="tipoPago" class="form-control">
+												<option value="" disabled selected>-- Seleccione --</option>
+												<option value="1">EFECTIVO</option>
 												<option value="2">TRANSFERENCIA</option>
 											</select>
 										</div>
@@ -144,10 +145,10 @@
 								</div>
 								<br>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-danger"
+									<button onclick="resetFormPagoMasivo();" type="button" class="btn btn-danger"
 										data-bs-dismiss="modal">Cancelar</button>
 									<button type="submit" class="btn btn-success"
-										data-bs-dismiss="modal">Confirmar</button>
+										>Confirmar</button>
 								</div>
 							</div>
 						</div>

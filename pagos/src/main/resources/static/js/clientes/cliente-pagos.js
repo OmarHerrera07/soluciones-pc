@@ -1,17 +1,40 @@
 document.body.addEventListener("resetForm", function() {
 
 	$('#cantidadAbonoinput').val('');
-	console.log("Hola que hace");
 	document.getElementById('mesesAbonos').innerHTML = ' ';
+	document.getElementById('tipoPagoAbono').value = '';
+	$('.modal').modal('hide');
+})
+document.body.addEventListener("refresh", function() {
+
+	document.getElementById('tipoPagoMasivo').value = '';
 	$('.modal').modal('hide');
 })
 
-function mostrarMesesAbono(abono) {
-	
-	if(abono > 0){
+function resetFormPagoMasivo(){
+	document.getElementById('tipoPagoMasivo').value = '';
+} 
+
+function validarTipoPagoAbono() {
+	let tipoPagoSelect = $("#tipoPagoAbono").val();
+	let abono = $("#cantidadAbonoinput").val();
+	if (abono > 0 && tipoPagoSelect != null) {
 		$("#confirmarAbonoModal").prop("disabled", false);
 		console.log();
-	}else{
+	} else {
+		$("#confirmarAbonoModal").prop("disabled", true);
+	}
+}
+
+function mostrarMesesAbono(abono) {
+
+	let tipoPagoSelect = $("#tipoPagoAbono").val();
+	console.log('Este es el select');
+	console.log(tipoPagoSelect);
+	if (abono > 0 && tipoPagoSelect != null) {
+		$("#confirmarAbonoModal").prop("disabled", false);
+		console.log();
+	} else {
 		$("#confirmarAbonoModal").prop("disabled", true);
 	}
 
@@ -22,11 +45,11 @@ function mostrarMesesAbono(abono) {
 
 	// Limitar a 4 dígitos
 	valor = valor.slice(0, 5);
-	
-	
+
+
 	$('#confirmarAbono').text(abono);
 	console.log($('#confirmarAbono'));
-	
+
 	abono = valor;
 	$('#cantidadAbonoinput').val(valor);
 
@@ -88,10 +111,12 @@ function resetAbono() {
 	$('#cantidadAbonoinput').val('');
 	console.log("Hola que hace");
 	document.getElementById('mesesAbonos').innerHTML = ' ';
+	document.getElementById('tipoPagoAbono').value = '';
+	$("#confirmarAbonoModal").prop("disabled", true);
 	$('.modal').modal('hide');
 }
 
 
-function cerrarConfirmarAbono(){
+function cerrarConfirmarAbono() {
 	$('#confirmarPagoAbono').modal('hide');
 }
