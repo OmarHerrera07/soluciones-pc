@@ -615,7 +615,6 @@ public class ClienteController {
 	@ResponseBody
 	public String clienteRepetido(@RequestParam(value = "nombre") String nombre){
 		
-		System.out.println(nombre);
 		boolean res = clienteService.findClienteByNombre(nombre);
 		
 		if(res) {
