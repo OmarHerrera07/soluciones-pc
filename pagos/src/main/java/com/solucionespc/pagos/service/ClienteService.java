@@ -627,4 +627,14 @@ public class ClienteService implements IClienteService {
 		// TODO Auto-generated method stub
 		return clienteRepository.obtenerAbonoActual(idCliente);
 	}
+	
+	@Override
+	public boolean findClienteByNombre(String nombre) {
+		Integer res = clienteRepository.findClienteByNombre(nombre);
+		System.out.println(res);
+		if(res > 0) {
+			return true;
+		}	
+		return false;
+	}
 }

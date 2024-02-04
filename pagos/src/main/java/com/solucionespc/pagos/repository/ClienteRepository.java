@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.solucionespc.pagos.dto.ClienteDTO;
 import com.solucionespc.pagos.entity.Cliente;
+import com.solucionespc.pagos.entity.Usuario;
 
 import jakarta.transaction.Transactional;
 
@@ -134,5 +135,9 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     @Query(value = "select c.abono from cliente c where c.id_cliente = ?1",
             nativeQuery = true)
     Float obtenerAbonoActual(Integer idCliente);
+    
+    @Query(value = "SELECT count(*) FROM cliente c WHERE REPLACE(c.nombre, ' ', '') = REPLACE(:nombre, ' ', '');", nativeQuery = true)
+    Integer findClienteByNombre(@Param("nombre") String nombre);
+
     
 }

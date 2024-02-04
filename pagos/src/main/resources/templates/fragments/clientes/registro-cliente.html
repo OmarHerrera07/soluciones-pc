@@ -13,8 +13,9 @@
 						<div class="row">
 							<div class="col-6">
 								<label for="nombreCliente">Nombre Completo: </label>
-								<input oninput="this.value = this.value.toUpperCase()" type="text" id="nombreCliente"
+								<input oninput="this.value = this.value.toUpperCase()" onchange="validarClienteRepetido()" type="text" id="nombreCliente"
 									name="nombre" class="form-control" required>
+									<div id="alerta-cliente-repetido" class="invalid-feedback">El cliente ya está registrado.</div>
 							</div>
 							<div class="col-6">
 								<label for="telefono">Teléfono: </label>
@@ -93,7 +94,7 @@
 
 						<div class="modal-footer">
 							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-success">Guardar</button>
+							<button disabled id="botonRegistrarCliente" type="submit" class="btn btn-success">Guardar</button>
 						</div>
 					</form>
 				</div>

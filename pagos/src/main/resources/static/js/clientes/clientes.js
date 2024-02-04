@@ -9,14 +9,37 @@ document.body.addEventListener("refreshCol", function() {
 	// Esperar 1000 milisegundos (1 segundo) antes de ejecutar el código
 	setTimeout(function() {
 		// Tu código aquí
-			$('.js-example-basic-single').select2();
+		$('.js-example-basic-single').select2();
 	}, 150);
 
 
 })
-function resetFormPagoCliente(){
+
+
+function validarClienteRepetido() {
+	console.log("validar");
+	const inputElement = document.getElementById("nombreCliente");
+	$.get('/clientes/buscarClienteRepetido?nombre=' + $("#nombreCliente").val(), function(data) {
+		console.log(data);
+		if(data == 'existe'){
+			inputElement.style.borderColor = "red";
+			$("#botonRegistrarCliente").prop("disabled", true);
+			$("#alerta-cliente-repetido").css("display", "block");
+
+		}else{
+			inputElement.style.borderColor = "green";
+			$("#botonRegistrarCliente").prop("disabled", false);
+			$("#alerta-cliente-repetido").css("display", "none");
+
+		}
+	});
+
+}
+
+
+function resetFormPagoCliente() {
 	document.getElementById('tipoPagoSelect').value = '';
-} 
+}
 
 function concultarCliente(id) {
 	$('#idUser').val(id);
@@ -32,25 +55,25 @@ function editarCliente(id) {
 	boton.click();
 }
 
-function confirmarPago(id, nombreCliente, totalPago,abono) {
+function confirmarPago(id, nombreCliente, totalPago, abono) {
 	$('#idUser').val(id);
 	$('#clienteId').val(id);
 	$('#clientePago').text(nombreCliente);
 	$('#paquetePago').text(totalPago);
 	$('#totalPago').text(totalPago);
-	
-	if(abono>0){
+
+	if (abono > 0) {
 		let newTotalPago = totalPago - abono;
 		$('#totalPago').text(newTotalPago);
 		$('#cantidadAbono').text(abono);
 		$('#abonoCliente').css('display', 'block');
-	}else{
+	} else {
 		$('#abonoCliente').css('display', 'none');
 	}
-	
+
 }
 
-function EliminarUsuario(id,nombre){
+function EliminarUsuario(id, nombre) {
 	$('#idEliminar').val(id);
 	$('#clienteEliminar').text(nombre);
 }
@@ -211,43 +234,43 @@ function colonias() {
 	cargarClientes(0);
 }
 
-function validarfecha(){
+function validarfecha() {
 	var fechaIngresada = $('#fechaPago').val();
-	
 
-        // Convertimos la fecha ingresada en un objeto de fecha de JavaScript
-        var fecha = new Date(fechaIngresada);
-        console.log(fechaIngresada);
-        console.log(fecha.getDate());
 
-        // Verificamos si el día es igual a 29
-        var fechaC = fecha.getDate()+1;
-         console.log(fechaC);
-        if (fechaC == 29 || fechaC == 30 || fechaC == 31) {
-          alert('No se permiten fechas con el día 29,30 y 31');
-         $('#fechaPago').val('');
-          
-          }
-          
+	// Convertimos la fecha ingresada en un objeto de fecha de JavaScript
+	var fecha = new Date(fechaIngresada);
+	console.log(fechaIngresada);
+	console.log(fecha.getDate());
+
+	// Verificamos si el día es igual a 29
+	var fechaC = fecha.getDate() + 1;
+	console.log(fechaC);
+	if (fechaC == 29 || fechaC == 30 || fechaC == 31) {
+		alert('No se permiten fechas con el día 29,30 y 31');
+		$('#fechaPago').val('');
+
+	}
+
 }
 
-function validarfechaE(){
+function validarfechaE() {
 	var fechaIngresada = $('#fechaPagoEditar').val();
-	
 
-        // Convertimos la fecha ingresada en un objeto de fecha de JavaScript
-        var fecha = new Date(fechaIngresada);
-        console.log(fechaIngresada);
-        console.log(fecha.getDate());
 
-        // Verificamos si el día es igual a 29
-        var fechaC = fecha.getDate()+1;
-         console.log(fechaC);
-        if (fechaC == 29 || fechaC == 30 || fechaC == 31) {
-          alert('No se permiten fechas con el día 29,30 y 31');
-         $('#fechaPagoEditar').val('');
-          
-          }
-          
+	// Convertimos la fecha ingresada en un objeto de fecha de JavaScript
+	var fecha = new Date(fechaIngresada);
+	console.log(fechaIngresada);
+	console.log(fecha.getDate());
+
+	// Verificamos si el día es igual a 29
+	var fechaC = fecha.getDate() + 1;
+	console.log(fechaC);
+	if (fechaC == 29 || fechaC == 30 || fechaC == 31) {
+		alert('No se permiten fechas con el día 29,30 y 31');
+		$('#fechaPagoEditar').val('');
+
+	}
+
 }
 

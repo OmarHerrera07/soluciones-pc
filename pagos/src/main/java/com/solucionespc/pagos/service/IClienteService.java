@@ -55,5 +55,7 @@ public interface IClienteService{
 	List<Date> obtenerMesesPagadosPorAnio(Integer idCliente, Integer anio);
 	
 	Float obtenerAbonoActual(Integer idCliente);
+	
+	boolean findClienteByNombre(String nombre);
 
 }

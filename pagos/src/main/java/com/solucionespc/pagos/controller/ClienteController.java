@@ -609,5 +609,19 @@ public class ClienteController {
 		}
 		
 	}
+	
+	
+	@GetMapping("/buscarClienteRepetido")
+	@ResponseBody
+	public String clienteRepetido(@RequestParam(value = "nombre") String nombre){
+		
+		System.out.println(nombre);
+		boolean res = clienteService.findClienteByNombre(nombre);
+		
+		if(res) {
+			return "existe";
+		}
+		return "no existe";
+	}
 
 }
