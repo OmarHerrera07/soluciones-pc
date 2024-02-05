@@ -43,7 +43,7 @@ public class PcUserDetailsService implements UserDetailsService{
         if(oUsuario == null || !oUsuario.getEstado()) {
         	throw new UsernameNotFoundException("No se encontró el usuario " + username);
         }
-        System.out.println("JPLALALIHFIUSgdyuf");
+
         String rolAsignado = oUsuario.getRol().getRol();
 
         return userDetailsMapper.toUserDetails(oUsuario, rolAsignado);
