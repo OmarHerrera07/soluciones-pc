@@ -40,7 +40,8 @@ public class PDFExporter {
 		Rectangle pageSize = new Rectangle(anchoPuntos, altoPuntos);
 	    // Tamaño personalizado para la impresora térmica Bixolon (80 mm de ancho, 58 mm de alto)
 	    Document document = new Document(pageSize, 10, 10, 10, 10);
-	    
+	    //
+	    //
 	    PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 
 	    document.open();

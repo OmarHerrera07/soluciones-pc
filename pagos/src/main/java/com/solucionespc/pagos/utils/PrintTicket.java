@@ -28,7 +28,7 @@ import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 
 public class PrintTicket {
-	
+	//
 	
 	public static void printTicket(InfoRecibo pago, List<MesesRecibo> meses) { 
 		 PrinterMatrix printer = new PrinterMatrix();

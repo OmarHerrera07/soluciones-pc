@@ -26,4 +26,8 @@ public interface IPagoService {
     List<Corte> getInfoCorteDinamicoEfectivo(String fechaInico, String fechaFIn);
     
     List<Corte> getInfoCorteDinamicoTransferencia(String fechaInico, String fechaFIn);
+    
+    boolean mesesConPago(Integer id);
+    
+    boolean deletePago(Integer id);
 }

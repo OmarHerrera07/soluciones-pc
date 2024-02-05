@@ -1,5 +1,20 @@
 var currentPage = 0;
 
+document.body.addEventListener("refresh", function() {
+
+	cargarPagos(currentPage);
+	$("#cerrarModalPago").click();
+})
+
+function eliminarPago(nombre,pago,fecha,id){
+	$("#clienteEliminar").text(nombre);
+	$("#pagoEliminar").text(pago);
+	$("#fechaEliminar").val(fecha);
+	$("#idPagoEliminar").val(id);
+	
+	console.log("Se elimino");
+}
+
 function cargarPagos(page) {
 	$.get("/pagos/paginacion?page=" + page + "&nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val() + "&fechaInicio=" + $("#fecha-inicio").val() + "&fechaFin=" + $("#fecha-fin").val(), function(data) {
 		currentPage = page;
@@ -11,10 +26,14 @@ function cargarPagos(page) {
 
 function actualizarTabla(pagos) {
 	var tabla = $("#tablaPagos");
+	let isAdmin = $("#isAdmin").val();
+	
+	console.log(isAdmin);
 	tabla.empty();
 	if (pagos.length !== 0) {
 		pagos.forEach(function(pago) {
-			tabla.append(`
+			
+			contenido = `
 					<tr>
 					
 					    <th>${pago.nombre}</th>
@@ -27,8 +46,16 @@ function actualizarTabla(pagos) {
                                   </svg>
                             </a>
                         </td>
-					</tr>
-			`);
+                        
+                        
+                                                
+					
+			`
+			if(isAdmin == 'true'){
+				contenido+=`<td>  <button data-bs-toggle="modal" data-bs-target="#modal-eliminar-pago" onclick="eliminarPago('${pago.nombre}','${pago.total}','${pago.fecha}','${pago.idPago}')" class="btn btn-danger">x</button></td>`
+			}
+			contenido += `</tr>`;
+			tabla.append(contenido);
 			$("#result-registros").hide();
 		});
 	} else {

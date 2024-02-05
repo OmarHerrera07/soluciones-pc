@@ -12,4 +12,8 @@ public interface InfoRecibo {
     Date getFecha();
 
     Float getTotal();
+    
+    Float getAbono();
+    
+    Integer getTipoTicket();
 }

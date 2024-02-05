@@ -25,4 +25,17 @@ public class PaqueteService implements IPaqueteService{
 		return paqueteRepository.findAll();
 	}
 
+	/**
+	 * Busca y recupera un paquete (Paquete de internet) por su identificador.
+	 *
+	 * @param idPaquete Identificador del paquete a buscar.
+	 * @return El objeto Paquete correspondiente al identificador proporcionado.
+	 * @throws NoSuchElementException Si no se encuentra ningún paquete con el identificador dado.
+	 */
+	@Override
+	public Paquete findbyId(Integer idPaquete) {
+		// TODO Auto-generated method stub
+		return paqueteRepository.findById(idPaquete).get();
+	}
+
 }

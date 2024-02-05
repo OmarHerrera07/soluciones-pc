@@ -19,15 +19,15 @@
 
 			</div>
 			<div class="container-lg d-flex client-info">
-												
+
 				<div>
 					<h2>Pagos</h2>
 					<div class="col-6 filtro-anios">
-						<form name="formAnio" hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container" hx-swap="innerHTML"
-							class="filtro-anios">
+						<form name="formAnio" hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container"
+							hx-swap="innerHTML" class="filtro-anios">
 							<input hidden name="id" th:value="${idCliente}">
 							<label>Año</label>
-							<input type="number" min="2017" max="2030" th:value="${anio}" class="form-control"
+							<input type="number" min="2017" max="2100" th:value="${anio}" class="form-control"
 								name="anio">
 							<button type="submit" class="btn btn-success">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -52,32 +52,33 @@
 
 			</div>
 			<br>
-			<button sec:authorize="hasAnyRole('ADMINISTRADOR')" type="button" data-bs-toggle="modal" data-bs-target="#modal-eliminar-pago"
-				class="btn btn-danger float-end" hx-get="/clientes/get-meses-pagados" hx-target="#body-cancelar-pago"
-				hx-swap="innerHTML" hx-include="[name='formAnio']">
+			<button sec:authorize="hasAnyRole('ADMINISTRADOR')" type="button" data-bs-toggle="modal"
+				data-bs-target="#modal-eliminar-pago" class="btn btn-danger float-end"
+				hx-get="/clientes/get-meses-pagados" hx-target="#body-cancelar-pago" hx-swap="innerHTML"
+				hx-include="[name='formAnio']">
 				Cancelar pago
 			</button>
-			
+
 			<div th:fragment="lista-meses" id="meses-container">
 				<input hidden id="fechaPagoCliente" type="date" th:value="${mesPago}">
-					<div class="row">
-						<div class="col-6">
-							<h3 class="col-6">Abono: $<span id="cantidadAbono" th:text="${cliente.abono}"></span></h3>
-						</div>
+				<div class="row">
+					<div class="col-6">
+						<h3 class="col-6">Abono: $<span id="cantidadAbono" th:text="${cliente.abono} + '0'"></span></h3>
 					</div>
-					
+				</div>
+
 				<form name="refresh">
 					<input name="idRefresh" th:value="${idCliente}" hidden>
 					<input name="anioRefresh" th:value="${anio}" hidden>
 				</form>
-				<button th:disabled="${cliente.estado == false}" type="button" data-bs-toggle="modal" data-bs-target="#modal-abono-cliente"
-						class="btn btn-success">
-						Abono
+				<button th:disabled="${cliente.estado == false}" type="button" data-bs-toggle="modal"
+					data-bs-target="#modal-abono-cliente" class="btn btn-success">
+					Abono
 				</button>
 				<br>
 				<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-confirm="¿Seguro?">
-					<br>	
+					<br>
 					<button th:disabled="${cliente.estado == false}" type="button" onclick="pagarMeses();"
 						class="btn btn-success">
 						Pagar
@@ -136,7 +137,7 @@
 												<option value="2">TRANSFERENCIA</option>
 											</select>
 										</div>
-									</div>									
+									</div>
 								</div>
 								<div id="confirmarMeses" class="modal-body">
 
@@ -160,7 +161,7 @@
 	<!--FIN MODAL EDITAR CLIENTE -->
 
 	<div th:replace="~{fragments/clientes/cancelar-pagos :: modal-eliminar-pago}"></div>
-	
+
 	<div th:replace="~{fragments/clientes/abono-cliente :: modal-abono-cliente}"></div>
 
 	<!-- MODAL PARA CONFIRMAR PAGO  -->

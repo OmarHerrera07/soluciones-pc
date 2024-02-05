@@ -43,4 +43,9 @@ public class Pago {
     @Column(name = "recibo")
     private byte[] recibo;
     
+    @Column(name = "tipo_ticket")
+    private Integer tipoTicket;
+    
+    private Float abono;
+    
 }

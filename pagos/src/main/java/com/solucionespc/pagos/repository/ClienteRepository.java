@@ -28,7 +28,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	 * @param pageable   Información sobre la paginación.
 	 * @return Una página de objetos ClienteDTO que cumplen con los criterios de paginación y filtrado.
 	 */
-    @Query(value = "select c.id_cliente as idCliente, c.nombre,c.telefono,p.precio as paquete,c.fecha_pago as fechaPago,c.ultimo_pago as ultimoPago, c.estado  from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null) order by c.nombre",
+    @Query(value = "select c.id_cliente as idCliente, c.nombre,c.telefono,p.precio as paquete,c.fecha_pago as fechaPago,c.ultimo_pago as ultimoPago, c.estado, c.abono from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null) order by c.nombre",
             countQuery = "select COUNT(*) from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null)",
             nativeQuery = true)
     Page<ClienteDTO> paginacionCliente(String nombre,Integer idColonia, Pageable pageable);
@@ -89,20 +89,48 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     List<ReporteCliente> getReporteClientes();
     
     
+    /**
+     * Cancela un pago para un cliente en una fecha específica.
+     *
+     * @param idCliente Identificador del cliente.
+     * @param fecha     Fecha en la que se cancela el pago.
+     * @return Entero que indica el resultado de la operación.
+     */
     @Procedure(name = "cancelarPago")
     Integer cancelarPago(@Param("p_id_cliente") Integer idCliente, @Param("p_fecha") String fecha);
     
+    /**
+     * Actualiza el monto total de un pago identificado por su ID.
+     *
+     * @param total  Nuevo monto total del pago.
+     * @param idPago Identificador del pago a actualizar.
+     * @return Entero que indica el número de filas afectadas por la actualización.
+     */
     @Modifying
     @Transactional
     @Query(value = "update pago set total = ?1 where id_pago = ?2", nativeQuery = true)
     int actualizarTotal(Float total, Integer idPago);
     
+    
+    /**
+     * Establece el monto de abono para un cliente identificado por su ID.
+     *
+     * @param abono     Nuevo monto de abono para el cliente.
+     * @param idCliente Identificador del cliente.
+     * @return Entero que indica el número de filas afectadas por la actualización.
+     */
     @Modifying
     @Transactional
     @Query(value = "update cliente set abono = ?1 where id_cliente = ?2", nativeQuery = true)
     int setAbono(Float abono, Integer idCliente);
     
     
+    /**
+     * Obtiene el monto actual de abono para un cliente identificado por su ID.
+     *
+     * @param idCliente Identificador del cliente.
+     * @return Monto actual de abono para el cliente.
+     */
     @Query(value = "select c.abono from cliente c where c.id_cliente = ?1",
             nativeQuery = true)
     Float obtenerAbonoActual(Integer idCliente);

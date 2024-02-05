@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.itextpdf.text.DocumentException;
 import com.solucionespc.pagos.dto.ClienteDTO;
@@ -39,6 +40,7 @@ import com.solucionespc.pagos.utils.PDFExporter;
 import com.solucionespc.pagos.utils.PDFReciboExporter;
 import com.solucionespc.pagos.utils.PDFReporteClientes;
 
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -217,5 +219,29 @@ public class PagoController {
         reporte.export(response);
 
     }
+    
+	/**
+	 * Editar un usuario nuevo
+	 * 
+	 * @param usuario a editar
+	 * @return Resultado sobre el la edición del usuario
+	 */
+	@PostMapping(value = "/eliminar", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+	@HxTrigger("refresh")
+	@ResponseBody
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public String eliminarCliente(@RequestParam(value = "idPagoEliminar") Integer id) {
+		
+		boolean totalMeses = pagoService.mesesConPago(id);
+		
+		if(totalMeses) {
+			return "<div id=\"result\" data-notify=\"3\" hidden>No se puede eliminar un pago con meses registrados</div>";
+		}
+		boolean res = pagoService.deletePago(id);
+		if (res) {
+			return "<div id=\"result\" data-notify=\"1\" hidden>Se ha eliminado el pago</div>";
+		}
+		return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al eliminar el pago</div>";
+	}
 
 }

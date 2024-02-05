@@ -107,7 +107,17 @@ public class ClienteService implements IClienteService {
 		cliente.setPaquete(Paquete.builder().idPaquete(c.getPaquete()).build());
 		cliente.setColonia(Colonia.builder().idColonia(c.getIdColonia()).build());
 		cliente.setDiasAtraso(0);
-		cliente.setAbono(0f);
+		if (c.getAbono() != null) {
+			if (c.getAbono() > 0) {
+				cliente.setAbono(c.getAbono());
+			} else {
+				cliente.setAbono(0f);
+			}
+
+		} else {
+			cliente.setAbono(0f);
+		}
+
 		try {
 			clienteRepository.save(cliente);
 			return true;
@@ -316,8 +326,7 @@ public class ClienteService implements IClienteService {
 	@Override
 	public void pagoMasivo(List<String> meses, Cliente cliente, Integer idUsuario, Integer tipoPago)
 			throws DocumentException, IOException {
-		
-		
+
 		Integer tipoRecibo = 1;
 		Float residuo = 0f;
 		PrintTicket printTicket = new PrintTicket();
@@ -335,20 +344,23 @@ public class ClienteService implements IClienteService {
 					res.getIdPago(), mes);
 		}
 
+		// Se actualiza el tipo de pago y si hay un abono
+		pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
 		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
 		if (cliente.getAbono() > 0) {
+			tipoRecibo = 4;
+			residuo = cliente.getAbono();
+			// Se actualiza el tipo de pago y si hay un abono
+			pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
 			pagoRepository.actualizarTotal(i.getTotal() - cliente.getAbono(), res.getIdPago());
 			i = pagoRepository.getInfoRecibo(res.getIdPago());
 			clienteRepository.setAbono(0f, cliente.getIdCliente());
-			tipoRecibo = 4;
-			residuo = cliente.getAbono();
-			
 		}
 
 		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
 				res.getIdPago());
-		
-		if(cliente.getAbono() > 0) {
+
+		if (cliente.getAbono() > 0) {
 			ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, cliente.getAbono(), 4);
 
 			System.out.println(i.getTotal());
@@ -356,14 +368,14 @@ public class ClienteService implements IClienteService {
 			System.out.println(tipoPago);
 			byte[] pdfBytes = reciboAbono.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
-		}else {
+		} else {
 			PDFRecibo recibo = new PDFRecibo(i, mesesR);
-			printTicket.printTicket(i, mesesR);
+			//printTicket.printTicket(i, mesesR);
 			byte[] pdfBytes = recibo.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
 		}
 		PrintTicketNew printTicketNew = new PrintTicketNew();
-		
+
 		printTicketNew.printTicket(i, mesesR, residuo, tipoRecibo);
 
 	}
@@ -392,21 +404,41 @@ public class ClienteService implements IClienteService {
 	public List<ReporteCliente> getReporteClientes() {
 		return clienteRepository.getReporteClientes();
 	}
-
+	
+	/**
+	 * Cancacela meses de pagos para un cliente por medio de su id 
+	 */
 	@Override
 	@Transactional
 	public Integer cancelarPago(Integer idCliente, String fecha) throws IOException, DocumentException {
 		Integer idPago = clienteRepository.cancelarPago(idCliente, fecha);
 		if (idPago > 0) {
 			InfoRecibo i = pagoRepository.getInfoRecibo(idPago);
+
 			List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(idCliente, idPago);
-			PDFRecibo recibo = new PDFRecibo(i, mesesR);
-			byte[] pdfBytes = recibo.getPdfBytes();
+			// PDFRecibo recibo = new PDFRecibo(i, mesesR);
+			// byte[] pdfBytes = recibo.getPdfBytes();
+			// pagoRepository.actualizarRecibo(pdfBytes, idPago);
+
+			ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, i.getAbono(), i.getTipoTicket());
+
+			if (i.getTipoTicket() == 3) {
+				pagoRepository.actualizarTotal(i.getTotal() + i.getAbono(), idPago);
+				i = pagoRepository.getInfoRecibo(idPago);
+			} else if (i.getTipoTicket() == 4) {
+				pagoRepository.actualizarTotal(i.getTotal() - i.getAbono(), idPago);
+				i = pagoRepository.getInfoRecibo(idPago);
+			}
+
+			byte[] pdfBytes = reciboAbono.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, idPago);
 		}
 		return idPago;
 	}
 
+	/**
+	 * Elimina un cliente del sistema, simpre y cuando este no tenga ningun pago registrado
+	 */
 	@Override
 	public boolean deteleCliente(Integer idCliente) {
 		try {
@@ -416,7 +448,11 @@ public class ClienteService implements IClienteService {
 			return false;
 		}
 	}
-
+	
+	
+	/**
+	 * Verifica si un cliente tienen pagos hechos en el sistema
+	 */
 	@Override
 	public boolean totalMesesPagados(Integer idCliente) {
 		Integer res = mesesPagoRepositoty.totalMesesPagados(idCliente);
@@ -427,137 +463,165 @@ public class ClienteService implements IClienteService {
 		return false;
 	}
 
+	/**
+	 * Realiza un pago de un cliente por medio de un abono
+	 */
 	@Override
 	public boolean abonoCliente(Integer idCliente, Float abono, Integer tipoPago)
 			throws IOException, DocumentException {
-		Cliente cliente = clienteRepository.findById(idCliente).get();
+		
 		/**
-		 * Estado 1: ticket normal Estado 2: Solo abono x Estado 3: Meses mas abono
-		 * Estado 4: Usando el abono x
+		 * Tipo de tickets
+		 * 1.- Ticket normal (solo contiene meses de pago)
+		 * 2.- Ticket de abono (solo contiene el abono, sin ningun mes pagado)
+		 * 3.- Ticket con mes de pago más abono a favor
+		 * 4.- Ticket usando el abono que el cliente tenia guardado
+		 * 
 		 */
-		Integer tipoTicket;
-		Float residuo = 0f;
-		Pago pago = new Pago();
-		List<String> fechasGeneradas = new ArrayList<>();
-		Integer tipoRecibo = 1;
-		Pago res = new Pago();
 
-		float resultado = (abono + cliente.getAbono()) / cliente.getPaquete().getPrecio();
-		int numMeses = (int) Math.floor(resultado);
-		residuo = (abono + cliente.getAbono()) % cliente.getPaquete().getPrecio();
+		try {
 
-		System.out.println("Num de meses: ");
-		System.out.println(numMeses);
-		System.out.println("Abono proximo mes: ");
-		System.out.println(residuo);
+			Cliente cliente = clienteRepository.findById(idCliente).get();
+			/**
+			 * Estado 1: ticket normal Estado 2: Solo abono x Estado 3: Meses mas abono
+			 * Estado 4: Usando el abono x
+			 */
+			Integer tipoTicket;
+			Float residuo = 0f;
+			Pago pago = new Pago();
+			List<String> fechasGeneradas = new ArrayList<>();
+			Integer tipoRecibo = 1;
+			Pago res = new Pago();
 
-		clienteRepository.setAbono(residuo, idCliente);
+			float resultado = (abono + cliente.getAbono()) / cliente.getPaquete().getPrecio();
+			int numMeses = (int) Math.floor(resultado);
+			residuo = (abono + cliente.getAbono()) % cliente.getPaquete().getPrecio();
 
-		// Número de meses a generar
-		int numeroMeses = numMeses;
+			System.out.println("Num de meses: ");
+			System.out.println(numMeses);
+			System.out.println("Abono proximo mes: ");
+			System.out.println(residuo);
 
-		// Formato deseado para la impresión
-		DateTimeFormatter formatoDeseado = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		LocalDate fechaInicio = cliente.getFechaPago().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		// Lista para almacenar las fechas generadas
+			clienteRepository.setAbono(residuo, idCliente);
 
-		// Generar fechas y agregarlas a la lista
-		for (int i = 0; i < numeroMeses; i++) {
-			LocalDate fechaGenerada = fechaInicio.plusMonths(i);
-			fechasGeneradas.add(fechaGenerada.format(formatoDeseado));
-		}
+			// Número de meses a generar
+			int numeroMeses = numMeses;
 
-		// Imprimir la lista de fechas generadas
-		System.out.println("Fechas generadas:");
-		fechasGeneradas.forEach(System.out::println);
+			// Formato deseado para la impresión
+			DateTimeFormatter formatoDeseado = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			LocalDate fechaInicio = cliente.getFechaPago().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			// Lista para almacenar las fechas generadas
 
-		pago.setFecha(new Date());
-		pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
-		pago.setIdUsuario(Usuario.builder().idUsuario(1).build());
-		pago.setTipoPago(tipoPago);
-		res = pagoRepository.save(pago);
+			// Generar fechas y agregarlas a la lista
+			for (int i = 0; i < numeroMeses; i++) {
+				LocalDate fechaGenerada = fechaInicio.plusMonths(i);
+				fechasGeneradas.add(fechaGenerada.format(formatoDeseado));
+			}
 
-		for (String mes : fechasGeneradas) {
-			System.out.println(mes);
-			clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
-					res.getIdPago(), mes);
-		}
-		pagoRepository.actualizarTotal(abono, res.getIdPago());
+			// Imprimir la lista de fechas generadas
+			System.out.println("Fechas generadas:");
+			fechasGeneradas.forEach(System.out::println);
 
-		if ((abono + cliente.getAbono()) >= cliente.getPaquete().getPrecio()) {
-			if (cliente.getAbono() == 0) {
+			pago.setFecha(new Date());
+			pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
+			pago.setIdUsuario(Usuario.builder().idUsuario(1).build());
+			pago.setTipoPago(tipoPago);
+			res = pagoRepository.save(pago);
 
-				if (residuo == 0) {
-					// Estado 1: ticket normal
-					tipoRecibo = 1;
+			for (String mes : fechasGeneradas) {
+				System.out.println(mes);
+				clienteRepository.InsertarMesPago(cliente.getIdCliente(), cliente.getPaquete().getIdPaquete(),
+						res.getIdPago(), mes);
+			}
+			pagoRepository.actualizarTotal(abono, res.getIdPago());
+
+			if ((abono + cliente.getAbono()) >= cliente.getPaquete().getPrecio()) {
+				if (cliente.getAbono() == 0) {
+
+					if (residuo == 0) {
+						// Estado 1: ticket normal
+						tipoRecibo = 1;
+					} else {
+						// Estado 3: Meses mas abono
+						tipoRecibo = 3;
+					}
+					/**
+					 * Estado 1: ticket normal Estado 2: Solo abono x Estado 3: Meses mas abono
+					 * Estado 4: Usando el abono x
+					 */
+
 				} else {
-					// Estado 3: Meses mas abono
-					tipoRecibo = 3;
+					if ((abono % cliente.getPaquete().getPrecio() == 0)) {
+						// Estado 1: ticket normal
+						tipoRecibo = 1;
+					} else {
+						// Estado 4: Usando el abono
+
+						if ((residuo != cliente.getAbono()) && residuo == 0) {
+							residuo = cliente.getAbono();
+						}
+
+						tipoRecibo = 4;
+						Float abonoCurrent = clienteRepository.obtenerAbonoActual(idCliente);
+						if ((residuo - abonoCurrent) == 0) {
+							residuo = residuo - cliente.getAbono();
+							tipoRecibo = 3;
+							System.out.println("ENTRO EN LA CONDICIÓN");
+						}
+						System.out.println("Este es el abono last");
+						System.out.println(cliente.getAbono());
+						System.out.println("Abono actual");
+						System.out.println(clienteRepository.obtenerAbonoActual(idCliente));
+						System.out.println("Este es el residuo");
+						System.out.println(residuo);
+					}
+
 				}
-				/**
-				 * Estado 1: ticket normal Estado 2: Solo abono x Estado 3: Meses mas abono
-				 * Estado 4: Usando el abono x
-				 */
 
 			} else {
-				if ((abono % cliente.getPaquete().getPrecio() == 0)) {
-					// Estado 1: ticket normal
-					tipoRecibo = 1;
-				} else {
-					// Estado 4: Usando el abono
-
-					if ((residuo != cliente.getAbono()) && residuo == 0) {
-						residuo = cliente.getAbono();
-					}
-					
-					tipoRecibo = 4;
-					Float abonoCurrent = clienteRepository.obtenerAbonoActual(idCliente);
-					if((residuo - abonoCurrent) == 0) {
-						residuo = residuo - cliente.getAbono();
-						tipoRecibo = 3;
-						System.out.println("ENTRO EN LA CONDICIÓN");
-					}
-					System.out.println("Este es el abono last");
-					System.out.println(cliente.getAbono());
-					System.out.println("Abono actual");
-					System.out.println(clienteRepository.obtenerAbonoActual(idCliente));
-					System.out.println("Este es el residuo");
-					System.out.println(residuo);
-				}
+				// Estado 2: Solo abono
+				tipoRecibo = 2;
+				residuo = abono;
 
 			}
 
-		} else {
-			// Estado 2: Solo abono
-			tipoRecibo = 2;
-			residuo = abono;
+			// Se actualiza el tipo de pago y si hay un abono
+			pagoRepository.actualizarInfoPago(res.getIdPago(), residuo, tipoRecibo);
 
+			InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
+
+			List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
+					res.getIdPago());
+			ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, residuo, tipoRecibo);
+
+			System.out.println(i.getTotal());
+			System.out.println(mesesR);
+			System.out.println(tipoPago);
+			byte[] pdfBytes = reciboAbono.getPdfBytes();
+			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
+
+			PrintTicketNew printTicket = new PrintTicketNew();
+
+			printTicket.printTicket(i, mesesR, residuo, tipoRecibo);
+
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 
-		InfoRecibo i = pagoRepository.getInfoRecibo(res.getIdPago());
-
-		List<MesesRecibo> mesesR = mesesPagoRepositoty.obtnerMesesPagadosRecibo(cliente.getIdCliente(),
-				res.getIdPago());
-		ReciboAbono reciboAbono = new ReciboAbono(i, mesesR, residuo, tipoRecibo);
-
-		System.out.println(i.getTotal());
-		System.out.println(mesesR);
-		System.out.println(tipoPago);
-		byte[] pdfBytes = reciboAbono.getPdfBytes();
-		pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
-		
-		PrintTicketNew printTicket = new PrintTicketNew();
-		
-		printTicket.printTicket(i, mesesR, residuo, tipoRecibo);
-
-		return false;
 	}
-
+	
+	/**
+	 * Obtinene los meses que un cliente a pagado usando el año como filtro
+	 */
 	@Override
 	public List<Date> obtenerMesesPagadosPorAnio(Integer idCliente, Integer anio) {
-		return mesesPagoRepositoty.obtenerMesesPagadosPorAnio(idCliente,anio);
+		return mesesPagoRepositoty.obtenerMesesPagadosPorAnio(idCliente, anio);
 	}
 
+	/**
+	 * Obtiene el abono actualziado de un cliente por medio de su id
+	 */
 	@Override
 	public Float obtenerAbonoActual(Integer idCliente) {
 		// TODO Auto-generated method stub

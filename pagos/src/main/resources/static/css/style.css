@@ -150,3 +150,7 @@ a {
 	border: .2px solid black;
 	border-radius: 50%;
 }
+
+.custom-modal-dialog {
+  max-width: 600px !important;
+}

@@ -77,6 +77,9 @@ public interface MesesPagoRepositoty extends JpaRepository<MesesPago, Integer>{
             nativeQuery = true)
 	List<MesesRecibo> obtnerMesesPagadosRecibo(Integer idCliente,Integer idPago);
 	
+	/**
+	 * Obtiene el total de meses pagados por un cliente específico.
+	 */
 	@Query(value = "select COUNT(*) as registro from meses_pago mp where mp.id_cliente = ?1",
             nativeQuery = true)
     Integer totalMesesPagados(Integer idCliente);

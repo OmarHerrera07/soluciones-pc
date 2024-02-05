@@ -32,8 +32,9 @@ public class PrintTicketNew {
 	public static void printTicket(InfoRecibo pago, List<MesesRecibo> meses,Float abono, Integer TipoTicket) { 
 		 PrinterMatrix printer = new PrinterMatrix();
 		 
+		 int centrado = 6;
 		 int espacio = 11;
-		 int numCol = 12 + meses.size()+2 + espacio;
+		 int numCol = 15 + meses.size()+2 + espacio;
 		 
 		 if(TipoTicket == 3 || TipoTicket == 4 || TipoTicket == 2) {
 			 numCol+=2;
@@ -41,29 +42,38 @@ public class PrintTicketNew {
 		 
 		 
 		 String nombre = "Soluciones PC";
+		 String rfc = "RFC: ZARE881013I12";
+		 String telefono = "Tel. 6161651227";
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		 
 		 Extenso e = new Extenso();
 		 
 		 e.setNumber(101.85);
 		 
-		 printer.setOutSize(numCol, 32);
+		 printer.setOutSize(numCol, 42);
+		 printer.printCharAtCol(1, 1, 42, "=");
 		 	 
-		 printer.printTextWrap(1, 2, 8, 32, nombre);
-		 printer.printTextWrap(2, 3, 8, 32, "");
-		 printer.printTextWrap(3,4, 15, 32, "Fecha: "+sdf.format(pago.getFecha())); 
-		 printer.printTextWrap(4, 5, 8, 32, "");
-		 printer.printTextWrap(5,6, 1, 20, "RFC: "+pago.getRfc()); 
-		 printer.printTextWrap(6, 7, 8, 32, "");
-		 printer.printTextWrap(7, 8, 5, 16, "Mes de Pago");
-		 printer.printTextWrap(7, 8, 20, 32, "Subtotal");
+		 printer.printTextWrap(1, 2,8+centrado, 42, nombre);
+		 
+		 
+		 printer.printTextWrap(2, 3,6+centrado, 42, rfc);
+		 printer.printTextWrap(3, 4,7+centrado, 42, telefono);
+		 
+		 
+		 printer.printTextWrap(4, 5, 8, 42, "");
+		 printer.printTextWrap(5,6, 15+centrado, 42, "Fecha: "+sdf.format(pago.getFecha())); 
+		 printer.printTextWrap(6, 7, 8, 42, "");
+		 printer.printTextWrap(7,8, 5, 32, "RFC: "+pago.getRfc()); 
+		 printer.printTextWrap(8, 9, 8+centrado, 42, "");
+		 printer.printTextWrap(9, 10, 1+centrado, 16+centrado, "Mes de Pago");
+		 printer.printTextWrap(9,10, 21+centrado, 42, "Subtotal");
 		 
 		 	     	        
-		 int colPagos = 9;
+		 int colPagos = 11;
 	     for(MesesRecibo mes : meses) {
 	    	 String fechaFormateada = sdf.format(mes.getFecha());
-			 printer.printTextWrap(colPagos, colPagos+1, 5, 16, fechaFormateada);
-			 printer.printTextWrap(colPagos,colPagos+1, 20, 32, "$"+mes.getPrecio()+"0");
+			 printer.printTextWrap(colPagos, colPagos+1, 1+centrado, 26, fechaFormateada);
+			 printer.printTextWrap(colPagos,colPagos+1, 22+centrado, 42, "$"+mes.getPrecio()+"0");
 			 colPagos+=1;
 	    	 
 	     }
@@ -77,28 +87,28 @@ public class PrintTicketNew {
 	     
 	     System.out.println("Imprimiendo ticket");
 	     if(TipoTicket == 3 || TipoTicket == 2) {
-			 printer.printTextWrap(colPagos, colPagos+1, 5, 16, "abono");
-			 printer.printTextWrap(colPagos,colPagos+1, 20, 32, "$"+abono+"0");
+			 printer.printTextWrap(colPagos, colPagos+1, 5+centrado, 16+centrado, "abono");
+			 printer.printTextWrap(colPagos,colPagos+1, 22+centrado, 32+centrado, "$"+abono+"0");
 			 colPagos+=1;
 			 System.out.println("ENTROOOO EN LA CONDICIÓN");
 	     }
 	     
 	     if(TipoTicket == 4) {
-			 printer.printTextWrap(colPagos, colPagos+1, 5, 16, "abono");
-			 printer.printTextWrap(colPagos,colPagos+1, 18, 32, "- $"+abono+"0");
+			 printer.printTextWrap(colPagos, colPagos+1, 3+centrado, 16+centrado, "abono");
+			 printer.printTextWrap(colPagos,colPagos+1, 20+centrado, 42, "- $"+abono+"0");
 			 colPagos+=1;
 	     }
 		 
-		 printer.printTextWrap(colPagos, colPagos+1, 8, 32, "");
+		 printer.printTextWrap(colPagos, colPagos+1, 8+centrado, 42, "");
 		 colPagos+=1;
-		 printer.printTextWrap(colPagos, colPagos+1, 15, 32, "Total: $"+pago.getTotal()+"0");
+		 printer.printTextWrap(colPagos, colPagos+1, 15+centrado, 42, "Total: $"+pago.getTotal()+"0");
 		 colPagos+=1;
-		 printer.printTextWrap(colPagos, colPagos+1, 8, 32, "");
+		 printer.printTextWrap(colPagos, colPagos+1, 8+centrado, 42, "");
 		 colPagos+=1;
-		 printer.printTextWrap(colPagos, colPagos+1, 1, 32, "Cobrado por: ");
+		 printer.printTextWrap(colPagos, colPagos+1, 5, 42, "Cobrado por: ");
 		 colPagos+=1;
-		 printer.printTextWrap(colPagos, colPagos+1, 1, 32, pago.getNombreUsuario());
-		 printer.printCharAtCol(colPagos+espacio, 1, 32, "");
+		 printer.printTextWrap(colPagos, colPagos+1, 5, 42, pago.getNombreUsuario());
+		 printer.printCharAtCol(colPagos+espacio, 1, 42, "");
 		 
 		 
 		 
