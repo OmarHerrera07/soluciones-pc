@@ -96,7 +96,7 @@ public class ClienteService implements IClienteService {
 	@Override
 	public boolean registrarCliente(ClienteRegisterDTO c) {
 		Cliente cliente = new Cliente();
-		cliente.setNombre(c.getNombre());
+		cliente.setNombre(c.getNombre().trim());
 		cliente.setTelefono(c.getTelefono());
 		cliente.setTelefono2(c.getTelefono2());
 		cliente.setCoordenadas(c.getCoordenadas());
@@ -149,7 +149,7 @@ public class ClienteService implements IClienteService {
 	@Override
 	public boolean editarCliente(ClienteRegisterDTO c) {
 		Cliente cliente = clienteRepository.findById(c.getIdCliente()).get();
-		cliente.setNombre(c.getNombre());
+		cliente.setNombre(c.getNombre().trim());
 		cliente.setTelefono(c.getTelefono());
 		cliente.setTelefono2(c.getTelefono2());
 		cliente.setCoordenadas(c.getCoordenadas());
