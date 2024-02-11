@@ -29,11 +29,9 @@ function validarTipoPagoAbono() {
 function mostrarMesesAbono(abono) {
 
 	let tipoPagoSelect = $("#tipoPagoAbono").val();
-	console.log('Este es el select');
-	console.log(tipoPagoSelect);
+
 	if (abono > 0 && tipoPagoSelect != null) {
 		$("#confirmarAbonoModal").prop("disabled", false);
-		console.log();
 	} else {
 		$("#confirmarAbonoModal").prop("disabled", true);
 	}
@@ -48,7 +46,6 @@ function mostrarMesesAbono(abono) {
 
 
 	$('#confirmarAbono').text(abono);
-	console.log($('#confirmarAbono'));
 
 	abono = valor;
 	$('#cantidadAbonoinput').val(valor);
@@ -72,7 +69,8 @@ function mostrarMesesAbono(abono) {
 
 	// Generar las fechas adicionales
 	for (let i = 0; i < numMeses; i++) {
-		const fechaActual = new Date(fechaInput);
+		let fechaActual = new Date(fechaInput);
+		fechaActual.setDate(fechaActual.getDate() + 1);
 		fechaActual.setMonth(fechaActual.getMonth() + i);
 		const dia = fechaActual.getDate() + 1;
 		const mes = fechaActual.getMonth() + 1;
@@ -85,7 +83,6 @@ function mostrarMesesAbono(abono) {
 
 
 	if (fechasGeneradas.length > 0) {
-		console.log(fechasGeneradas);
 		contenedorMeses = '';
 		fechasGeneradas.forEach(function(mes) {
 			var fecha = new Date(mes);
@@ -104,12 +101,11 @@ function mostrarMesesAbono(abono) {
 	}
 	document.getElementById('mesesAbonos').innerHTML = contenedorMeses;
 	// Mostrar las fechas generadas en la consola (puedes ajustar esto según tus necesidades)
-	console.log(fechasGeneradas);
+
 }
 
 function resetAbono() {
 	$('#cantidadAbonoinput').val('');
-	console.log("Hola que hace");
 	document.getElementById('mesesAbonos').innerHTML = ' ';
 	document.getElementById('tipoPagoAbono').value = '';
 	$("#confirmarAbonoModal").prop("disabled", true);
