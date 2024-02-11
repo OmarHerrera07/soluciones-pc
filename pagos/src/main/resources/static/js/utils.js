@@ -29,12 +29,12 @@ function pagarMeses() {
 		return this.value;
 	}).get();
 
-
 	if (valoresSeleccionados.length > 0) {
 		console.log(valoresSeleccionados);
 		let contenedorMeses = '';
 		valoresSeleccionados.forEach(function(mes) {
 			var fecha = new Date(mes);
+			fecha.setDate(fecha.getDate() + 1);
 			var opciones = { month: 'long' };
 			var nombreMes = fecha.toLocaleString('es-ES', opciones);
 			contenedorMeses += `<p class="fw-bold meses-pagar"> Mes: <span class="no-bold" id="clientePago">${nombreMes}</span></p>`;
