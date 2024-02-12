@@ -596,12 +596,13 @@ public class ClienteController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String abono(@RequestParam(value = "abono") Float abono,
 			@RequestParam(value = "idCliente") Integer idCliente,
-			@RequestParam(value = "tipoPagoAbono") Integer tipoPago) throws IOException, DocumentException {
+			@RequestParam(value = "tipoPagoAbono") Integer tipoPago,Authentication authentication) throws IOException, DocumentException {
 
 		System.out.println("DATOS: ");
 		System.out.println(abono);
 		System.out.println(idCliente);
-		boolean res = clienteService.abonoCliente(idCliente, abono, tipoPago);
+		Usuario user = usuarioService.finUserByUsername(authentication.getName());
+		boolean res = clienteService.abonoCliente(idCliente, abono, tipoPago, user.getIdUsuario());
 		if(res) {
 			return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
 		}else {

@@ -467,7 +467,7 @@ public class ClienteService implements IClienteService {
 	 * Realiza un pago de un cliente por medio de un abono
 	 */
 	@Override
-	public boolean abonoCliente(Integer idCliente, Float abono, Integer tipoPago)
+	public boolean abonoCliente(Integer idCliente, Float abono, Integer tipoPago, Integer idUsuario)
 			throws IOException, DocumentException {
 		
 		/**
@@ -524,7 +524,7 @@ public class ClienteService implements IClienteService {
 
 			pago.setFecha(new Date());
 			pago.setIdCliente(Cliente.builder().idCliente(cliente.getIdCliente()).build());
-			pago.setIdUsuario(Usuario.builder().idUsuario(1).build());
+			pago.setIdUsuario(Usuario.builder().idUsuario(idUsuario).build());
 			pago.setTipoPago(tipoPago);
 			res = pagoRepository.save(pago);
 

@@ -50,7 +50,7 @@ public interface IClienteService{
 	
 	boolean totalMesesPagados(Integer idCliente);
 	
-	boolean abonoCliente(Integer idCliente, Float abono,Integer tipoPago) throws IOException, DocumentException;
+	boolean abonoCliente(Integer idCliente, Float abono,Integer tipoPago, Integer idUsuario) throws IOException, DocumentException;
 	
 	List<Date> obtenerMesesPagadosPorAnio(Integer idCliente, Integer anio);
 	

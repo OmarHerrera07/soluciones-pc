@@ -80,13 +80,14 @@ public class PDFRecibo {
 	    // Crear celdas sin bordes
 	    PdfPCell cell;
 
-	    // Agregar RFC a la izquierda
-	    cell = new PdfPCell(new Phrase("RFC: "+pago.getRfc(),fontTableHead));
+	    // Agregar cliente a la izquierda
+	    cell = new PdfPCell(new Phrase("Cliente: "+pago.getNombreCliente(),fontTableHead));
 	    cell.setBorder(Rectangle.NO_BORDER);
 	    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 	    tableHead.addCell(cell);
 
-	    // Agregar fecha a la derecha
+
+		// Agregar fecha a la derecha
 	    cell = new PdfPCell(new Phrase("Fecha: "+fechaFormateada,fontTableHead));
 	    cell.setBorder(Rectangle.NO_BORDER);
 	    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -94,10 +95,18 @@ public class PDFRecibo {
 
 	    // Agregar la tabla al documento
 	    document.add(tableHead);
-	    
-	    
-	    
-	    
+
+
+
+		Font coloniafont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
+
+		Paragraph colonia = new Paragraph("Colonia: "+pago.getColonia(), coloniafont);
+		colonia.setAlignment(Element.ALIGN_LEFT);
+		colonia.setSpacingAfter(10f);
+		document.add(colonia);
+
+
+
 	    document.add(new Paragraph(" "));
 
 	    // Resto de tu código para generar el contenido del PDF

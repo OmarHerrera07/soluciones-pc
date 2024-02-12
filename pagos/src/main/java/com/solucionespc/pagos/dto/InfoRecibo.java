@@ -5,6 +5,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public interface InfoRecibo {
+    String getNombreCliente();
+
+    String getColonia();
+
     String getRfc();
 
     String getNombreUsuario();
