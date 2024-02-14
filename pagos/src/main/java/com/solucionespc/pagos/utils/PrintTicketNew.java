@@ -9,6 +9,7 @@ import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -83,10 +84,12 @@ public class PrintTicketNew {
 		 printer.printTextWrap(10, 11, 1+centrado, 16+centrado, "Mes de Pago");
 		 printer.printTextWrap(10,11, 21+centrado, 42, "Subtotal");
 		 
-		 	     	        
+		 SimpleDateFormat formatoMes = new SimpleDateFormat("MMMM", new Locale("es", "ES"));		     	        
 		 int colPagos = 12;
 	     for(MesesRecibo mes : meses) {
-	    	 String fechaFormateada = sdf.format(mes.getFecha());
+	    	 String fechaFormateada = formatoMes.format(mes.getFecha());
+	    	 //Convierte la primera letra en mayuscula
+	    	 fechaFormateada = fechaFormateada.substring(0, 1).toUpperCase() + fechaFormateada.substring(1).toLowerCase();
 			 printer.printTextWrap(colPagos, colPagos+1, 1+centrado, 26, fechaFormateada);
 			 printer.printTextWrap(colPagos,colPagos+1, 22+centrado, 42, "$"+mes.getPrecio()+"0");
 			 colPagos+=1;
@@ -102,14 +105,16 @@ public class PrintTicketNew {
 	     
 	     System.out.println("Imprimiendo ticket");
 	     if(TipoTicket == 3 || TipoTicket == 2) {
-			 printer.printTextWrap(colPagos, colPagos+1, 5+centrado, 16+centrado, "abono");
+	    	 //abono +5 de espacio
+			 printer.printTextWrap(colPagos, colPagos+1, 1+centrado, 16+centrado, "Abono");
 			 printer.printTextWrap(colPagos,colPagos+1, 22+centrado, 32+centrado, "$"+abono+"0");
 			 colPagos+=1;
 			 System.out.println("ENTROOOO EN LA CONDICIÓN");
 	     }
 	     
 	     if(TipoTicket == 4) {
-			 printer.printTextWrap(colPagos, colPagos+1, 3+centrado, 16+centrado, "abono");
+	    	//abono +1 de espacio
+			 printer.printTextWrap(colPagos, colPagos+1, 1+centrado, 16+centrado, "Abono");
 			 printer.printTextWrap(colPagos,colPagos+1, 20+centrado, 42, "- $"+abono+"0");
 			 colPagos+=1;
 	     }
