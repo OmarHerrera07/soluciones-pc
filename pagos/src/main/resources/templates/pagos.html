@@ -22,7 +22,7 @@
 				</div>
 				<br>
 			</div>
-			<div>
+			<div sec:authorize="hasAnyRole('ADMINISTRADOR')">
 				<a href="/pagos/corte" target="_blank" class="btn btn-success">
 					Generar corte
 				</a>
