@@ -11,6 +11,8 @@ public interface ReporteCliente {
     Date getFechaPago();
 
     String getColonia();
+    
+    String getTelefono();
 
     Integer getDiasAtraso();
 

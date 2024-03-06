@@ -59,9 +59,9 @@ public class PDFReporteClientes {
 
 
         Font fontTableHead = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, negro);
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(5);
 
-        float[] columnWidths = new float[] {2f, 1f, 1f,1.5f};
+        float[] columnWidths = new float[] {2f, 1f, 1f,1f,1.5f};
         table.setWidths(columnWidths);
 
         table.setTotalWidth(PageSize.A4.getWidth()); // Establece el ancho total de la tabla al ancho de la página
@@ -81,6 +81,11 @@ public class PDFReporteClientes {
         table.addCell(cell);
 
         cell = new PdfPCell(new Phrase("Colonia",fontTableHead));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        
+        cell = new PdfPCell(new Phrase("Teléfono",fontTableHead));
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
@@ -109,6 +114,12 @@ public class PDFReporteClientes {
             table.addCell(cell);
 
             cell = new PdfPCell(new Phrase(r.getColonia(),fontTableBody));
+            cell.setBorder(Rectangle.NO_BORDER);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPadding(paddig);
+            table.addCell(cell);
+            
+            cell = new PdfPCell(new Phrase(r.getTelefono(),fontTableBody));
             cell.setBorder(Rectangle.NO_BORDER);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setPadding(paddig);
