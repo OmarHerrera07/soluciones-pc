@@ -39,6 +39,14 @@ public class PrintTicketNew {
 		 int espacio = 11;
 		 int numCol = 15 + meses.size()+2 + espacio;
 		 
+		 String tipoPago = "";
+		 if(pago.getTipoPago() == 1) {
+			 tipoPago = "Efectivo";
+		 }else {
+			 tipoPago = "Transferencia";
+		 }
+
+		 
 		 if(TipoTicket == 3 || TipoTicket == 4 || TipoTicket == 2) {
 			 numCol+=2;
 		 }
@@ -121,6 +129,7 @@ public class PrintTicketNew {
 		 
 		 printer.printTextWrap(colPagos, colPagos+1, 8+centrado, 42, "");
 		 colPagos+=1;
+		 printer.printTextWrap(colPagos, colPagos+1, 5, 20, tipoPago);
 		 printer.printTextWrap(colPagos, colPagos+1, 15+centrado, 42, "Total: $"+pago.getTotal()+"0");
 		 colPagos+=1;
 		 printer.printTextWrap(colPagos, colPagos+1, 8+centrado, 42, "");

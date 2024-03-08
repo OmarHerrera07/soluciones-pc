@@ -26,157 +26,159 @@ import com.solucionespc.pagos.entity.Pago;
 
 public class PDFRecibo {
 	private final InfoRecibo pago;
-	
+
 	private final List<MesesRecibo> meses;
 
-	
 	public PDFRecibo(InfoRecibo pago, List<MesesRecibo> meses) {
 		this.pago = pago;
 		this.meses = meses;
 	}
-	
-	
+
 	public byte[] getPdfBytes() throws IOException, DocumentException {
-		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		  
-		// Convertir las dimensiones de la hoja de la impresora a puntos (1 pulgada = 72 puntos)
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		// Convertir las dimensiones de la hoja de la impresora a puntos (1 pulgada = 72
+		// puntos)
 		float anchoPuntos = (float) (2.5 * 72); // Asumiendo un ancho de 2.5 pulgadas
 		float altoPuntos = (float) (3 * 72); // Asumiendo un alto de 11 pulgadas (típico para recibos)
 
 		// Crear un nuevo tamaño de página con las dimensiones de la impresora
 		Rectangle pageSize = new Rectangle(anchoPuntos, altoPuntos);
-	    // Tamaño personalizado para la impresora térmica Bixolon (80 mm de ancho, 58 mm de alto)
-	    Document document = new Document(pageSize, 10, 10, 10, 10);
-	    PdfWriter.getInstance(document, baos);
+		// Tamaño personalizado para la impresora térmica Bixolon (80 mm de ancho, 58 mm
+		// de alto)
+		Document document = new Document(pageSize, 10, 10, 10, 10);
+		PdfWriter.getInstance(document, baos);
 
+		document.open();
 
-	    document.open();
+		BaseColor negro = BaseColor.BLACK;
+		Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, negro);
 
-	    BaseColor negro = BaseColor.BLACK;
-	    Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, negro);
+		Paragraph title = new Paragraph("Soluciones PC", boldFont);
+		title.setAlignment(Element.ALIGN_CENTER);
+		title.setSpacingAfter(10f);
+		document.add(title);
 
-	    Paragraph title = new Paragraph("Soluciones PC", boldFont);
-	    title.setAlignment(Element.ALIGN_CENTER);
-	    title.setSpacingAfter(10f);
-	    document.add(title);
-	    
-	    
-        // Obtener la fecha actual
-        LocalDate fechaActual = LocalDate.now();
+		// Obtener la fecha actual
+		LocalDate fechaActual = LocalDate.now();
 
-        // Definir el formato deseado (MM/dd/yyyy)
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		// Definir el formato deseado (MM/dd/yyyy)
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        // Formatear la fecha
-        String fechaFormateada = fechaActual.format(formato);
-        
-        
-        
-	    Font fontTableHead = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
-	 // Crear una tabla con dos columnas
-	    PdfPTable tableHead = new PdfPTable(2);
-	    tableHead.setWidthPercentage(100); // Hacer que la tabla ocupe todo el ancho de la página
+		// Formatear la fecha
+		String fechaFormateada = fechaActual.format(formato);
 
-	    // Crear celdas sin bordes
-	    PdfPCell cell;
+		Font fontTableHead = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
+		// Crear una tabla con dos columnas
+		PdfPTable tableHead = new PdfPTable(2);
+		tableHead.setWidthPercentage(100); // Hacer que la tabla ocupe todo el ancho de la página
 
-	    // Agregar cliente a la izquierda
-	    cell = new PdfPCell(new Phrase("Cliente: "+pago.getNombreCliente(),fontTableHead));
-	    cell.setBorder(Rectangle.NO_BORDER);
-	    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-	    tableHead.addCell(cell);
+		// Crear celdas sin bordes
+		PdfPCell cell;
 
+		// Agregar cliente a la izquierda
+		cell = new PdfPCell(new Phrase("Cliente: " + pago.getNombreCliente(), fontTableHead));
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		tableHead.addCell(cell);
 
 		// Agregar fecha a la derecha
-	    cell = new PdfPCell(new Phrase("Fecha: "+fechaFormateada,fontTableHead));
-	    cell.setBorder(Rectangle.NO_BORDER);
-	    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-	    tableHead.addCell(cell);
+		cell = new PdfPCell(new Phrase("Fecha: " + fechaFormateada, fontTableHead));
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+		tableHead.addCell(cell);
 
-	    // Agregar la tabla al documento
-	    document.add(tableHead);
-
-
+		// Agregar la tabla al documento
+		document.add(tableHead);
 
 		Font coloniafont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
 
-		Paragraph colonia = new Paragraph("Colonia: "+pago.getColonia(), coloniafont);
+		Paragraph colonia = new Paragraph("Colonia: " + pago.getColonia(), coloniafont);
 		colonia.setAlignment(Element.ALIGN_LEFT);
 		colonia.setSpacingAfter(10f);
 		document.add(colonia);
 
+		document.add(new Paragraph(" "));
+
+		// Resto de tu código para generar el contenido del PDF
+
+		// Ahora, ajustamos el tamaño del documento según el contenido
+		document.setPageSize(document.getPageSize());
+		// Crear una tabla con tres columnas
+		PdfPTable table = new PdfPTable(3);
+		// Establecer los anchos de las columnas
+		float[] columnWidths = new float[] { 1f, 2f, 1f };
+		table.setWidths(columnWidths);
+		// Crear celdas sin bordes
+
+		cell = new PdfPCell(new Phrase("Cantidad", fontTableHead));
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("Concepto", fontTableHead));
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("Total", fontTableHead));
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cell);
+
+		SimpleDateFormat formatoMes = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
+
+		// Obtén el nombre del mes en español
+
+		Font fontTableBody = FontFactory.getFont(FontFactory.HELVETICA, 6, negro);
+		// Agregar filas a la tabla
+		for (MesesRecibo mes : meses) {
+			cell = new PdfPCell(new Phrase("1", fontTableBody));
+			cell.setBorder(Rectangle.NO_BORDER);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(cell);
+
+			String nombreMes = formatoMes.format(mes.getFecha());
+			cell = new PdfPCell(new Phrase("Pago del mes " + nombreMes, fontTableBody));
+			cell.setBorder(Rectangle.NO_BORDER);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(cell);
+
+			cell = new PdfPCell(new Phrase("$" + mes.getPrecio(), fontTableBody));
+			cell.setBorder(Rectangle.NO_BORDER);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(cell);
+		}
+
+		table.setSpacingAfter(15f);
+		document.add(table);
+		Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);
 
 
-	    document.add(new Paragraph(" "));
+		Paragraph total = new Paragraph("Total: $" + pago.getTotal(), totalFont);
+		total.setAlignment(Element.ALIGN_RIGHT);
+		total.setSpacingAfter(9f);
+		document.add(total);
+		
+		String tipoPago = "";
+		if (pago.getTipoPago() == 1) {
+			tipoPago = "Efectivo";
+		} else {
+			tipoPago = "Transferencia";
+		}
 
-	    // Resto de tu código para generar el contenido del PDF
+		Paragraph tipoPago2 = new Paragraph("Tipo de pago: "+tipoPago, totalFont);
+		tipoPago2.setAlignment(Element.ALIGN_LEFT);
+		tipoPago2.setSpacingAfter(9f);
+		document.add(tipoPago2);
 
-	    // Ahora, ajustamos el tamaño del documento según el contenido
-	    document.setPageSize(document.getPageSize());
-	 // Crear una tabla con tres columnas
-	    PdfPTable table = new PdfPTable(3);
-	 // Establecer los anchos de las columnas
-	    float[] columnWidths = new float[] {1f, 2f, 1f};
-	    table.setWidths(columnWidths);
-	    // Crear celdas sin bordes
-	    
-	    
-	    cell = new PdfPCell(new Phrase("Cantidad",fontTableHead));
-	    cell.setBorder(Rectangle.NO_BORDER);
-	    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	    table.addCell(cell);
+		Font cajaFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
 
-	    cell = new PdfPCell(new Phrase("Concepto",fontTableHead));
-	    cell.setBorder(Rectangle.NO_BORDER);
-	    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	    table.addCell(cell);
-
-	    cell = new PdfPCell(new Phrase("Total",fontTableHead));
-	    cell.setBorder(Rectangle.NO_BORDER);
-	    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	    table.addCell(cell);
-	    
-	    SimpleDateFormat formatoMes = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
-
-        // Obtén el nombre del mes en español
-        
-	    Font fontTableBody = FontFactory.getFont(FontFactory.HELVETICA, 6, negro);
-	    // Agregar filas a la tabla
-	    for (MesesRecibo mes : meses) {
-	        cell = new PdfPCell(new Phrase("1",fontTableBody));
-	        cell.setBorder(Rectangle.NO_BORDER);
-	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        table.addCell(cell);
-	        
-	        String nombreMes = formatoMes.format(mes.getFecha());
-	        cell = new PdfPCell(new Phrase("Pago del mes "+nombreMes,fontTableBody));
-	        cell.setBorder(Rectangle.NO_BORDER);
-	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        table.addCell(cell);
-
-	        cell = new PdfPCell(new Phrase("$"+mes.getPrecio(),fontTableBody));
-	        cell.setBorder(Rectangle.NO_BORDER);
-	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	        table.addCell(cell);
-	    }
-	    
-	    
-	    table.setSpacingAfter(15f);
-	    document.add(table);
-	    Font totalFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, negro);	    	    	    	    	    	    	    	    
-
-	    Paragraph total = new Paragraph("Total: $"+pago.getTotal(), totalFont);
-	    total.setAlignment(Element.ALIGN_RIGHT);
-	    total.setSpacingAfter(15f);
-	    document.add(total);
-	    
-	    Font cajaFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 6, negro);
-
-	    Paragraph caja = new Paragraph("Cobrado por: "+pago.getNombreUsuario(), cajaFont);
-	    caja.setAlignment(Element.ALIGN_LEFT);
-	    caja.setSpacingAfter(10f);
-	    document.add(caja);	    
-	    document.close();
-	    return baos.toByteArray();
+		Paragraph caja = new Paragraph("Cobrado por: " + pago.getNombreUsuario(), cajaFont);
+		caja.setAlignment(Element.ALIGN_LEFT);
+		caja.setSpacingAfter(10f);
+		document.add(caja);
+		document.close();
+		return baos.toByteArray();
 	}
 }

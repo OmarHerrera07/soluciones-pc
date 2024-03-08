@@ -10,6 +10,8 @@ public interface InfoRecibo {
     String getColonia();
 
     String getRfc();
+    
+    Integer getTipoPago();
 
     String getNombreUsuario();
     @DateTimeFormat(pattern = "yyyy-MM-dd")

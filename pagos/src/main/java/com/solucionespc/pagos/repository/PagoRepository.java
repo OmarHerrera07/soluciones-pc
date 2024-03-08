@@ -65,7 +65,7 @@ public interface PagoRepository extends JpaRepository<Pago, Integer> {
 	 * @param idRecibo ID del recibo para el cual se obtiene la información.
 	 * @return Objeto InfoRecibo que representa la información detallada del recibo.
 	 */
-	@Query(value = "select c.nombre as nombreCliente, co.colonia,  c.rfc,u.nombre as nombreUsuario,p.fecha,p.total,p.abono,p.tipo_ticket as tipoTicket  from pago p join cliente c on p.id_cliente = c.id_cliente join usuario u on u.id_usuario = p.id_usuario join colonia co on co.id_colonia = c.id_colonia where p.id_pago =?1", nativeQuery = true)
+	@Query(value = "select c.nombre as nombreCliente, co.colonia,  c.rfc,u.nombre as nombreUsuario,p.fecha,p.total,p.abono,p.tipo_ticket as tipoTicket,CAST(p.tipo_pago AS SIGNED) AS tipoPago from pago p join cliente c on p.id_cliente = c.id_cliente join usuario u on u.id_usuario = p.id_usuario join colonia co on co.id_colonia = c.id_colonia where p.id_pago =?1", nativeQuery = true)
 	InfoRecibo getInfoRecibo(Integer idRecibo);
 
 	/**
