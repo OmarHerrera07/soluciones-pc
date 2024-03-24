@@ -1,0 +1,30 @@
+<div th:fragment="calendario-cliente">
+    <br><br>
+    <h3 th:text="${anioCalendario}">2025</h3>
+    <div class="row">
+        <div th:each="mes : ${mesesCalendario}" class="col-md-3 col-6">
+            <div th:if="${mes.fecha != mesPago}">
+                <input
+                    th:attr="name=${mes.pagado ? 'pagado' : 'meses'},disabled=${mes.pagado ? 'disabled' : null}"
+                    th:checked="${mes.pagado ? 'checked' : null}"
+                    th:value="${mes.fecha}" type="checkbox" class="btn-check" th:id="${mes.nombresMes + -2}"
+                    autocomplete="off">
+                <label th:class="${mes.pagado ? 'btn btn-outline-success custom-column' : 'btn btn-outline-warning custom-column'}"  th:for="${mes.nombresMes + -2}">
+                    <div th:text="${mes.nombresMes}">Enero</div>
+                    <div th:text="${#dates.format(mes.fecha, 'dd-MM-yyyy')}">04/44/2444</div>
+                </label>
+            </div>
+            <div th:if="${mes.fecha == mesPago}">
+                <input th:attr="name=${mes.pagado ? 'pagado' : 'meses'}"
+                    th:checked="${mes.pagado ? 'checked' : null}"
+                    th:value="${mes.fecha}" type="checkbox" class="btn-check" th:id="${mes.nombresMes + -2}"
+                    autocomplete="off">
+                <label class="btn btn-outline-primary custom-column" th:for="${mes.nombresMes + -2}">
+                    <div th:text="${mes.nombresMes}">Enero</div>
+                    <div th:text="${#dates.format(mes.fecha, 'dd-MM-yyyy')}">04/44/2444</div>
+                </label>
+            </div>
+        </div>
+    </div>
+    <br><br>
+</div>

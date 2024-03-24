@@ -3,12 +3,11 @@ package com.solucionespc.pagos.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.solucionespc.pagos.dto.*;
 import com.solucionespc.pagos.entity.Paquete;
@@ -26,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,41 +67,39 @@ public class ClienteController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String registrarCliente(ClienteRegisterDTO cliente) {
 		Paquete p = paqueteService.findbyId(cliente.getPaquete());
-		
-		
-		if(cliente.getAbono()!= null) {
-			if(cliente.getAbono() > p.getPrecio()) {
+
+		if (cliente.getAbono() != null) {
+			if (cliente.getAbono() > p.getPrecio()) {
 				return "<div id=\"result\" data-notify=\"3\" hidden>El abono no puede ser mayor al paquete</div>";
 			}
 		}
 
-		
-//		if (cliente.getAbono() < 0) {
-//			cliente.setAbono(cliente.getAbono() * (-1f));			
-//			float resultado = (cliente.getAbono()) / p.getPrecio();
-//			int numMeses = (int) Math.floor(resultado);
-//			
-//
-//			Float residuo = (cliente.getAbono() % p.getPrecio());
-//			
-//			Calendar calendar = Calendar.getInstance();
-//			calendar.setTime(cliente.getFecha());
-//			
-//			if(numMeses == 0) {
-//				numMeses = 1;
-//				residuo = p.getPrecio() - cliente.getAbono();
-//			}
-//			cliente.setAbono(residuo);
-//
-//			numMeses = numMeses * (-1);
-//			// Resta 3 meses a la fecha actual
-//			calendar.add(Calendar.MONTH, numMeses);
-//
-//			// Obtiene la fecha después de restarle 3 meses
-//			Date fechaRestada = calendar.getTime();
-//			cliente.setFecha(fechaRestada);
-//		}
-		
+		// if (cliente.getAbono() < 0) {
+		// cliente.setAbono(cliente.getAbono() * (-1f));
+		// float resultado = (cliente.getAbono()) / p.getPrecio();
+		// int numMeses = (int) Math.floor(resultado);
+		//
+		//
+		// Float residuo = (cliente.getAbono() % p.getPrecio());
+		//
+		// Calendar calendar = Calendar.getInstance();
+		// calendar.setTime(cliente.getFecha());
+		//
+		// if(numMeses == 0) {
+		// numMeses = 1;
+		// residuo = p.getPrecio() - cliente.getAbono();
+		// }
+		// cliente.setAbono(residuo);
+		//
+		// numMeses = numMeses * (-1);
+		// // Resta 3 meses a la fecha actual
+		// calendar.add(Calendar.MONTH, numMeses);
+		//
+		// // Obtiene la fecha después de restarle 3 meses
+		// Date fechaRestada = calendar.getTime();
+		// cliente.setFecha(fechaRestada);
+		// }
+
 		boolean res = clienteService.registrarCliente(cliente);
 
 		if (res) {
@@ -270,66 +268,72 @@ public class ClienteController {
 		// Obtener el día del mes
 		Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
 		System.out.println(fechaPago);
-		
-		
+
 		Cliente cliente = clienteService.finById(id);
-		
+
 		//
-		
-//		Float deuda= 0f;
-//		
-//        LocalDate fechaActual = LocalDate.now();
-//
-//        // Convierte la fecha anterior a LocalDate
-//        LocalDate fechaAnteriorLocalDate = cliente.getFechaPago().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-//
-//        // Calcula la diferencia en meses
-//        long mesesDeDiferencia = ChronoUnit.MONTHS.between(fechaAnteriorLocalDate, fechaActual);
-//        System.out.println("Numero de meses");
-//        System.out.println(mesesDeDiferencia);
-//        System.out.print("Este es su adeudo");
-//        if(mesesDeDiferencia == 0 ) {    
-//            // Comparar fechas
-//            if (fechaAnteriorLocalDate.compareTo(fechaActual) > 0) {
-//            	// La fecha de pago no ha pasado 
-//                System.out.println(fechaAnteriorLocalDate + " es posterior a " + fechaActual);
-//                System.out.println("La fecha de pago ya ha pasado");
-//                deuda = 0f;
-//            } else if (fechaAnteriorLocalDate.compareTo(fechaActual) < 0) {
-//            	System.out.println("La fecha de pago no ha pasado");
-//            	// La fecha de pago ya paso 
-//            	
-//            	deuda = cliente.getPaquete().getPrecio() - cliente.getAbono();
-//                System.out.println(fechaAnteriorLocalDate + " es anterior a " + fechaActual);
-//            } else {
-//            	deuda = 0f;
-//                System.out.println(fechaAnteriorLocalDate + " es igual a " + fechaActual);
-//            }
-//        }else {
-//        	 if (fechaAnteriorLocalDate.compareTo(fechaActual) > 0) {
-//        		 deuda = 0f;
-//        	 }else {
-//                 int dia1 = fechaAnteriorLocalDate.getDayOfMonth();
-//                 int dia2 = fechaActual.getDayOfMonth();              
-//                 if(dia1>dia2) {
-//                	 deuda -= cliente.getPaquete().getPrecio() + cliente.getPaquete().getPrecio() - cliente.getAbono();
-//                 }else {
-//                	 deuda += cliente.getPaquete().getPrecio() + cliente.getPaquete().getPrecio() - cliente.getAbono();
-//                 	
-//                 }        		 
-//        		 
-//        	 }
-//        	
-//        }
-       	//
+
+		// Float deuda= 0f;
+		//
+		// LocalDate fechaActual = LocalDate.now();
+		//
+		// // Convierte la fecha anterior a LocalDate
+		// LocalDate fechaAnteriorLocalDate =
+		// cliente.getFechaPago().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+		//
+		// // Calcula la diferencia en meses
+		// long mesesDeDiferencia = ChronoUnit.MONTHS.between(fechaAnteriorLocalDate,
+		// fechaActual);
+		// System.out.println("Numero de meses");
+		// System.out.println(mesesDeDiferencia);
+		// System.out.print("Este es su adeudo");
+		// if(mesesDeDiferencia == 0 ) {
+		// // Comparar fechas
+		// if (fechaAnteriorLocalDate.compareTo(fechaActual) > 0) {
+		// // La fecha de pago no ha pasado
+		// System.out.println(fechaAnteriorLocalDate + " es posterior a " +
+		// fechaActual);
+		// System.out.println("La fecha de pago ya ha pasado");
+		// deuda = 0f;
+		// } else if (fechaAnteriorLocalDate.compareTo(fechaActual) < 0) {
+		// System.out.println("La fecha de pago no ha pasado");
+		// // La fecha de pago ya paso
+		//
+		// deuda = cliente.getPaquete().getPrecio() - cliente.getAbono();
+		// System.out.println(fechaAnteriorLocalDate + " es anterior a " + fechaActual);
+		// } else {
+		// deuda = 0f;
+		// System.out.println(fechaAnteriorLocalDate + " es igual a " + fechaActual);
+		// }
+		// }else {
+		// if (fechaAnteriorLocalDate.compareTo(fechaActual) > 0) {
+		// deuda = 0f;
+		// }else {
+		// int dia1 = fechaAnteriorLocalDate.getDayOfMonth();
+		// int dia2 = fechaActual.getDayOfMonth();
+		// if(dia1>dia2) {
+		// deuda -= cliente.getPaquete().getPrecio() + cliente.getPaquete().getPrecio()
+		// - cliente.getAbono();
+		// }else {
+		// deuda += cliente.getPaquete().getPrecio() + cliente.getPaquete().getPrecio()
+		// - cliente.getAbono();
+		//
+		// }
+		//
+		// }
+		//
+		// }
+		//
 
 		int anioPago = calendar.get(Calendar.YEAR);
 		model.addAttribute("anio", anioPago);
-		//model.addAttribute("deuda", deuda);
+		// model.addAttribute("deuda", deuda);
 		model.addAttribute("cliente", cliente);
 		model.addAttribute("idCliente", id);
 		model.addAttribute("mesPago", fechaPago);
-		model.addAttribute("meses", clienteService.generarMeses2(diaDelMes, anioPago));
+		List<MesesDTO> mesesPagados = clienteService.actualizarPagosMesesDTO(
+				clienteService.generarMeses2(diaDelMes, anioPago), clienteService.obtenerMesesPagados(id));
+		model.addAttribute("meses", mesesPagados);
 		model.addAttribute("mesesPagados", clienteService.obtenerMesesPagados(id));
 		return "cliente-pagos";
 	}
@@ -413,8 +417,8 @@ public class ClienteController {
 	 * @param id    El ID del cliente.
 	 * @param anio  El año para filtrar los meses.
 	 * @param model El modelo utilizado para la vista.
-	 * @return 		La vista "cliente-pagos :: lista-meses" actualizada con la
-	 *         		información de los meses pagados.
+	 * @return La vista "cliente-pagos :: lista-meses" actualizada con la
+	 *         información de los meses pagados.
 	 */
 	@GetMapping("/refrescar-meses")
 	@HxTrigger("resetForm")
@@ -434,8 +438,13 @@ public class ClienteController {
 		model.addAttribute("idCliente", id);
 		model.addAttribute("fechaPagoCliente", fechaPago);
 		model.addAttribute("mesPago", fechaPago);
-		model.addAttribute("meses", clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio)));
-		model.addAttribute("mesesPagados", clienteService.obtnerMesesPagadosFiltro(anio, id));
+
+		List<MesesDTO> mesesPagados = clienteService.actualizarPagosMesesDTO(
+				clienteService.generarMesesPorAnio(diaDelMes, anioPago),
+				clienteService.obtnerMesesPagadosFiltro(String.valueOf(anioPago), id));
+		model.addAttribute("meses", mesesPagados);
+
+		model.addAttribute("mesesPagados", clienteService.obtnerMesesPagadosFiltro(String.valueOf(anioPago), id));
 
 		return "cliente-pagos :: lista-meses";
 	}
@@ -448,8 +457,8 @@ public class ClienteController {
 	 * @param id    El ID del cliente.
 	 * @param anio  El año para filtrar los meses pagados.
 	 * @param model El modelo utilizado para la vista.
-	 * @return 		La vista "cliente-pagos :: lista-meses" con la información de los
-	 *         		meses pagados filtrada por año.
+	 * @return La vista "cliente-pagos :: lista-meses" con la información de los
+	 *         meses pagados filtrada por año.
 	 */
 	@GetMapping("/pagos-meses-filtro")
 	public String mesesPagadosFiltro(@RequestParam(value = "id") Integer id, @RequestParam(value = "anio") String anio,
@@ -463,11 +472,16 @@ public class ClienteController {
 		Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
 		System.out.println(fechaPago);
 		int anioPago = calendar.get(Calendar.YEAR);
+
+		List<MesesDTO> mesesPagados = clienteService.actualizarPagosMesesDTO(
+				clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio)),
+				clienteService.obtnerMesesPagadosFiltro(anio, id));
+
 		model.addAttribute("cliente", clienteService.finById(id));
 		model.addAttribute("anio", anio);
 		model.addAttribute("idCliente", id);
 		model.addAttribute("mesPago", fechaPago);
-		model.addAttribute("meses", clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio)));
+		model.addAttribute("meses", mesesPagados);
 		model.addAttribute("mesesPagados", clienteService.obtnerMesesPagadosFiltro(anio, id));
 
 		return "cliente-pagos :: lista-meses";
@@ -480,12 +494,12 @@ public class ClienteController {
 	 * solicitudes HTTP GET dirigidas a la ruta "/reporte". Devuelve un archivo PDF
 	 * como respuesta.
 	 *
-	 * @param request  				La solicitud HTTP recibida.
-	 * @param response 				La respuesta HTTP que se enviará al cliente.
-	 * @throws DocumentException	Excepción lanzada en caso de problemas al manipular
-	 *                           	el documento PDF.
-	 * @throws IOException       	Excepción lanzada en caso de problemas de
-	 *                           	entrada/salida.
+	 * @param request  La solicitud HTTP recibida.
+	 * @param response La respuesta HTTP que se enviará al cliente.
+	 * @throws DocumentException Excepción lanzada en caso de problemas al manipular
+	 *                           el documento PDF.
+	 * @throws IOException       Excepción lanzada en caso de problemas de
+	 *                           entrada/salida.
 	 */
 	@GetMapping("/reporte")
 	@ResponseBody
@@ -502,13 +516,14 @@ public class ClienteController {
 		reporte.export(response);
 
 	}
-	
+
 	/**
 	 * Obtiene los meses que ha pagado un cliente para poder cancelarlos
-	 * @param id		id del cliente del cual se le recuperarán los pagos
-	 * @param anio		año del cual se obtendran los meses
-	 * @param model		el modelo utilizado para la vista
-	 * @return			fragemento donde se coloran los meses pagados de acuerdo al año
+	 * 
+	 * @param id    id del cliente del cual se le recuperarán los pagos
+	 * @param anio  año del cual se obtendran los meses
+	 * @param model el modelo utilizado para la vista
+	 * @return fragemento donde se coloran los meses pagados de acuerdo al año
 	 */
 	@GetMapping("/get-meses-pagados")
 	public String getMesesPagados(@RequestParam(value = "id") Integer id, @RequestParam(value = "anio") Integer anio,
@@ -519,16 +534,16 @@ public class ClienteController {
 		return "fragments/clientes/cancelar-pagos :: form-eliminar-pago";
 	}
 
-	
 	/**
 	 * Metodo para cancelar meses pagados
-	 * @param id					id del cliente al cual se le cancelaran los meses pagados 
-	 * @param meses					meses que se van a cancelar 
-	 * @return						fragamento html con información sobre el resultado de la operación
-	 * @throws DocumentException	Excepción lanzada en caso de problemas al manipular
-	 *                           	el documento PDF.
-	 * @throws IOException       	Excepción lanzada en caso de problemas de
-	 *                           	entrada/salida.
+	 * 
+	 * @param id    id del cliente al cual se le cancelaran los meses pagados
+	 * @param meses meses que se van a cancelar
+	 * @return fragamento html con información sobre el resultado de la operación
+	 * @throws DocumentException Excepción lanzada en caso de problemas al manipular
+	 *                           el documento PDF.
+	 * @throws IOException       Excepción lanzada en caso de problemas de
+	 *                           entrada/salida.
 	 */
 	@PostMapping(value = "/cancelar-pago", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refresh")
@@ -551,8 +566,9 @@ public class ClienteController {
 
 	/**
 	 * Método para registrar una nueva colonia en el sistema
-	 * @param colonia		nombre de la colonia a registrar
-	 * @return				fragamento html con información sobre el resultado de la operación
+	 * 
+	 * @param colonia nombre de la colonia a registrar
+	 * @return fragamento html con información sobre el resultado de la operación
 	 */
 	@PostMapping(value = "/registrar-colonia", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refreshCol")
@@ -569,11 +585,13 @@ public class ClienteController {
 		}
 		return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error en el registro del cliente</div>";
 	}
-	
+
 	/**
-	 * Metodo que sirve para actualizar el listado de colonias al momento de agregar una nueva
-	 * @param model		modelo para pasar información a la vista
-	 * @return			fragmento para actualizar el listado de colonias
+	 * Metodo que sirve para actualizar el listado de colonias al momento de agregar
+	 * una nueva
+	 * 
+	 * @param model modelo para pasar información a la vista
+	 * @return fragmento para actualizar el listado de colonias
 	 */
 	@GetMapping("/refrescar-colonias")
 	public String getColonias(Model model) {
@@ -583,12 +601,16 @@ public class ClienteController {
 
 	/**
 	 * Realiza un pago de un cliente por medio de un abono
-	 * @param abono					cantidad de dinero que paga el cliente
-	 * @param idCliente				id del cliente que realiza el abono
-	 * @param tipoPago				tipo de pago que realizo el cliente (Transferencia o Efectivo)
-	 * @return						resultado sobre si se realizo el pago
-	 * @throws DocumentException 	Excepción lanzada en caso de problemas al manipular el documento PDF.
-	 * @throws IOException       	Excepción lanzada en caso de problemas de entrada/salida.
+	 * 
+	 * @param abono     cantidad de dinero que paga el cliente
+	 * @param idCliente id del cliente que realiza el abono
+	 * @param tipoPago  tipo de pago que realizo el cliente (Transferencia o
+	 *                  Efectivo)
+	 * @return resultado sobre si se realizo el pago
+	 * @throws DocumentException Excepción lanzada en caso de problemas al manipular
+	 *                           el documento PDF.
+	 * @throws IOException       Excepción lanzada en caso de problemas de
+	 *                           entrada/salida.
 	 */
 	@PostMapping(value = "/abono", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.TEXT_HTML_VALUE)
 	@HxTrigger("refresh")
@@ -596,32 +618,55 @@ public class ClienteController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String abono(@RequestParam(value = "abono") Float abono,
 			@RequestParam(value = "idCliente") Integer idCliente,
-			@RequestParam(value = "tipoPagoAbono") Integer tipoPago,Authentication authentication) throws IOException, DocumentException {
+			@RequestParam(value = "tipoPagoAbono") Integer tipoPago, Authentication authentication)
+			throws IOException, DocumentException {
 
 		System.out.println("DATOS: ");
 		System.out.println(abono);
 		System.out.println(idCliente);
 		Usuario user = usuarioService.finUserByUsername(authentication.getName());
 		boolean res = clienteService.abonoCliente(idCliente, abono, tipoPago, user.getIdUsuario());
-		if(res) {
+		if (res) {
 			return "<div id=\"result\" data-notify=\"1\" hidden>Se ha registro el pago</div>";
-		}else {
+		} else {
 			return "<div id=\"result\" data-notify=\"2\" hidden>Ha ocurrido un error al realizar el pago</div>";
 		}
-		
+
 	}
-	
-	
+
 	@GetMapping("/buscarClienteRepetido")
 	@ResponseBody
-	public String clienteRepetido(@RequestParam(value = "nombre") String nombre){
-		
+	public String clienteRepetido(@RequestParam(value = "nombre") String nombre) {
+
 		boolean res = clienteService.findClienteByNombre(nombre);
-		
-		if(res) {
+
+		if (res) {
 			return "existe";
 		}
 		return "no existe";
+	}
+
+	@GetMapping("/get-new-calendar")
+	public String getAnuncioDetalles(@RequestParam(value = "anio") String anio,
+			@RequestParam(value = "idCliente") Integer idCliente, Model model) {
+		Date fechaPago = clienteService.obtenerFechaPago(idCliente);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fechaPago);
+
+		// Obtener el día del mes
+		Integer diaDelMes = calendar.get(Calendar.DAY_OF_MONTH);
+		Integer anioPagado = Integer.parseInt(anio) + 1;
+
+		List<MesesDTO> mesesPagados = clienteService.actualizarPagosMesesDTO(
+				clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio) + 1),
+				clienteService.obtnerMesesPagadosFiltro(Integer.toString(anioPagado), idCliente));
+		model.addAttribute("anioCalendario", Integer.parseInt(anio) + 1);
+		model.addAttribute("mesesCalendario",
+				mesesPagados);
+		model.addAttribute("mesesPagadosCalendario",
+				clienteService.obtnerMesesPagadosFiltro(Integer.toString(anioPagado), idCliente));
+
+		return "fragments/clientes/calendario-cliente :: calendario-cliente";
 	}
 
 }

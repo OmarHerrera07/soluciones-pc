@@ -43,7 +43,7 @@ public interface PagoRepository extends JpaRepository<Pago, Integer> {
 	 *         paginación y filtrado.
 	 */
 	@Query(value = "select p.id_pago as idPago, c.nombre, p.fecha,p.total from pago p join cliente c on p.id_cliente  = c.id_cliente WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%')"
-			+ "and (p.fecha >= ?2 or cast(?2 as date) is null) and (p.fecha <= ?3 or cast(?3 as date) is null) order by p.fecha desc", countQuery = "SELECT COUNT(*) from pago p join cliente c on p.id_cliente  = c.id_cliente WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (p.fecha >= ?2 or cast(?2 as date) is null) and (p.fecha <= ?3 or cast(?3 as date) is null)", nativeQuery = true)
+			+ "and (p.fecha >= ?2 or cast(?2 as date) is null) and (p.fecha <= ?3 or cast(?3 as date) is null) order by p.id_pago desc", countQuery = "SELECT COUNT(*) from pago p join cliente c on p.id_cliente  = c.id_cliente WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (p.fecha >= ?2 or cast(?2 as date) is null) and (p.fecha <= ?3 or cast(?3 as date) is null)", nativeQuery = true)
 	Page<PagoDTO> paginacionPagos(String nombre, String fechaInico, String fechaFIn, Pageable pageable);
 
 	/**
@@ -99,28 +99,32 @@ public interface PagoRepository extends JpaRepository<Pago, Integer> {
 	 *
 	 * @param fechaInicio Fecha de inicio del rango.
 	 * @param fechaFin    Fecha de fin del rango.
-	 * @return Lista de objetos Corte que contiene el nombre del cliente y el total del pago.
+	 * @return Lista de objetos Corte que contiene el nombre del cliente y el total
+	 *         del pago.
 	 */
 	@Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null)", nativeQuery = true)
 	List<Corte> getInfoCorteDinamico(String fechaInico, String fechaFIn);
 
 	/**
-	 * Obtiene la información de corte dinámico para pagos en efectivo dentro de un rango de fechas.
+	 * Obtiene la información de corte dinámico para pagos en efectivo dentro de un
+	 * rango de fechas.
 	 *
 	 * @param fechaInicio Fecha de inicio del rango.
 	 * @param fechaFin    Fecha de fin del rango.
-	 * @return Lista de objetos Corte que contiene el nombre del cliente y el total del pago en efectivo.
+	 * @return Lista de objetos Corte que contiene el nombre del cliente y el total
+	 *         del pago en efectivo.
 	 */
 	@Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null) and p.tipo_pago  = 1", nativeQuery = true)
 	List<Corte> getInfoCorteDinamicoEfectivo(String fechaInico, String fechaFIn);
 
-	
 	/**
-	 * Obtiene la información de corte dinámico para pagos por transferencia dentro de un rango de fechas.
+	 * Obtiene la información de corte dinámico para pagos por transferencia dentro
+	 * de un rango de fechas.
 	 *
 	 * @param fechaInicio Fecha de inicio del rango.
 	 * @param fechaFin    Fecha de fin del rango.
-	 * @return Lista de objetos Corte que contiene el nombre del cliente y el total del pago por transferencia.
+	 * @return Lista de objetos Corte que contiene el nombre del cliente y el total
+	 *         del pago por transferencia.
 	 */
 	@Query(value = "select c.nombre as nombreCliente,p.total as totalPago from pago p join cliente c on p.id_cliente = c.id_cliente where (p.fecha >= ?1 or cast(?1 as date) is null) and (p.fecha <= ?2 or cast(?2 as date) is null) and p.tipo_pago  = 2", nativeQuery = true)
 	List<Corte> getInfoCorteDinamicoTransferencia(String fechaInico, String fechaFIn);
@@ -138,7 +142,8 @@ public interface PagoRepository extends JpaRepository<Pago, Integer> {
 	int actualizarTotal(Float total, Integer idPago);
 
 	/**
-	 * Actualiza la información de pago, incluyendo el abono y el tipo de ticket, para un pago identificado por su ID.
+	 * Actualiza la información de pago, incluyendo el abono y el tipo de ticket,
+	 * para un pago identificado por su ID.
 	 *
 	 * @param idPago     Identificador del pago a actualizar.
 	 * @param abono      Nuevo monto de abono para el pago.
@@ -151,7 +156,8 @@ public interface PagoRepository extends JpaRepository<Pago, Integer> {
 	int actualizarInfoPago(Integer idPago, Float abono, Integer tipoTicket);
 
 	/**
-	 * Obtiene el número de meses con pago asociado a un pago identificado por su ID.
+	 * Obtiene el número de meses con pago asociado a un pago identificado por su
+	 * ID.
 	 *
 	 * @param id Identificador del pago.
 	 * @return Número de meses con pago asociado.

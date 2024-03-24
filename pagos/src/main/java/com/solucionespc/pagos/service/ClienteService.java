@@ -6,9 +6,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import com.solucionespc.pagos.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,7 +269,7 @@ public class ClienteService implements IClienteService {
 			LocalDate fechaLocal = LocalDate.of(anio, i + 1, diaDePago);
 			Date fecha = java.sql.Date.valueOf(fechaLocal);
 
-			MesesDTO mes = new MesesDTO(fecha, formato.format(fecha));
+			MesesDTO mes = new MesesDTO(fecha, formato.format(fecha), false);
 			todosLosMeses.add(mes);
 		}
 		return todosLosMeses;
@@ -291,7 +293,7 @@ public class ClienteService implements IClienteService {
 			LocalDate fechaLocal = LocalDate.of(anio, i + 1, diaDePago);
 			Date fecha = java.sql.Date.valueOf(fechaLocal);
 
-			MesesDTO mes = new MesesDTO(fecha, formato.format(fecha));
+			MesesDTO mes = new MesesDTO(fecha, formato.format(fecha), false);
 			todosLosMeses.add(mes);
 		}
 		return todosLosMeses;
@@ -370,7 +372,7 @@ public class ClienteService implements IClienteService {
 			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
 		} else {
 			PDFRecibo recibo = new PDFRecibo(i, mesesR);
-			//printTicket.printTicket(i, mesesR);
+			// printTicket.printTicket(i, mesesR);
 			byte[] pdfBytes = recibo.getPdfBytes();
 			pagoRepository.actualizarRecibo(pdfBytes, res.getIdPago());
 		}
@@ -404,9 +406,9 @@ public class ClienteService implements IClienteService {
 	public List<ReporteCliente> getReporteClientes() {
 		return clienteRepository.getReporteClientes();
 	}
-	
+
 	/**
-	 * Cancacela meses de pagos para un cliente por medio de su id 
+	 * Cancacela meses de pagos para un cliente por medio de su id
 	 */
 	@Override
 	@Transactional
@@ -437,7 +439,8 @@ public class ClienteService implements IClienteService {
 	}
 
 	/**
-	 * Elimina un cliente del sistema, simpre y cuando este no tenga ningun pago registrado
+	 * Elimina un cliente del sistema, simpre y cuando este no tenga ningun pago
+	 * registrado
 	 */
 	@Override
 	public boolean deteleCliente(Integer idCliente) {
@@ -448,8 +451,7 @@ public class ClienteService implements IClienteService {
 			return false;
 		}
 	}
-	
-	
+
 	/**
 	 * Verifica si un cliente tienen pagos hechos en el sistema
 	 */
@@ -469,7 +471,7 @@ public class ClienteService implements IClienteService {
 	@Override
 	public boolean abonoCliente(Integer idCliente, Float abono, Integer tipoPago, Integer idUsuario)
 			throws IOException, DocumentException {
-		
+
 		/**
 		 * Tipo de tickets
 		 * 1.- Ticket normal (solo contiene meses de pago)
@@ -610,7 +612,7 @@ public class ClienteService implements IClienteService {
 		}
 
 	}
-	
+
 	/**
 	 * Obtinene los meses que un cliente a pagado usando el año como filtro
 	 */
@@ -627,13 +629,32 @@ public class ClienteService implements IClienteService {
 		// TODO Auto-generated method stub
 		return clienteRepository.obtenerAbonoActual(idCliente);
 	}
-	
+
 	@Override
 	public boolean findClienteByNombre(String nombre) {
 		Integer res = clienteRepository.findClienteByNombre(nombre);
-		if(res > 0) {
+		if (res > 0) {
 			return true;
-		}	
+		}
 		return false;
+	}
+
+	@Override
+	public List<MesesDTO> actualizarPagosMesesDTO(List<MesesDTO> meses, List<Date> fechas) {
+		return meses.stream()
+				.map(mes -> {
+					boolean pagado = fechas.stream()
+							.anyMatch(fecha -> {
+								Calendar cal1 = Calendar.getInstance();
+								cal1.setTime(mes.getFecha());
+								Calendar cal2 = Calendar.getInstance();
+								cal2.setTime(fecha);
+								return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+										cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
+							});
+					mes.setPagado(pagado);
+					return mes;
+				})
+				.collect(Collectors.toList());
 	}
 }

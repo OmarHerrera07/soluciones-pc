@@ -20,7 +20,6 @@ function validarTipoPagoAbono() {
 	let abono = $("#cantidadAbonoinput").val();
 	if (abono > 0 && tipoPagoSelect != null) {
 		$("#confirmarAbonoModal").prop("disabled", false);
-		console.log();
 	} else {
 		$("#confirmarAbonoModal").prop("disabled", true);
 	}
@@ -72,13 +71,14 @@ function mostrarMesesAbono(abono) {
 		let fechaActual = new Date(fechaInput);
 		fechaActual.setDate(fechaActual.getDate() + 1);
 		fechaActual.setMonth(fechaActual.getMonth() + i);
-		const dia = fechaActual.getDate() + 1;
+		//const dia = fechaActual.getDate() + 1;
+		const dia = fechaActual.getDate();
+
 		const mes = fechaActual.getMonth() + 1;
 		const anio = fechaActual.getFullYear();
 		const fechaGenerada = `${anio}/${mes.toString().padStart(2, '0')}/${dia.toString().padStart(2, '0')}`;
 		fechasGeneradas.push(fechaGenerada);
 	}
-
 
 
 
@@ -115,4 +115,18 @@ function resetAbono() {
 
 function cerrarConfirmarAbono() {
 	$('#confirmarPagoAbono').modal('hide');
+}
+function addCalendario(){
+	let anio = $('#anio-actual-pago').val();
+	let idCliente = $('#id-cliente-calendario').val();
+	$.get(`/clientes/get-new-calendar?anio=${anio}&idCliente=${idCliente}`, function (data, status) {
+		document.querySelector('#contenedor-calendario').innerHTML = data;
+		$("#quitar-calendario").show("slow");
+		$("#mostrar-calendario").hide("slow");
+	});
+}
+function deteleCalendario(){
+	$("#quitar-calendario").hide("slow");
+	$("#mostrar-calendario").show("slow");
+	document.querySelector('#contenedor-calendario').innerHTML = "";
 }

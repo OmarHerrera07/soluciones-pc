@@ -25,9 +25,9 @@
 					<div class="col-6 filtro-anios">
 						<form name="formAnio" hx-get="/clientes/pagos-meses-filtro" hx-target="#meses-container"
 							hx-swap="innerHTML" class="filtro-anios">
-							<input hidden name="id" th:value="${idCliente}">
+							<input id="id-cliente-calendario" hidden name="id" th:value="${idCliente}">
 							<label>Año</label>
-							<input type="number" min="2017" max="2100" th:value="${anio}" class="form-control"
+							<input id="anio" type="number" min="2017" max="2100" th:value="${anio}" class="form-control"
 								name="anio">
 							<button type="submit" class="btn btn-success">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -69,13 +69,14 @@
 
 				<form name="refresh">
 					<input name="idRefresh" th:value="${idCliente}" hidden>
-					<input name="anioRefresh" th:value="${anio}" hidden>
+					<input id="anio-actual-pago" name="anioRefresh" th:value="${anio}" hidden>
 				</form>
 				<button th:disabled="${cliente.estado == false}" type="button" data-bs-toggle="modal"
 					data-bs-target="#modal-abono-cliente" class="btn btn-success">
 					Abono
 				</button>
 				<br>
+
 				<form hx-post="/clientes/realizar-pago-masivo" hx-target="#result-msg" hx-swap="innerHTML"
 					hx-confirm="¿Seguro?">
 					<br>
@@ -83,7 +84,17 @@
 						class="btn btn-success">
 						Pagar
 					</button>
-
+					<button id="mostrar-calendario" class="btn btn-success" type="button" onclick="addCalendario();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+							<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+						</svg>
+					</button>
+					<button style="display:none;" id="quitar-calendario" class="btn btn-danger" type="button" onclick="deteleCalendario();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+							<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
+						  </svg>
+					</button>
+					
 					<span id="alerta-pagar-mes" style="color: red; margin:0;padding: 0;visibility: 
 					hidden;">Seleccione un mes a pagar</span>
 					<input hidden name="idCliente" th:value="${idCliente}">
@@ -94,18 +105,18 @@
 						<div th:each="mes : ${meses}" class="col-md-3 col-6">
 							<div th:if="${mes.fecha != mesPago}">
 								<input
-									th:attr="name=${mesesPagados.contains(mes.fecha) ? 'pagado' : 'meses'},disabled=${mesesPagados.contains(mes.fecha) ? 'disabled' : null}"
-									th:checked="${mesesPagados.contains(mes.fecha) ? 'checked' : null}"
+									th:attr="name=${mes.pagado ? 'pagado' : 'meses'},disabled=${mes.pagado ? 'disabled' : null}"
+									th:checked="${mes.pagado ? 'checked' : null}"
 									th:value="${mes.fecha}" type="checkbox" class="btn-check" th:id="${mes.nombresMes}"
 									autocomplete="off">
-								<label class="btn btn-outline-success custom-column" th:for="${mes.nombresMes}">
+								<label th:class="${mes.pagado ? 'btn btn-outline-success custom-column' : 'btn btn-outline-warning custom-column'}" th:for="${mes.nombresMes}">
 									<div th:text="${mes.nombresMes}">Enero</div>
 									<div th:text="${#dates.format(mes.fecha, 'dd-MM-yyyy')}">04/44/2444</div>
 								</label>
 							</div>
 							<div th:if="${mes.fecha == mesPago}">
-								<input th:attr="name=${mesesPagados.contains(mes.fecha) ? 'pagado' : 'meses'}"
-									th:checked="${mesesPagados.contains(mes.fecha) ? 'checked' : null}"
+								<input th:attr="name=${mes.pagado ? 'pagado' : 'meses'}"
+									th:checked="${mes.pagado ? 'checked' : null}"
 									th:value="${mes.fecha}" type="checkbox" class="btn-check" th:id="${mes.nombresMes}"
 									autocomplete="off">
 								<label class="btn btn-outline-primary custom-column" th:for="${mes.nombresMes}">
@@ -115,7 +126,10 @@
 							</div>
 						</div>
 					</div>
+					<br>
+					<div id="contenedor-calendario">
 
+					</div>
 					<!-- MODAL DE CONFIRMACIÓN -->
 
 					<!-- Modal -->
@@ -156,6 +170,7 @@
 					<!-- FIN MODAL DE CONFIRMACIÓN -->
 
 				</form>
+
 			</div>
 		</div>
 	</main>

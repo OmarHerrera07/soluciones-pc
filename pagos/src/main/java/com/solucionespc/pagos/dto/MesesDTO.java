@@ -12,10 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class MesesDTO {
-	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fecha;
-	
+
 	private String nombresMes;
+
+	private boolean pagado;
 
 }
