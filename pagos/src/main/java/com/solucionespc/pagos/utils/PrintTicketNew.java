@@ -41,7 +41,7 @@ public class PrintTicketNew {
 		int colonialimit = 24;
 		int centrado = 6;
 		int espacio = 11;
-		int numCol = 15 + meses.size() + 2 + espacio;
+		int numCol = 17 + meses.size() + 2 + espacio;
 
 		String tipoPago = "";
 		if (pago.getTipoPago() == 1) {
@@ -141,6 +141,28 @@ public class PrintTicketNew {
 		colPagos += 1;
 		printer.printTextWrap(colPagos, colPagos + 1, 8 + centrado, 42, "");
 		colPagos += 1;
+
+		MesesRecibo ultimomes = meses.get(meses.size() - 1);
+		calendar.setTime(ultimomes.getFecha());
+
+		// Aumentar un mes
+		calendar.add(Calendar.MONTH, 1);
+
+		// Obtener la nueva fecha
+		Date nuevaFecha = calendar.getTime();
+
+		System.out.println("Este es la proxima fecha de pago");
+		System.out.println(nuevaFecha);
+
+		String fechaProximaFormateada = sdf.format(nuevaFecha);
+
+		printer.printTextWrap(colPagos, colPagos + 1, 5, 42,
+				"Proximo Pago: " + fechaProximaFormateada);
+		colPagos += 1;
+
+		printer.printTextWrap(colPagos, colPagos + 1, 8 + centrado, 42, "");
+		colPagos += 1;
+
 		printer.printTextWrap(colPagos, colPagos + 1, 5, 42,
 				"Cobrado por: " + pago.getNombreUsuario().substring(0, usuariolimit));
 		colPagos += 1;
