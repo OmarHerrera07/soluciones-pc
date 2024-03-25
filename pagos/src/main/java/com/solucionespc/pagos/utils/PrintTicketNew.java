@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +29,8 @@ import com.solucionespc.pagos.dto.MesesRecibo;
 
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
+
+import java.text.Normalizer;
 
 public class PrintTicketNew {
 
@@ -83,7 +86,8 @@ public class PrintTicketNew {
 		printer.printTextWrap(4, 5, 8, 42, "");
 		printer.printTextWrap(5, 6, 15 + centrado, 42, "Fecha: " + sdf.format(pago.getFecha()));
 		printer.printTextWrap(6, 7, 8, 42, "");
-		printer.printTextWrap(7, 8, 5, 42, "Cliente: " + pago.getNombreCliente().substring(0, nombrelimit));
+		printer.printTextWrap(7, 8, 5, 42,
+				"Cliente: " + quitarAcentosYReemplazarN(pago.getNombreCliente().substring(0, nombrelimit)));
 		printer.printTextWrap(8, 9, 5, 42, "Colonia: " + pago.getColonia().substring(0, colonialimit));
 		printer.printTextWrap(9, 10, 8 + centrado, 42, "");
 		printer.printTextWrap(10, 11, 1 + centrado, 16 + centrado, "Mes de Pago");
@@ -198,6 +202,17 @@ public class PrintTicketNew {
 		} catch (IOException | PrintException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static String quitarAcentosYReemplazarN(String texto) {
+		// Primero, quitamos los acentos utilizando Normalizer
+		String textoSinAcentos = Normalizer.normalize(texto, Normalizer.Form.NFD)
+				.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+		// Luego, reemplazamos la letra "ñ" por "n"
+		String textoSinAcentosYN = textoSinAcentos.replaceAll("ñ", "n").replaceAll("Ñ", "N");
+
+		return textoSinAcentosYN;
 	}
 
 	public static void main(String[] args) {

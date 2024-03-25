@@ -208,6 +208,7 @@ public class ClienteController {
 	 * @return clase con los resultados de la paginación (tamaño, clientes, etc)
 	 */
 	@ResponseBody
+	@HxTrigger("refreshNumClientes")
 	@GetMapping("/paginacion")
 	public Page<ClienteDTO> paginacion(Pageable pageable,
 			@RequestParam(name = "nombre", required = false) String nombre,
@@ -476,7 +477,7 @@ public class ClienteController {
 		List<MesesDTO> mesesPagados = clienteService.actualizarPagosMesesDTO(
 				clienteService.generarMesesPorAnio(diaDelMes, Integer.parseInt(anio)),
 				clienteService.obtnerMesesPagadosFiltro(anio, id));
-
+		System.out.println(mesesPagados);
 		model.addAttribute("cliente", clienteService.finById(id));
 		model.addAttribute("anio", anio);
 		model.addAttribute("idCliente", id);
@@ -667,6 +668,14 @@ public class ClienteController {
 				clienteService.obtnerMesesPagadosFiltro(Integer.toString(anioPagado), idCliente));
 
 		return "fragments/clientes/calendario-cliente :: calendario-cliente";
+	}
+
+	@ResponseBody
+	@GetMapping("/count-cliente")
+	public Integer countCliente(
+			@RequestParam(name = "nombre", required = false) String nombre,
+			@RequestParam(name = "idColonia", required = false) Integer idColonia) {
+		return clienteService.countClientes(nombre, idColonia);
 	}
 
 }

@@ -657,4 +657,10 @@ public class ClienteService implements IClienteService {
 				})
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public Integer countClientes(String nombre, Integer idColonia) {
+		// TODO Auto-generated method stub
+		return clienteRepository.countClientes(nombre, idColonia);
+	}
 }

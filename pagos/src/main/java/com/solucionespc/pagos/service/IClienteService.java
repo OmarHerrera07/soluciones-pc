@@ -62,4 +62,6 @@ public interface IClienteService {
 
 	List<MesesDTO> actualizarPagosMesesDTO(List<MesesDTO> meses, List<Date> fechas);
 
+	Integer countClientes(String nombre, Integer idColonia);
+
 }

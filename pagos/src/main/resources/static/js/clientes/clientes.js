@@ -5,6 +5,12 @@ document.body.addEventListener("refresh", function() {
 	$('.modal').modal('hide');
 	cargarClientes(currentPage);
 })
+function numClientes() {
+	$.get("/clientes/count-cliente?nombre=" + $("#filtroNombre").val() + "&size=" + $("#num-registros").val() + "&idColonia=" + $("#colonia-filtro").val(), function(data) {
+		$('#totalClientes').text(data);
+	});
+}
+
 document.body.addEventListener("refreshCol", function() {
 	// Esperar 1000 milisegundos (1 segundo) antes de ejecutar el código
 	setTimeout(function() {
@@ -85,7 +91,7 @@ function cargarClientes(page) {
 		console.log(data);
 		actualizarTabla(data.content);
 		cargarPaginacion(data.totalPages);
-		$('#totalClientes').text(data.totalElements);
+		numClientes();
 	});
 }
 

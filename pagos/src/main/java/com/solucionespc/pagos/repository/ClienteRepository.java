@@ -136,4 +136,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
         @Query(value = "SELECT count(*) FROM cliente c WHERE REPLACE(c.nombre, ' ', '') = REPLACE(:nombre, ' ', '');", nativeQuery = true)
         Integer findClienteByNombre(@Param("nombre") String nombre);
 
+        @Query(value = "select COUNT(*) from cliente c join paquete_internet p ON c.id_paquete = p.id_paquete WHERE LOWER(c.nombre) LIKE CONCAT('%', LOWER(?1), '%') and (c.id_colonia = ?2 or ?2 is null) and c.estado =1", nativeQuery = true)
+        Integer countClientes(String nombre, Integer idColonia);
+
 }
