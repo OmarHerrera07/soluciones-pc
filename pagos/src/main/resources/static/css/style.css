@@ -154,3 +154,11 @@ a {
 .custom-modal-dialog {
   max-width: 600px !important;
 }
+
+.hoja-actual {
+    display: flex !important;
+    justify-content: space-between;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
