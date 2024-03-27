@@ -162,3 +162,7 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+.elementos-hojas{
+	padding-top: 15px;
+}
