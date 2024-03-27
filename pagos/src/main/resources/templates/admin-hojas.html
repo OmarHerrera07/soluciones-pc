@@ -10,15 +10,66 @@
 
 <body>
     <div th:replace="~{fragments/layout :: nav}"></div>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
-            tabindex="0">...</div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...
+    <br>
+    <div class="container-xl card">
+        <div class="row">
+            <h2 class="text-center">Datos de la empresa</h2>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4">
+                        <label class="col-form-label" for="nombreCliente">Nombre: </label>
+                        <input class="form-control" disabled value="Nombre de la empresa">
+                    </div>
+                    <div class="col-4">
+                        <label class="col-form-label" for="nombreCliente">RFC: </label>
+                        <input class="form-control" disabled value="FJELDSUYWMVOPED">
+                    </div>
+                    <div class="col-4">
+                        <label class="col-form-label" for="nombreCliente">Teléfono: </label>
+                        <input class="form-control" disabled value="6161071750">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <label class="col-form-label" for="nombreCliente">Correo: </label>
+                        <input class="form-control" disabled value="empresaanonima@gmail.com">
+                    </div>
+                    <div class="col-8">
+                        <label class="col-form-label" for="nombreCliente">Dirección: </label>
+                        <input class="form-control" disabled value="Aqui debe ir la dirección de la empresa">
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                h
+            </div>
         </div>
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...
+        <br>
+    </div>
+    <br>
+    <div class="container-xl">
+        <h2 class="text-center">Hoja de servicios</h2>
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label class="col-form-label" for="nombreCliente">Fecha </label>
+            </div>
+            <div class="col-2">
+                <label class="col-form-label" for="nombreCliente">Cantidad </label>
+            </div>
+            <div class="col-2">
+                <label class="col-form-label" for="nombreCliente">Descripción </label>
+            </div>
+            <div class="col-2">
+                <label class="col-form-label" for="nombreCliente">Atención </label>
+            </div>
+            <div class="col-2">
+                <label class="col-form-label" for="nombreCliente">Precio unitario </label>
+            </div>
+            <div class="col-2">
+                <label class="col-form-label" for="nombreCliente">Precio</label>
+            </div>
         </div>
-        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
-            ...</div>
     </div>
 
 </body>
